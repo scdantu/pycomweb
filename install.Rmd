@@ -1,0 +1,35 @@
+---
+title: "Installation"
+#author: "Dr. Sarath Dantu"
+#date: "`r format(Sys.time(), '%d/%m/%y')`"
+header-includes:
+    - \usepackage{setspace}\doublespacing
+---
+
+***
+
+## Download and Install
+
+Please download the database from:
+
+1. Database with protein annotation information [pycom.db]()
+2. Database of coevolution matrices [pycom.mat]()
+3. Please note that you can only access individual alignment files from [here]()
+
+***
+
+### Using Pip
+
+```
+pip install git+https://github.com/scdantu/pycom
+```
+
+***
+
+### Using git
+
+***
+
+### Using Conda
+
+***

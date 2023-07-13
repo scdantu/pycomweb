@@ -1,0 +1,17 @@
+name: "PyCoM"
+navbar:
+  title: "PyCoM"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Install"
+      href: install.html
+    - text: "Tutorials"
+      href: tutorials.html
+    - text: "FAQ's"
+      href: faqs.html
+    - text: "Developers"
+      href: developers.html
+    - text: "Dantu Lab"
+      href: https://sites.google.com/view/sarathchandradantu/home
+

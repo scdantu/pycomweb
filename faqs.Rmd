@@ -1,0 +1,25 @@
+---
+title: "FAQ's"
+#author: "Dr. Sarath Dantu"
+#date: "`r format(Sys.time(), '%d/%m/%y')`"
+header-includes:
+    - \usepackage{setspace}\doublespacing
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***
+
+## Frequently Asked Questions
+
+
+List of frequently asked questions:
+
+1. How to Install PyCoM?
+   See the instructions [here](install.html)
+   
+2. What are the advantages of downloading this large database over the web API?
+   While working with the local database is faster, because of limitations of disk space webAPI will be useful. The only disadvantage is you will not be able to query the following fields using the webAPI.
+   
+

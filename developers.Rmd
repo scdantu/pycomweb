@@ -1,0 +1,17 @@
+---
+title: "Developers"
+#author: "Dr. Sarath Dantu"
+#date: "`r format(Sys.time(), '%d/%m/%y')`"
+header-includes:
+    - \usepackage{setspace}\doublespacing
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***
+
+List of Developers:
+
+* Philipp Bibik
+* Sarath Chandra Dantu

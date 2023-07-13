@@ -1,0 +1,39 @@
+---
+title: "Tutorials"
+#author: "Dr. Sarath Dantu"
+#date: "`r format(Sys.time(), '%d/%m/%y')`"
+header-includes:
+    - \usepackage{setspace}\doublespacing
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***
+
+
+To run these tutorials you will need the following:
+
+### Constructing a query
+
+***
+
+### Analysing the query object
+
+***
+
+### Visualising the coevolution matrix
+
+***
+
+### Analysing the alignment
+
+```{r}
+# this is a statement too
+
+# syntax complete statement
+
+```
+
+***
+
