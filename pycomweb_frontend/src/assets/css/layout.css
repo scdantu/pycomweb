@@ -1,0 +1,47 @@
+.main-content-wrapper {
+  margin-top: 5px;
+  flex: 1;
+  height: 100vh;
+  /* Full viewport height */
+}
+
+/*GENRAL SIDEBAR STYLES*/
+.sidebar-div {
+  background-color: white;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-div::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar-heading {
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  margin: 1.5%;
+  padding: 2%;
+  background-color: #eeebf7;
+
+}
+
+.sidebar-heading>h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0
+}
+
+/**LEFT MAIN CONTENT */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 100vh;
+}

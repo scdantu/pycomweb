@@ -1,0 +1,244 @@
+/**SideBar*/
+
+.coevolution-sidebar-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    padding: 1rem;
+
+}
+
+.sidebar-Option-wrapper {
+    width: 100%;
+    /* margin: 10px 5px; */
+    border-radius: 5px;
+}
+
+.sidebar-Option-wrapper button {
+    display: inline-block;
+    padding: 1rem;
+    transition: all 0.5s ease-out;
+    color: #8a41ff;
+    margin-bottom: 5px;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+}
+
+.sidebar-Option-wrapper button.active {
+    color: #ffffff;
+    background-color: #8a41ff;
+    border-radius: 5px;
+}
+
+
+.sidebar-Option-wrapper button:not(.active):hover {
+    background: #eeebf7;
+    color: #8a41ff;
+}
+
+.protein_detials_lists {
+    background: #fff;
+}
+
+
+.protein-detail-cards {
+    background: #eeebf7;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    gap: 10px;
+    border-radius: 5px;
+}
+
+
+
+/* Styling the tab links */
+#protein-details-tabs .nav-link {
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-top: none;
+    /* border-radius: 4px 4px 0 0; */
+    background-color: #eeebf7;
+    color: #555;
+    padding: 10px 15px;
+}
+
+.tab-pane.active {
+    background: #fff;
+    color: black;
+}
+
+#protein-details-tabs .nav-link:hover {
+    background-color: #e0e0e0;
+}
+
+#protein-details-tabs .nav-link.active {
+    color: #ffffff;
+    background-color: #8a41ff;
+    border-bottom-color: transparent;
+    border-radius: 0;
+}
+
+/* Styling the tab content area */
+.tab-content {
+    border: 1px solid #ddd;
+    border-top: none;
+    /* overflow-y: auto; */
+    padding: 15px;
+    background-color: white;
+    color: black;
+}
+
+.tab-content-div {
+    overflow-y: scroll;
+    height: 500px;
+}
+
+/* Coevolution Matrix Styles*/
+.coevolution-matrix {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.coevolution-matrix th,
+.coevolution-matrix td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.coevolution-matrix th {
+    background-color: #f4f4f4;
+}
+
+
+.coevolution-matrix td:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.coevolution-matrix {
+    width: auto;
+    min-width: 800px;
+}
+
+.matrix-container-wrapper {
+    width: 100%;
+    /* Full width within the parent container */
+}
+
+.matrix-container {
+    max-height: 500px;
+    width: 100%;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.grid-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.header-cell {
+    background-color: #f7f7f7;
+    font-weight: bold;
+    text-align: center;
+}
+
+.modal {
+    position: fixed;
+    display: block;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 1000;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for the close button inside the modal */
+.modal-close-button {
+    position: absolute;
+    top: 50px;
+    right: 100px;
+    z-index: 1001;
+    cursor: pointer;
+    background: lightgray;
+    border: none;
+    font-size: 20px;
+}
+
+.protein-detail-page .visualization-content {
+    margin-left: 200px;
+    padding: 20px;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+}
+
+.analysis-content-wrapper {
+    width: '100%';
+    max-height: '500px' !important;
+    overflow-y: auto;
+}
+
+.analysis-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.analysis-title-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.analysis-title {
+    font-weight: bold;
+}
+
+.analysis-subtitle {
+    color: gray;
+}
+
+.total-results {
+    margin-left: auto;
+    padding-left: 20px;
+    font-weight: normal;
+}
+
+.analysis-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+
+}
+
+.analysis-table-container table {
+    width: 100%;
+    table-layout: fixed;
+    margin-bottom: 0;
+    padding: 0;
+    background: #FFFF;
+    border-collapse: collapse;
+}
+
+.analysis-table-container thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1;
+}

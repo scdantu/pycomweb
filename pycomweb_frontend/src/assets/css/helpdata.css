@@ -1,0 +1,45 @@
+/* ---------Help Data Sidebar starts here------ */
+
+
+.helpdata-links-div {
+    padding: 1rem;
+}
+
+.helpdata-links-div a {
+    display: inline-block;
+    padding: 1rem;
+    border-radius: 6px;
+    transition: all 0.5s ease-out;
+    color: #8a41ff;
+    margin-bottom: 5px;
+}
+
+.helpdata-links-div a:not(.active):hover {
+    background: #eeebf7;
+    color: #8a41ff;
+}
+
+/* ---------Help Data Sidebar ENDS here------ */
+
+/* ---------Help Data CONTENT BEGINS here------*/
+.helpdata-title {
+    padding: 5px;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+}
+
+
+/* .organism_taxonomy_cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+} */
+
+/* ---------Help Data CONTENT ENDS here------ */
