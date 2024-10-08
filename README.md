@@ -18,12 +18,20 @@
 ```
 
 ## Prerequisites
+
 Python 3.7 or higher
 Flask installed
 Git installed
 
-## Clone the repository
+Clone the repository
+
+```
 git clone git@github.com:scdantu/pycomweb.git
+```
+
+## Setting up Backend 
+
+```
 cd pycomweb/pycomweb_backend
 
 ## Create Virtual environment
@@ -40,7 +48,6 @@ pip3.10 install -r requirements.txt
 ## Setup Environment variables
 
 export FLASK_APP=run.py
-
 export FLASK_ENV=development
 
 ## Run The App
@@ -49,21 +56,19 @@ flask run --debug
 
 ### run app without debug mode
 flask run
+```
 
 App will run at http://127.0.0.1:5000
 
 
-# Instructions to Setup PyComWeb Frontend
-cd pycomweb_frontend 
-
-Open terminal and type:
+## Setup PyComWeb Frontend
 
 ```
+cd pycomweb_frontend 
 npm install
 ```
 
-### to start the website:
-
+To start the website
 ```
 npm run dev
 ```
