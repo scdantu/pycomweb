@@ -48,4 +48,11 @@ flask run --debug
 ### run app without debug mode
 flask run
 
+App will run at http://127.0.0.1:5000
+
+
+# Instructions to Setup PyComWeb Frontend
+cd pycomweb_frontend 
+Open terminal and type npm install
+
 
