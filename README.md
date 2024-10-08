@@ -23,23 +23,25 @@ Flask installed
 Git installed
 
 ## Clone the repository
-https://github.com/scdantu/pycomweb.git
+git clone git@github.com:scdantu/pycomweb.git
 cd pycomweb/pycomweb_backend
 
 ## Create Virtual environment
 ### For Mac/Linux
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv ../pycomweb
+source ../pycomweb/bin/activate
 
 ### For Windows
 py -3 -m venv .venv
 
 ## Install dependencies
-pip install -r requirements.txt
+pip3.10 install -r requirements.txt
 
 ## Setup Environment variables
-FLASK_APP=run.py
-FLASK_ENV=development
+
+export FLASK_APP=run.py
+
+export FLASK_ENV=development
 
 ## Run The App
 ### run app in debug mode 
@@ -53,6 +55,15 @@ App will run at http://127.0.0.1:5000
 
 # Instructions to Setup PyComWeb Frontend
 cd pycomweb_frontend 
-Open terminal and type npm install
 
+Open terminal and type:
 
+```
+npm install
+```
+
+### to start the website:
+
+```
+npm run dev
+```
