@@ -22,25 +22,22 @@ Python 3.7 or higher
 Flask installed
 Git installed
 
+## Clone the repository
+https://github.com/scdantu/pycomweb.git
+cd pycomweb/pycomweb_backend
+
 ## Create Virtual environment
 ### For Mac/Linux
 python3 -m venv venv
 source venv/bin/activate
 
 ### For Windows
-python -m venv venv
-venv\Scripts\activate
+py -3 -m venv .venv
 
 ## Install dependencies
-### For Mac/Linux
-python3 -m venv venv
-source venv/bin/activate
+pip install -r requirements.txt
 
-### For Windows
-python -m venv venv
-venv\Scripts\activate
-
-
+## Setup Environment variables
 FLASK_APP=run.py
 FLASK_ENV=development
 
