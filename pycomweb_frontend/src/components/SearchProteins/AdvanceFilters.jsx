@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { Accordion, Form, Row, Col, Button } from "react-bootstrap";
 import AsyncSelect from 'react-select';
 import "../../../src/assets/css/advanceFilters.css";
@@ -12,6 +12,8 @@ function AdvanceFilters({ filters, onFilterChange }) {
 
     const [formData, setFormData] = useState({});
     const [isFormChanged, setIsFormChanged] = useState(false);
+    const advancedFilterFormRef = useRef();
+    
     const handleChange = (e) => {
         const { name, type, checked, value } = e.target;
         if (type === 'checkbox') {
@@ -45,8 +47,10 @@ function AdvanceFilters({ filters, onFilterChange }) {
 
     const handleClearFilters = () => {
         setFormData({})
-        onFilterChange(formData);
+        // onFilterChange(formData);
+        onFilterChange({});
         setIsFormChanged(false);
+        advancedFilterFormRef.current.reset();
     }
 
 
@@ -59,7 +63,7 @@ function AdvanceFilters({ filters, onFilterChange }) {
                     <Button onClick={handleClearFilters}>Clear</Button>
                 </Col>
             </div>
-            <Form>
+            <Form ref={advancedFilterFormRef}>
                 <Accordion defaultActiveKey="0" flush>
                     <Accordion.Item eventKey="0" className="item">
                         <Accordion.Header>Options</Accordion.Header>
