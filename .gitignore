@@ -1,0 +1,9 @@
+
+/pycomweb/bin
+/pycomweb/etc
+/pycomweb/include
+/pycomweb/lib
+pycomweb/pyvenv.cfg
+/pycomweb/share
+/pycomweb_backend/__pycache__
+/pycomweb_backend/app
