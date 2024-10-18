@@ -1,8 +1,11 @@
 import { Card, Col } from 'react-bootstrap';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import PropTypes from 'prop-types';
 
 const DetailComponent = ({ data }) => {
+    const {diseases, ligands, ec_numbers, pdb, organism_id, ptm} = data;
+    console.log(JSON.stringify(organism_id))
     return (
         <div>
             {/* <!--Header Section--> */}
@@ -51,9 +54,9 @@ const DetailComponent = ({ data }) => {
                     variant="secondary"
                     data-bs-theme="dark"
                 >
-                    <Tab eventKey="diseases" title="Diseases">
+                    <Tab eventKey="diseases" title={`Diseases: ${diseases.length}`}>
                         <div className='tab-content-div'>
-                            {data.diseases.length ?
+                            {diseases.length ?
                                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                     <thead>
                                         <tr>
@@ -62,7 +65,7 @@ const DetailComponent = ({ data }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.diseases.map(disease => (
+                                        {diseases.map(disease => (
                                             <tr key={disease.disease_id}>
                                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{disease.disease_id}</td>
                                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{disease.disease}</td>
@@ -76,9 +79,9 @@ const DetailComponent = ({ data }) => {
                         </div>
 
                     </Tab>
-                    <Tab eventKey="Ligands" title="Ligands">
+                    <Tab eventKey="Ligands" title={`Ligands: ${ligands.length}`}>
                         <div className='tab-content-div'>
-                            {data.ligands.length ?
+                            {ligands.length ?
                                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                     <thead>
                                         <tr>
@@ -87,7 +90,7 @@ const DetailComponent = ({ data }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.ligands.map(ligand => (
+                                        {ligands.map(ligand => (
                                             <tr key={ligand.id}>
                                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{ligand.id}</td>
                                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{ligand.name}</td>
@@ -99,11 +102,11 @@ const DetailComponent = ({ data }) => {
                                 <p>No Ligands</p>}
                         </div>
                     </Tab>
-                    <Tab eventKey="ecnumber" title="EC Numbers">
+                    <Tab eventKey="ecnumber" title={`EC Numbers: ${ec_numbers.length}`}>
                         <div className='tab-content-div'>
-                            {data.ec_numbers.length ?
+                            {ec_numbers.length ?
                                 <ul>
-                                    {data.ec_numbers.map(ec => (
+                                    {ec_numbers.map(ec => (
                                         <li key={ec}>{ec}</li>
                                     ))}
                                 </ul>
@@ -112,13 +115,13 @@ const DetailComponent = ({ data }) => {
                             }
                         </div>
                     </Tab>
-                    <Tab eventKey="pdb" title="PDB">
+                    <Tab eventKey="pdb" title={`PDB: ${pdb.length}`}>
                         <div className='tab-content-div'>
                             {
-                                data.pdb.length ?
+                                pdb.length ?
                                     <ul>
-                                        {data.pdb.map(pdb => (
-                                            <li key={pdb}>{pdb}</li>
+                                        {pdb.map(pdb_ref => (
+                                            <li key={pdb_ref}>{pdb_ref}</li>
                                         ))}
                                     </ul>
                                     :
@@ -126,12 +129,12 @@ const DetailComponent = ({ data }) => {
                             }
                         </div>
                     </Tab>
-                    <Tab eventKey="organisms" title="Organisms">
+                    <Tab eventKey="organisms" title={`Organisms: ${organism_id.length}`}>
                         <div className='tab-content-div'>
                             {
-                                data.organism_id.length ?
+                                organism_id.length ?
                                     <ul>
-                                        <li key={data.organism_id}>{data.organism_id}</li>
+                                        <li key={organism_id}>{organism_id}</li>
                                     </ul>
                                     :
                                     <p>No Organisms found</p>
@@ -139,12 +142,12 @@ const DetailComponent = ({ data }) => {
                         </div>
                     </Tab>
 
-                    <Tab eventKey="ptm" title="Post-Translational Modifications (PTMs)">
+                    <Tab eventKey="ptm" title={`Post-Translational Modifications (PTMs): ${ptm.length}`}>
                         <div className='tab-content-div'>
-                            {data.ptm.length ?
+                            {ptm.length ?
                                 <ul>
-                                    {data.ptm.map(ptm => (
-                                        <li key={ptm}>{ptm}</li>
+                                    {ptm.map(ptm_ref => (
+                                        <li key={ptm_ref}>{ptm_ref}</li>
                                     ))}
                                 </ul>
                                 :
@@ -158,5 +161,9 @@ const DetailComponent = ({ data }) => {
         </div >
     );
 };
+
+DetailComponent.propTypes = {
+    data: PropTypes.object,
+  }
 
 export default DetailComponent;
