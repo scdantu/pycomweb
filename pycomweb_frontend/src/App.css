@@ -243,7 +243,13 @@ button:disabled {
   background-color: #ffffff;
   /* border-radius: 0.375rem;
   border: 1px solid #dee2e6; */
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.organism-link {
+  text-decoration: underline;
+  color: purple;
 }
 
 .select_Protein_filter {
@@ -381,9 +387,6 @@ input {
   border-radius: 0 0 5px 5px;
 }
 
-
-
-
 /*Home Page*/
 
 #home {
@@ -394,6 +397,10 @@ input {
 .home-carousal {
   margin: 0;
   max-height: 500px;
+}
+
+.protein-detail-cards {
+  padding: .5rem 1rem !important;
 }
 
 
