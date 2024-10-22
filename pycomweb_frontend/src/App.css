@@ -396,6 +396,19 @@ input {
   max-height: 500px;
 }
 
+.basketCountBubble {
+  background-color: #8A41FF;
+  color: #ffffff;
+  border-radius: .5rem;
+  font-size: .7rem;
+  padding: .2rem;
+  position: relative;
+  top: -27px;
+  right: -11px;
+  display: flex;
+  justify-content: center;
+}
+
 
 /* .home-carousal .carousel-item:before {
     content: '';

@@ -1,7 +1,11 @@
+import { useContext } from "react";
 import { Col, Table } from "react-bootstrap";
-import { FaEye, FaFileDownload } from 'react-icons/fa';
+import { FaEye, FaFileDownload, FaCartPlus} from 'react-icons/fa';
+import { HelpDataContext } from "../../context/HelpDataContext";
 
 const TableComponent = ({ data, loading, error, pagination, onPageChange, onRecordsPerPageChange }) => {
+  const {updateBasket} =  useContext(HelpDataContext);
+  
   const { results, result_count, total_pages, page } = data || {};
 
   if (loading) return <div>Loading...</div>;
@@ -63,10 +67,11 @@ const TableComponent = ({ data, loading, error, pagination, onPageChange, onReco
                 <td>{row.helix_frac}</td>
                 <td>{row.strand_frac}</td>
                 <td>
-                  <a className="fa-icon" href={"/protein/" + row.uniprot_id} target="_blank"><FaEye title="View more" /> </a>
+                  <a className="fa-icon" href={"/protein/" + row.uniprot_id} target="_blank"><FaEye title="View more" />&nbsp;</a>
                   <a className="fa-icon" href={"https://pycom.brunel.ac.uk/alignments/" + row.uniprot_id + ".aln"} >
-                    <FaFileDownload title="Download MSA file" />
+                    <FaFileDownload title="Download MSA file" />&nbsp;
                   </a>
+                  <a className="fa-icon"><FaCartPlus title="Add to Download Selection" onClick={() => updateBasket(row.uniprot_id)}/>&nbsp;</a>
                 </td>
               </tr>
             ))}

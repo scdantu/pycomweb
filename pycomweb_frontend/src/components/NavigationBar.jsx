@@ -3,10 +3,22 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, NavLink } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { HelpDataContext } from "../context/HelpDataContext";
+import { FaCartArrowDown } from "react-icons/fa";
 
 
 
 function NavigationBar() {
+  const {basket} =  useContext(HelpDataContext);
+  const [basketCount, setBasketCount] = useState(0);
+
+  //update the cart count bubble each time an item is added to the basket
+  useEffect(() => {
+    let basketItems = Object.keys(basket).length;
+    setBasketCount(basketItems);
+  }, [basket]);
+
   return (
     <Navbar expand="lg" className="fixed-top bg-body-tertiary shadow" data-bs-theme="light" >
       <Container>
@@ -55,6 +67,10 @@ function NavigationBar() {
             {/* <NavLink className="text-uppercase nav-link" to="/pdb">
               PDB
             </NavLink> */}
+            <Nav.Link><FaCartArrowDown size={20}/>
+            {
+              basketCount > 0 ? (<div className="basketCountBubble">{basketCount}</div>) : (<div></div>)
+            }</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
