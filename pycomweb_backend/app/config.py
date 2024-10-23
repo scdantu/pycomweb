@@ -16,6 +16,8 @@ class Config:
 
     #Pycom API URL
     PYCOM_API_URL = os.environ.get('PYCOM_API_URL')
+    if PYCOM_API_URL is None:
+        raise ValueError("PYCOM_API_URL environment variable is not set")
 
 
 # Ensure the uploads directory exists
