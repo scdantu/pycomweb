@@ -1,9 +1,14 @@
+import { useContext } from 'react';
 import { Card, Col } from 'react-bootstrap';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import PropTypes from 'prop-types';
+import { HelpDataContext } from '../../context/HelpDataContext';
+import { PyComContext } from "../../context/PyComContext";
+import { FaCartPlus} from 'react-icons/fa';
 
 const DetailComponent = ({ data }) => {
+    const {updateBasket} =  useContext(HelpDataContext);
     const {diseases, ligands, ec_numbers, pdb, organism_id, ptm} = data;
     console.log(JSON.stringify(organism_id))
     return (
@@ -15,6 +20,7 @@ const DetailComponent = ({ data }) => {
                 </div>
                 <p><strong>UniProt ID:</strong> {data.uniprot_id}</p>
                 <p><strong>Sequence Length:</strong> {data.sequence_length} residues</p>
+                <a className="fa-icon" onClick={() => updateBasket(data.uniprot_id)}><FaCartPlus title="Add to Download Selection"/>&nbsp; Add to download</a>
                 {/* <p><strong>Neff:</strong>{data.neff}</p> */}
             </Col>
             <Col md={12} className="content-header-wrapper">

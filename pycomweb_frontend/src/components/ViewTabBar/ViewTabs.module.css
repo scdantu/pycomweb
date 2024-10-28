@@ -1,0 +1,38 @@
+.ViewTabs {
+    display: flex;
+    margin: 5rem 2rem 0rem 2rem;
+    flex-direction: row;
+    align-items: flex-end;
+}
+.ViewTabsSearch, .ViewTabsProteinLabel {
+    cursor:pointer;
+}
+.ViewTabsSearch {
+    height: 50px;
+    border: 1px solid #000000;
+    padding: .5rem 1rem;
+}
+
+.ViewTabsProtein, .ViewTabsProteinSelected {
+    height: 50px;
+    border: 1px solid #000000;
+    border-left: none;
+    padding: .5rem 1rem;
+}
+.ViewTabsProteinSelected {
+    background-color: #000000;
+    color: #ffffff;
+}
+.ViewTabsProteinLabel {
+    height: 45px;
+    padding: .5rem 1rem;
+}
+.ViewTabsRemoveTab {
+    background-color: #666666;
+    color: #ffffff;
+    border-radius: 2rem;
+    font-size: .8rem;
+    padding: .2rem .5rem;
+    cursor: pointer;
+}
+

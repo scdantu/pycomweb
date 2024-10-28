@@ -67,7 +67,7 @@ function NavigationBar() {
             {/* <NavLink className="text-uppercase nav-link" to="/pdb">
               PDB
             </NavLink> */}
-            <Nav.Link><FaCartArrowDown size={20}/>
+            <Nav.Link as={Link} to={"basket"}><FaCartArrowDown size={20}/>
             {
               basketCount > 0 ? (<div className="basketCountBubble">{basketCount}</div>) : (<div></div>)
             }</Nav.Link>

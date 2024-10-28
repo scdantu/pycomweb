@@ -25,8 +25,12 @@ export const HelpDataProvider = ({children}) =>{
         }
     }
 
+    const removeItemFromBasket = (UniProtId) => {
+        console.log(`removing ${UniProtId}`);
+    }
+
     return (
-        <HelpDataContext.Provider value= {{helpDataCache, setHelpDataCache, basket, setBasket, updateBasket}}>
+        <HelpDataContext.Provider value= {{helpDataCache, setHelpDataCache, basket, setBasket, updateBasket, removeItemFromBasket}}>
             {children}
         </HelpDataContext.Provider>
     )

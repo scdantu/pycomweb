@@ -4,15 +4,16 @@
  Hook returns data, total records, total pages, current Page,filters 
  and methods for updating Filters, changing Page number, change Records Per Page,
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {PYCOMWEB_BASE_URL, PYCOMWEB_QUERY_PROTEINS_API} from "../constants"
+import { PyComContext } from "../context/PyComContext";
 
 const useFetchQueryProteins = (filters, pagination) => {
     console.log("Hook is called ");
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-  
+    const {addItemsToProteinRepository } = useContext(PyComContext);
     const cleanFilters = (filters) => {
       console.log(filters)
         const cleanedFilters = {};
@@ -54,6 +55,7 @@ const useFetchQueryProteins = (filters, pagination) => {
                 throw new Error(`Error: ${response.status}`);
               }
               const result = await response.json();
+              addItemsToProteinRepository(result.results);
               setData(result);
             } catch (err) {
               setError(err);
