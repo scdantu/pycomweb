@@ -182,7 +182,7 @@ button:disabled {
   padding: 10px;
   width: 100%;
   border: none;
-  border-right: 1px solid #dee2e6;
+  /* border-right: 1px solid #dee2e6; */
   border-radius: 0;
 }
 

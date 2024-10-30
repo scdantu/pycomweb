@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Container, Row, Col, Card, Table } from 'react-bootstrap';
-import { FaSearch } from 'react-icons/fa';
+
 import AdvanceFilters from '../components/SearchProteins/AdvanceFilters.jsx';
 import { FaX } from 'react-icons/fa6';
 import useFetchQueryProteins from '../customHooks/useFetchQueryProteins.jsx';
@@ -16,19 +16,12 @@ function Home() {
     page: 1,
     recordsPerPage: 10,
   });
-  const [uniprot_id, setUniprot_id] = useState('');
 
-
+  /* Call the hook initially to fetch first 10 protiens without filters */
   const { data, loading, error } = useFetchQueryProteins(filters, pagination);
 
   // Called by apply filter button in advance filter component
   const handleFiltersChange = (newFilters) => {
-
-    if (uniprot_id) {
-      newFilters = { ...newFilters, uniprot_id }
-    } else {
-      delete newFilters.uniprot_id;
-    }
     setFilters(newFilters);
     setPagination((prev) => ({ ...prev, page: 1 })); // Reset page to 1 on filter change
   };
@@ -41,25 +34,10 @@ function Home() {
     setPagination((prev) => ({ ...prev, recordsPerPage, page: 1 }));
   };
 
-  // called by search button next to UniProt ID input field
-  const handleSearchBtn = () => {
-    // const newFilters = { ...filters, uniprot_id }
-    handleFiltersChange(filters);
-  }
-
-  // called when user presses enter button ater typing UniprotID
-  const handleSearchBoxKeyDown = (event) => {
-    if (event.key == "Enter") {
-      handleFiltersChange(filters);
-    }
-  }
-
   const handleRemoveFilter = (filterName) => {
     setFilters(prev => {
       const newFilters = { ...prev };
       delete newFilters[filterName];
-      console.log("not me ")
-      console.log(newFilters)
       return newFilters;
     });
     console.log(filters)
@@ -68,9 +46,6 @@ function Home() {
   // To display applied filters as tags
   const getAppliedFilters = () => {
     const appliedFilters = Object.entries(filters)
-    console.log("hii")
-    console.log(appliedFilters)
-    console.log(filters)
     return (
       <div>
         {appliedFilters.map(([name, value]) => {
@@ -91,7 +66,8 @@ function Home() {
 
     <Container fluid className="main-content-wrapper">
       <Row>
-        <Col md={3} lg={2} className="sidebar-div advance-filter-div ">
+        {/* --------Advance Filter Component----- */}
+        <Col md={3} lg={2} className="sidebar-div">
           <AdvanceFilters visible={navVisible} show={showNavbar} filters={filters} onFilterChange={handleFiltersChange} />
         </Col>
         {/* <!--Right Content Section-> */}
@@ -101,17 +77,6 @@ function Home() {
             <div className='header-title col-md-6'>
               <div className='h5'>Search Proteins</div>
               <span>Search Using UniProt ID or use Advance Filters</span>
-            </div>
-            <div className="header-search-box col-md-6">
-              <input
-                type="text"
-                placeholder='Search By UniProtID'
-                name="uniprot_id"
-                defaultValue={filters.uniprot_id || ''}
-                onChange={(e) => setUniprot_id(e.target.value)}
-                onKeyDown={handleSearchBoxKeyDown}
-              />
-              <button type="button" onClick={handleSearchBtn}><FaSearch /></button>
             </div>
           </Col>
           {/* <!--Filters Applied section--> */}
