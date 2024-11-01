@@ -5,7 +5,43 @@ import PropTypes from 'prop-types';
 
 const DetailComponent = ({ data }) => {
     const {diseases, ligands, ec_numbers, pdb, organism_id, ptm} = data;
-    console.log(JSON.stringify(organism_id))
+    const {neff, helix_frac, turn_frac, strand_frac, has_ptm, has_pdb, has_substrate} = data;
+    const decimalPlaces = 3; //number of decimal places for display
+
+    /*
+        roundFigure()
+        receives a param and fixes the decimal places to the value set by decimalPlaces
+    */
+    const roundFigure = (item) => {
+        return item.toFixed(decimalPlaces);
+    }
+
+    /*
+        renderTrueFalse()
+        receives a param and depending on value renders a tick or cross respectively
+    */
+    const renderTrueFalse = (item) => {
+        if(item) {
+            return "\u2714"; //unicode check
+        } else {
+            return "\u2716"; //unicode cross
+        }
+    }
+
+    /*  
+        renderLink()
+        receives a param and depending on length, renders a link or a cross
+    */
+    const renderLink = (item) => {
+        if(item.length > 0) {
+            let hrefLink = `https://www.uniprot.org/taxonomy/${item}`
+            return (<a className="organism-link" href={hrefLink} target="_blank" rel="noreferrer">{item}</a>);
+            
+         } else {
+             return "\u2716"; //unicode cross
+         }
+    }
+    
     return (
         <div>
             {/* <!--Header Section--> */}
@@ -23,25 +59,28 @@ const DetailComponent = ({ data }) => {
             {/* <!--Statistics about the search Data--> */}
             <Col md={12} className="result-statistics-wrapper">
                 <div className='protein-detail-cards'>
-                    <b>Neff: </b> <span> {data.neff}</span>
+                    <b>Organism: </b> <span> {renderLink(organism_id)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Helix Fraction: </b> <span> {data.helix_frac}</span>
+                    <b>Neff: </b> <span> {roundFigure(neff)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Turn Fraction: </b> <span> {data.turn_frac}</span>
+                    <b>Helix Fraction: </b> <span> {roundFigure(helix_frac)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Standard Fraction: </b> <span> {data.strand_frac}</span>
+                    <b>Turn Fraction: </b> <span> {roundFigure(turn_frac)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Ptm: </b> <span> {data.has_ptm}</span>
+                    <b>Standard Fraction: </b> <span> {roundFigure(strand_frac)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>PDB: </b> <span> {data.has_pdb}</span>
+                    <b>Ptm: </b> <span> {renderTrueFalse(has_ptm)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Substrate: </b> <span> {data.has_substrate}</span>
+                    <b>PDB: </b> <span> {renderTrueFalse(has_pdb)}</span>
+                </div>
+                <div className='protein-detail-cards'>
+                    <b>Substrate: </b> <span> {renderTrueFalse(has_substrate)}</span>
                 </div>
 
             </Col>
@@ -129,19 +168,6 @@ const DetailComponent = ({ data }) => {
                             }
                         </div>
                     </Tab>
-                    <Tab eventKey="organisms" title={`Organisms: ${organism_id.length}`}>
-                        <div className='tab-content-div'>
-                            {
-                                organism_id.length ?
-                                    <ul>
-                                        <li key={organism_id}>{organism_id}</li>
-                                    </ul>
-                                    :
-                                    <p>No Organisms found</p>
-                            }
-                        </div>
-                    </Tab>
-
                     <Tab eventKey="ptm" title={`Post-Translational Modifications (PTMs): ${ptm.length}`}>
                         <div className='tab-content-div'>
                             {ptm.length ?
