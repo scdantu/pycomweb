@@ -14,6 +14,27 @@ export const SEARCH_FILTERS = {
     "sequence": "Sequence",
     "min_length": "Min Length",
     "max_length": "Max Length",
+    "min_helix": "Min Helix",
+    "max_helix": "Max Helix",
+    "min_turn": "Min Turn",
+    "max_turn": "Max Turn",
+    "min_strand": "Min Strand",
     "max_strand": "Max Strand",
-    "has_substrate": "Has Substrate"
+    "has_substrate": "Has Substrate",
+    "cath": "Cath",
+    "enzyme": "Enzyme",
+    "organism_id": "Organism ID",
+    "organism_name": "organism Name",
+    "disease_id": "Disease Id",
+    "disease": "Disease",
+    "cofactor_id": "Cofactor ID",
+    "cofactor": "Cofactor",
+    "biological_process": "Biological Process",
+    "cellular_component": "Cellular Component",
+    "developmental_stage": "Developmental Stage",
+    "domain": "Domain",
+    "ligand": "Ligand",
+    "molecular_function": "Molecular function",
+    "ptm": "PTM"
+
 }

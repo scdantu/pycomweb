@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import {PYCOMWEB_BASE_URL, PYCOMWEB_QUERY_PROTEINS_API} from "../constants"
 
 const useFetchQueryProteins = (filters, pagination) => {
-    console.log("Hook is called ");
+    console.log("Fetch Proteins Hook is called ");
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -25,7 +25,6 @@ const useFetchQueryProteins = (filters, pagination) => {
             cleanedFilters[key] = value;
           }
         });
-      
         return cleanedFilters;
       };
 
@@ -34,8 +33,6 @@ const useFetchQueryProteins = (filters, pagination) => {
             setLoading(true);
             setError(null);
             const cleanedFilters = cleanFilters(filters);
-            console.log(filters)
-            console.log(cleanedFilters)
             const requestData = {
               ...cleanedFilters,
               page: pagination.page,
