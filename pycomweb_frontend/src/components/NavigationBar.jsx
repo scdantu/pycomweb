@@ -4,13 +4,14 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, NavLink } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { HelpDataContext } from "../context/HelpDataContext";
+// import { HelpDataContext } from "../context/HelpDataContext";
+import { DownloadContext } from "../context/DownloadContext";
 import { FaCartArrowDown } from "react-icons/fa";
 
 
 
 function NavigationBar() {
-  const {basket} =  useContext(HelpDataContext);
+  const {basket} =  useContext(DownloadContext);
   const [basketCount, setBasketCount] = useState(0);
 
   //update the cart count bubble each time an item is added to the basket
@@ -26,9 +27,9 @@ function NavigationBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto justify-content-end w-100">
-            <NavLink className="text-uppercase nav-link" as={Link} to={"/"}>
+            {/* <NavLink className="text-uppercase nav-link" as={Link} to={"/"}>
               Search Protein
-            </NavLink>
+            </NavLink> */}
             <NavDropdown className=" text-uppercase" title="Data" id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to={"biological_processes"}>
                 Biological Processes
@@ -62,7 +63,7 @@ function NavigationBar() {
               </NavDropdown.Item>
             </NavDropdown>
             {/* <Nav.Link className=" text-uppercase" href="/search">Search Protein</Nav.Link> */}
-            <Nav.Link className=" text-uppercase" href="/AI_help">AI Assistance</Nav.Link>
+            {/* <Nav.Link className=" text-uppercase" href="/AI_help">AI Assistance</Nav.Link> */}
             {/* <NavLink className=" text-uppercase nav-link" to="/MSA">MSA</NavLink> */}
             {/* <NavLink className="text-uppercase nav-link" to="/pdb">
               PDB

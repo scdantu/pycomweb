@@ -1,3 +1,4 @@
+import React from "react";
 import { Outlet } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import './App.css';
@@ -8,22 +9,26 @@ import ViewTabBar from "./components/ViewTabBar/ViewTabs";
 import Footer from "./components/Footer";
 import { PyComProvider } from "./context/PyComContext";
 import { HelpDataProvider } from "./context/HelpDataContext";
+import { PyComProviders } from "./context/PyComProviders";
+
 
 function App() {
 
   return (
-    <PyComProvider>
+    <PyComProviders>
+      <PyComProvider>
       <HelpDataProvider>
-        <div>
+        <React.Fragment>
           <NavigationBar />
-          <ViewTabBar />
-          <main className="content">
-            <Outlet />
-          </main>
-          <Footer />
-        </div>
+            <ViewTabBar />
+              <main className="content">
+              <Outlet />
+              </main>
+            <Footer />
+        </React.Fragment>
       </HelpDataProvider>
-    </PyComProvider>
+      </PyComProvider>
+    </PyComProviders>
   )
 }
 

@@ -1,10 +1,10 @@
 import React, { useContext} from 'react'
-import { PyComContext } from '../../context/PyComContext';
+import { ProteinTabContext } from '../../context/ProteinTabContext';
 import styles from './ViewTabs.module.css'; 
 import { useNavigate } from "react-router-dom";
 
 function ViewTabBar() {
-  const { proteinTabs, removeProteinFromTabs, updateSelectedProtein } = useContext(PyComContext)
+  const { proteinTabs, removeProteinFromTabs, updateSelectedProtein } = useContext(ProteinTabContext);
   const navigate = useNavigate();
 
   const ViewSearch = () => {
@@ -26,7 +26,7 @@ function ViewTabBar() {
 return (
     <React.Fragment>
         <div className={styles.ViewTabs}>
-            <div className={styles.ViewTabsSearch} onClick={() => ViewSearch()}>Search</div>
+            <div className={proteinTabs.selectedIndex === -1 ? styles.ViewTabsSearchSelected : styles.ViewTabsSearch} onClick={() => ViewSearch()}>Search Protein</div>
             { proteinTabs.tabs.map((tab, index) => (
                 <div key={tab} className={proteinTabs.selectedIndex === index ? styles.ViewTabsProteinSelected : styles.ViewTabsProtein} >&nbsp;
                 <span className={styles.ViewTabsProteinLabel}onClick={() =>ViewProtein(tab)}>{tab}</span>

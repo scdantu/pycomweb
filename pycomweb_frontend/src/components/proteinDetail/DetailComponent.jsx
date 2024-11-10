@@ -1,26 +1,35 @@
-import { useContext } from 'react';
-import { Card, Col } from 'react-bootstrap';
+import { useContext, useEffect, useState } from 'react';
+import { Col } from 'react-bootstrap';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import PropTypes from 'prop-types';
-import { HelpDataContext } from '../../context/HelpDataContext';
-import { PyComContext } from "../../context/PyComContext";
-import { FaCartPlus} from 'react-icons/fa';
+// import { HelpDataContext } from '../../context/HelpDataContext';
+import { DownloadContext } from '../../context/DownloadContext';
+// import { PyComContext } from "../../context/PyComContext";
+// import { RepositoryContext } from '../../context/RepositorContext';
+import { FaCartPlus } from 'react-icons/fa';
+import { RepositoryContext } from '../../context/RepositorContext';
+// import useDataLoader from '../../customHooks/useDataLoader';
+// import useProteinDetailsDataLoader from '../../customHooks/useProteinDetailsDataLoader'
+// import { SUMMARY_PROTEIN_DATA, PYCOM_PROTEIN_DATA } from '../../constants';
 
-const DetailComponent = ({ data }) => {
-    const {updateBasket} =  useContext(HelpDataContext);
-    const {diseases, ligands, ec_numbers, pdb, organism_id, ptm} = data;
-    console.log(JSON.stringify(organism_id))
+const DetailComponent = ({ uniprot_id }) => {
+
+    const { updateBasket } = useContext(DownloadContext);
+    const { proteinRepository } = useContext(RepositoryContext);
+    const data = proteinRepository[uniprot_id];
+    const { protein_name, diseases, ligands, ec_numbers, pdb, organism_id, ptm } = data.summaryData;
+
     return (
         <div>
             {/* <!--Header Section--> */}
             <Col md={12} className="content-header-wrapper mb-0">
                 <div className='header-title'>
-                    <div className='h4'>{data.protein_name}</div>
+                    <div className='h4'>{protein_name}</div>
                 </div>
                 <p><strong>UniProt ID:</strong> {data.uniprot_id}</p>
                 <p><strong>Sequence Length:</strong> {data.sequence_length} residues</p>
-                <a className="fa-icon" onClick={() => updateBasket(data.uniprot_id)}><FaCartPlus title="Add to Download Selection"/>&nbsp; Add to download</a>
+                <a className="fa-icon" onClick={() => updateBasket(data.uniprot_id)}><FaCartPlus title="Add to Downloads" />&nbsp; Add to download</a>
                 {/* <p><strong>Neff:</strong>{data.neff}</p> */}
             </Col>
             <Col md={12} className="content-header-wrapper">
@@ -135,18 +144,18 @@ const DetailComponent = ({ data }) => {
                             }
                         </div>
                     </Tab>
-                    <Tab eventKey="organisms" title={`Organisms: ${organism_id.length}`}>
-                        <div className='tab-content-div'>
-                            {
-                                organism_id.length ?
-                                    <ul>
-                                        <li key={organism_id}>{organism_id}</li>
-                                    </ul>
-                                    :
-                                    <p>No Organisms found</p>
-                            }
-                        </div>
-                    </Tab>
+                    {/* <Tab eventKey="organisms" title={`Organisms: ${organism_id.length}`}>
+                            <div className='tab-content-div'>
+                                {
+                                    organism_id.length ?
+                                        <ul>
+                                            <li key={organism_id}>{organism_id}</li>
+                                        </ul>
+                                        :
+                                        <p>No Organisms found</p>
+                                }
+                            </div>
+                        </Tab> */}
 
                     <Tab eventKey="ptm" title={`Post-Translational Modifications (PTMs): ${ptm.length}`}>
                         <div className='tab-content-div'>
@@ -170,6 +179,7 @@ const DetailComponent = ({ data }) => {
 
 DetailComponent.propTypes = {
     data: PropTypes.object,
-  }
+    uniprot_id: PropTypes.string
+}
 
 export default DetailComponent;

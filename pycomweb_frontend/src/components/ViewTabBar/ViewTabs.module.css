@@ -7,6 +7,12 @@
 .ViewTabsSearch, .ViewTabsProteinLabel {
     cursor:pointer;
 }
+.ViewTabsSearch, .ViewTabsSearchSelected {
+    height: 50px;
+    border: 1px solid #000000;
+    padding: .5rem 1rem;
+}
+
 .ViewTabsSearch {
     height: 50px;
     border: 1px solid #000000;
@@ -19,7 +25,7 @@
     border-left: none;
     padding: .5rem 1rem;
 }
-.ViewTabsProteinSelected {
+.ViewTabsProteinSelected, .ViewTabsSearchSelected {
     background-color: #000000;
     color: #ffffff;
 }

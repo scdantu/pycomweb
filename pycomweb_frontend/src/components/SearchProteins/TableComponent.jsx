@@ -1,13 +1,18 @@
 import { useContext } from "react";
 import { Col, Table } from "react-bootstrap";
 import { FaEye, FaFileDownload, FaCartPlus} from 'react-icons/fa';
-import { HelpDataContext } from "../../context/HelpDataContext";
-import { PyComContext } from "../../context/PyComContext";
+import { DownloadContext } from "../../context/DownloadContext";
+// import { HelpDataContext } from "../../context/HelpDataContext";
+// import { PyComContext } from "../../context/PyComContext";
+// import { RepositoryContext } from "../../context/RepositorContext";
 import { useNavigate } from "react-router-dom";
+import { ProteinTabContext } from "../../context/ProteinTabContext";
 
 const TableComponent = ({ data, loading, error, pagination, onPageChange, onRecordsPerPageChange }) => {
-  const {updateBasket} =  useContext(HelpDataContext);
-  const {addProteinToTab} = useContext(PyComContext);
+  const {updateBasket} =  useContext(DownloadContext);
+  // const {addProteinToTab} = useContext(PyComContext);
+  // const {addProteinToTab} = useContext(RepositoryContext);
+  const {addProteinToTab} = useContext(ProteinTabContext);
   const { results, result_count, total_pages, page } = data || {};
 
   const navigate = useNavigate();
