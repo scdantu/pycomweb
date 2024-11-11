@@ -3,30 +3,23 @@ import axios from 'axios';
 import { PYCOMWEB_BASE_URL, COEVOLUTION_SCORE_SIGNIFICANCE } from "../../constants"
 import { VariableSizeGrid as Grid } from 'react-window';
 import { Col, Form } from 'react-bootstrap';
+// import useFetchProteinDetail from '../../customHooks/useFetchProteinDetail';
+import useFetchProteinMatrices from '../../customHooks/useFetchProteinMatrices';
 
-
-const CoevolutionMatrix = ({ proteinData, rowHeight = 35, labelWidth = 100 }) => {
+const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => {
+    
+    const { matricesData, matricesLoaded, matricesError } = useFetchProteinMatrices(uniprot_id);
+    
     const [selectedData, setSelectedData] = useState(null);  // for selected residue Pair, score
-    const [matrixData, setMatrixData] = useState(proteinData.matrix); // Default to simple
+    
     const [matrixType, setMatrixType] = useState('matrix')
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [boxplotImage, setBoxplotImage] = useState('');
     const [descriptiveStatistics, setDescriptiveStatistics] = useState(null);
-
-
+    
     const handleMatrixTypeChange = (e) => {
         const val = e.target.value
-        setMatrixType(e.target.value)
-        if (val == 'matrix_S') {
-            setMatrixData(proteinData.matrix_S)
-        } else if (val == "matrix_N") {
-            setMatrixData(proteinData.matrix_N)
-        } else if (val == 'contact_matrix') {
-            setMatrixData(proteinData.contact_matrix)
-        } else {
-            setMatrixData(proteinData.matrix)
-        }
-        console.log(e.target.value)
+        setMatrixType(val)
     }
 
     const closeModal = () => {
@@ -67,9 +60,6 @@ const CoevolutionMatrix = ({ proteinData, rowHeight = 35, labelWidth = 100 }) =>
         }
     };
 
-    const numberOfColumns = matrixData[0].length + 1; // +1 for residue labels
-    const numberOfRows = matrixData.length + 1; // +1 for residue labels
-
     // Render a cell of the grid
     const Cell = ({ columnIndex, rowIndex, style }) => {
         if (rowIndex === 0 && columnIndex === 0) {
@@ -78,20 +68,20 @@ const CoevolutionMatrix = ({ proteinData, rowHeight = 35, labelWidth = 100 }) =>
             // First row, column labels
             return (
                 <div style={style} className="grid-cell header-cell">
-                    {proteinData.sequence[columnIndex - 1] + '(' + columnIndex + ')'}
+                    {matricesData.sequence[columnIndex - 1] + '(' + columnIndex + ')'}
                 </div>
             );
         } else if (columnIndex === 0) {
             // First column, row labels
             return (
                 <div style={style} className="grid-cell header-cell">
-                    {proteinData.sequence[rowIndex - 1] + '(' + rowIndex + ')'}
+                    {matricesData.sequence[rowIndex - 1] + '(' + rowIndex + ')'}
                 </div>
             );
         } else {
             // Data cells
-            const score = matrixData[rowIndex - 1][columnIndex - 1];
-            const selectedPair = proteinData.sequence[rowIndex - 1] + proteinData.sequence[columnIndex - 1]
+            const score = matricesData[matrixType][rowIndex - 1][columnIndex - 1];
+            const selectedPair = matricesData.sequence[rowIndex - 1] + matricesData.sequence[columnIndex - 1]
             return (
                 <div
                     style={style}
@@ -107,10 +97,19 @@ const CoevolutionMatrix = ({ proteinData, rowHeight = 35, labelWidth = 100 }) =>
         }
     };
     // Function to toggle the display of the matrix
-    const toggleMatrixDisplay = () => {
-        setShowMatrix(!showMatrix);
-    };
+    // const toggleMatrixDisplay = () => {
+    //     setShowMatrix(!showMatrix);
+    // };
+    
+    if(!matricesLoaded) {
+        return(
+            <div>loading</div>
+        )
+    }
+    
+    if(matricesLoaded && matricesData?.matrix){
     return (
+        // <div>something</div>
         <Col md={12} className="coevolution-matrix-wrapper">
             {/* header */}
             <div className="col-md-12 mb-3 content-header-wrapper">
@@ -155,7 +154,7 @@ const CoevolutionMatrix = ({ proteinData, rowHeight = 35, labelWidth = 100 }) =>
                             label="Contact Map (1.5 Contact factor)"
                             type="radio"
                             name="matrix_type"
-                            id="matrix_N"
+                            id="contact_matrix"
                             value="contact_matrix"
                             onChange={handleMatrixTypeChange}
                             checked={matrixType == 'contact_matrix'}
@@ -164,12 +163,12 @@ const CoevolutionMatrix = ({ proteinData, rowHeight = 35, labelWidth = 100 }) =>
                 </div>
             </div>
             <div className="matrix-container-wrapper" style={{ width: '100%', maxHeight: '500px' }}>
-                {matrixData && (
+                {matricesData && (
                     <Grid
-                        columnCount={numberOfColumns}
+                        columnCount={matricesData.entries}
                         columnWidth={() => 100}
                         height={500}
-                        rowCount={numberOfRows}
+                        rowCount={matricesData.entries}
                         rowHeight={() => rowHeight}
                         width={1200} // Adjust width based on your layout
                     >
@@ -207,6 +206,7 @@ const CoevolutionMatrix = ({ proteinData, rowHeight = 35, labelWidth = 100 }) =>
         </Col>
 
     );
+}
 
 };
 

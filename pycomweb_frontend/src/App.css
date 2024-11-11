@@ -182,7 +182,7 @@ button:disabled {
   padding: 10px;
   width: 100%;
   border: none;
-  /* border-right: 1px solid #dee2e6; */
+  border-right: 1px solid #dee2e6;
   border-radius: 0;
 }
 
@@ -243,13 +243,7 @@ button:disabled {
   background-color: #ffffff;
   /* border-radius: 0.375rem;
   border: 1px solid #dee2e6; */
-  /* justify-content: space-around; */
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-.organism-link {
-  text-decoration: underline;
-  color: purple;
+  justify-content: space-around;
 }
 
 .select_Protein_filter {
@@ -387,6 +381,9 @@ input {
   border-radius: 0 0 5px 5px;
 }
 
+
+
+
 /*Home Page*/
 
 #home {
@@ -399,8 +396,17 @@ input {
   max-height: 500px;
 }
 
-.protein-detail-cards {
-  padding: .5rem 1rem !important;
+.basketCountBubble {
+  background-color: #8A41FF;
+  color: #ffffff;
+  border-radius: .5rem;
+  font-size: .7rem;
+  padding: .2rem;
+  position: relative;
+  top: -27px;
+  right: -11px;
+  display: flex;
+  justify-content: center;
 }
 
 

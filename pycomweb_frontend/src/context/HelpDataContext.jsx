@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-
+import { createContext, useState } from "react";
+import { propTypes } from "react-bootstrap/esm/Image";
 export const HelpDataContext = createContext({
 
 });
@@ -12,4 +12,8 @@ export const HelpDataProvider = ({children}) =>{
         </HelpDataContext.Provider>
     )
 
+}
+
+HelpDataProvider.propTypes = {
+    children: propTypes.any
 }

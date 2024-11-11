@@ -13,6 +13,7 @@ function useFetchHelpData(helpDataKey, url) {
         fetch("https://pycom.brunel.ac.uk/api/"+url)
         .then((response) => response.json())
         .then((result)=>{
+            console.log(JSON.stringify(result));
             setData(result)
             setHelpDataCache((prev) => ({...prev, helpDataKey:result}));
             setLoading(false);

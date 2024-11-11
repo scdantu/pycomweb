@@ -1,19 +1,18 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { Accordion, Form, Row, Col, Button } from "react-bootstrap";
-import { FaSearch } from 'react-icons/fa';
-import AsyncSelect from 'react-select';
+// import { FaSearch } from 'react-icons/fa';
+// import AsyncSelect from 'react-select';
 import "../../../src/assets/css/advanceFilters.css";
 
-import useFetchHelpData from "../../customHooks/useFetchHelpData";
+// import useFetchHelpData from "../../customHooks/useFetchHelpData";
 import { validateField, validateForm } from "./ValidateSearchProteinFilters";
-
+import { SearchContext } from "../../context/SearchContext";
 
 function AdvanceFilters({ filters, onFilterChange }) {
-    // const organismFilterData = useFetchHelpData('organisms', 'get-organism-list')
-    // const formRef = useRef();
+    const {isFormChanged, setIsFormChanged} = useContext(SearchContext);
+    const {isSearchUpdateRequired, setIsSearchUpdateRequired} = useContext(SearchContext);
 
     const [formData, setFormData] = useState({});
-    const [isFormChanged, setIsFormChanged] = useState(false);
     const advancedFilterFormRef = useRef();
     const [errors, setErrors] = useState({});
 
@@ -36,7 +35,7 @@ function AdvanceFilters({ filters, onFilterChange }) {
         } else {
 
             if (value == '' || value == 'undefined') {
-
+                //why do we have this space?
             }
             // Update other types of inputs
             setFormData((prevFilters) => ({
@@ -89,6 +88,7 @@ function AdvanceFilters({ filters, onFilterChange }) {
             console.log('Form submitted successfully!', formData);
             onFilterChange(formData);
         }
+        setIsSearchUpdateRequired(true);
         setIsFormChanged(false);
     };
 
@@ -96,6 +96,7 @@ function AdvanceFilters({ filters, onFilterChange }) {
         setFormData({})
         setErrors({});
         onFilterChange({});
+        setIsSearchUpdateRequired(true);
         setIsFormChanged(false);
         advancedFilterFormRef.current.reset();
         // reset state of checkboxes to false to update the state
@@ -110,20 +111,6 @@ function AdvanceFilters({ filters, onFilterChange }) {
     return (
         <>
             <Form ref={advancedFilterFormRef}>
-                {/* <Col className="content-header-wrapper">
-                    <div className="header-search-box col-md-12">
-                        <input
-                            type="text"
-                            placeholder='Search By UniProtID'
-                            name="uniprot_id"
-                            defaultValue={filters.uniprot_id || ''}
-                            onChange={(e) => setUniprot_id(e.target.value)}
-                            onKeyDown={handleSearchBoxKeyDown}
-                        />
-                        <button type="button" onClick={handleSearchBtn}><FaSearch /></button>
-                    </div>
-                </Col> */}
-
                 <div className="advance-filter-heading">
                     <h2>Advanced Filters</h2>
                     <Col sm={{ span: 10 }} className="advance-filter-buttons-div">
@@ -131,17 +118,6 @@ function AdvanceFilters({ filters, onFilterChange }) {
                         <Button onClick={handleClearFilters}>Clear</Button>
                     </Col>
                 </div>
-                <Col className="content-header-wrapper">
-                    <div className="header-search-box col-md-12">
-                        <input
-                            type="text"
-                            placeholder='Search By UniProtID'
-                            name="uniprot_id"
-                            // onChange={(e) => setUniprot_id(e.target.value)}
-                            onChange={handleChange}
-                        />
-                    </div>
-                </Col>
                 <div className="advance-filters-div">
                     <Accordion defaultActiveKey="0" flush>
                         <Accordion.Item eventKey="0" className="item">

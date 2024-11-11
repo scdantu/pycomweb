@@ -1,64 +1,76 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Container, Row, Col, Card, Table } from 'react-bootstrap';
 
 import AdvanceFilters from '../components/SearchProteins/AdvanceFilters.jsx';
-import { FaX } from 'react-icons/fa6';
+// import { FaX } from 'react-icons/fa6';
 import useFetchQueryProteins from '../customHooks/useFetchQueryProteins.jsx';
 import TableComponent from '../components/SearchProteins/TableComponent.jsx'
-import { SEARCH_FILTERS } from '../constants';
-import { GiConsoleController } from 'react-icons/gi';
+// import { SEARCH_FILTERS } from '../constants';
+// import { GiConsoleController } from 'react-icons/gi';
+
+import { SearchContext } from '../context/SearchContext.jsx';
 
 function Home() {
   /*State to manage responsive sidebar */
   const [navVisible, showNavbar] = useState(false);  /* Not working */
-  const [filters, setFilters] = useState({});
-  const [pagination, setPagination] = useState({
-    page: 1,
-    recordsPerPage: 10,
-  });
+  
+  const {filters, setFilters, pagination, setPagination} = useContext(SearchContext);
+  const {handleFiltersChange, handlePageChange, handleRecordsPerPageChange, handleRemoveFilter, getAppliedFilters} = useContext(SearchContext);
+  const {searchData} = useContext(SearchContext);
+  
+  // const [filters, setFilters] = useState({});
+  // const [pagination, setPagination] = useState({
+  //   page: 1,
+  //   recordsPerPage: 10,
+  // });
+
+
+
+
 
   /* Call the hook initially to fetch first 10 protiens without filters */
   const { data, loading, error } = useFetchQueryProteins(filters, pagination);
+  // we need to update the search context after calling this
 
   // Called by apply filter button in advance filter component
-  const handleFiltersChange = (newFilters) => {
-    setFilters(newFilters);
-    setPagination((prev) => ({ ...prev, page: 1 })); // Reset page to 1 on filter change
-  };
+  // const handleFiltersChange = (newFilters) => {
+  //   setFilters(newFilters);
+  //   setPagination((prev) => ({ ...prev, page: 1 })); // Reset page to 1 on filter change
+  // };
 
-  const handlePageChange = (newPage) => {
-    setPagination((prev) => ({ ...prev, page: newPage }));
-  };
+  // const handlePageChange = (newPage) => {
+  //   setPagination((prev) => ({ ...prev, page: newPage }));
+  // };
 
-  const handleRecordsPerPageChange = (recordsPerPage) => {
-    setPagination((prev) => ({ ...prev, recordsPerPage, page: 1 }));
-  };
+  // const handleRecordsPerPageChange = (recordsPerPage) => {
+  //   setPagination((prev) => ({ ...prev, recordsPerPage, page: 1 }));
+  // };
 
-  const handleRemoveFilter = (filterName) => {
-    setFilters(prev => {
-      const newFilters = { ...prev };
-      delete newFilters[filterName];
-      return newFilters;
-    });
-    console.log(filters)
-  };
+  // const handleRemoveFilter = (filterName) => {
+  //   setFilters(prev => {
+  //     const newFilters = { ...prev };
+  //     delete newFilters[filterName];
+  //     return newFilters;
+  //   });
+  //   console.log(filters)
+  // };
 
   // To display applied filters as tags
-  const getAppliedFilters = () => {
-    const appliedFilters = Object.entries(filters)
-    return (
-      <div>
-        {appliedFilters.map(([name, value]) => {
-          const label = SEARCH_FILTERS[name];
-          return label && value.length > 0 ? (
-            <span key={name} style={{ margin: '5px', padding: '5px', border: '1px solid black', borderRadius: '3px' }}>
-              {label}: {value} <FaX onClick={() => handleRemoveFilter(name)} />
-            </span>
-          ) : null;
-        })}
-      </div>
-    );
-  }
+  // const getAppliedFilters = () => {
+  //   const appliedFilters = Object.entries(filters)
+  //   return (
+  //     <div>
+  //       {appliedFilters.map(([name, value]) => {
+  //         const label = SEARCH_FILTERS[name];
+  //         return label && value.length > 0 ? (
+  //           <span key={name} style={{ margin: '5px', padding: '5px', border: '1px solid black', borderRadius: '3px' }}>
+  //             {label}: {value} <FaX onClick={() => handleRemoveFilter(name)} />
+  //           </span>
+  //         ) : null;
+  //       })}
+  //     </div>
+  //   );
+  // }
 
 
   /*Render Home Page Components */
@@ -88,12 +100,12 @@ function Home() {
 
           <Col md={12} className="results-table-wrapper">
             <TableComponent
-              data={data}
+              // data={searchData}
               loading={loading}
               error={error}
-              pagination={pagination}
-              onPageChange={handlePageChange}
-              onRecordsPerPageChange={handleRecordsPerPageChange}
+              // pagination={pagination}
+              // onPageChange={handlePageChange}
+              // onRecordsPerPageChange={handleRecordsPerPageChange}
             />
           </Col>
         </Col>

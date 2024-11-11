@@ -4,17 +4,27 @@
  Hook returns data, total records, total pages, current Page,filters 
  and methods for updating Filters, changing Page number, change Records Per Page,
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {PYCOMWEB_BASE_URL, PYCOMWEB_QUERY_PROTEINS_API} from "../constants"
+import { PyComContext } from "../context/PyComContext";
+import { RepositoryContext } from "../context/RepositorContext";
+import { SearchContext } from "../context/SearchContext";
 
-const useFetchQueryProteins = (filters, pagination) => {
-    console.log("Fetch Proteins Hook is called ");
+const useFetchQueryProteins = (filters, pagination, run) => {
+    console.log("Hook is called ");
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-  
+    // const {addItemsToProteinRepository } = useContext(PyComContext);
+    const {addItemsToProteinRepository } = useContext(RepositoryContext);
+    const {searchData, setSearchData} = useContext(SearchContext);
+    const {isFormChanged, setIsFormChanged} = useContext(SearchContext);
+    const {isSearchUpdateRequired, setIsSearchUpdateRequired, setIsRunUniProtSearchById} = useContext(SearchContext);
+
+    const isEmptyObject = (object) => Object.keys(object).length === 0;
+
     const cleanFilters = (filters) => {
-      console.log(filters)
+      // console.log(filters)
         const cleanedFilters = {};
       
         Object.keys(filters).forEach((key) => {
@@ -25,14 +35,29 @@ const useFetchQueryProteins = (filters, pagination) => {
             cleanedFilters[key] = value;
           }
         });
+      
         return cleanedFilters;
       };
 
     useEffect(() => {
-        const fetchData = async () => {
+      console.log(`isFormChanged: ${isFormChanged}`);
+      console.log(`searchData: ${isEmptyObject(searchData)}`);
+      console.log(`isSearchUpdateRequired: ${isSearchUpdateRequired}`);
+      // console.log((searchData != {} && isFormChanged));
+
+      // if our search results are not empty, and isFormChanged is false, don't do an update
+      if(!isEmptyObject(searchData) && !isSearchUpdateRequired) {
+        return;
+      }
+      
+      
+      
+      const fetchData = async () => {
             setLoading(true);
             setError(null);
             const cleanedFilters = cleanFilters(filters);
+            // console.log(filters)
+            // console.log(cleanedFilters)
             const requestData = {
               ...cleanedFilters,
               page: pagination.page,
@@ -51,7 +76,12 @@ const useFetchQueryProteins = (filters, pagination) => {
                 throw new Error(`Error: ${response.status}`);
               }
               const result = await response.json();
+              addItemsToProteinRepository(result.results);
               setData(result);
+              setSearchData(result);
+              setIsFormChanged(false);
+              setIsSearchUpdateRequired(false);
+              setIsRunUniProtSearchById(false);
             } catch (err) {
               setError(err);
             } finally {
@@ -60,7 +90,7 @@ const useFetchQueryProteins = (filters, pagination) => {
           };
       
         fetchData();
-    }, [filters, pagination]);
+    }, [filters, pagination, isFormChanged, searchData, isSearchUpdateRequired]);
   
     return {
         loading,
