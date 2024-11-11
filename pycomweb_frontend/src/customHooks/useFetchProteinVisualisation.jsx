@@ -17,7 +17,7 @@ const useFetchProteinVisualisation = (uniprot_id, selectedPlot, threshold, matri
                         // const response = await axios.get(PYCOMWEB_BASE_URL + PYCOMWEB_GET_PROTEIN_MATRICES + uniprot_id);
                         const response = await axios.post(PYCOMWEB_BASE_URL + GENERATE_PLOTS, 
                             {uniprot_id, selectedPlot, threshold, matrixType}, 
-                            { responseType: 'image/png' });
+                            { responseType: "text" });
                         const { data } = response;
                         return data;
                     } catch (err) {

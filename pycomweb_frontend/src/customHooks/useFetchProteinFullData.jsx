@@ -16,15 +16,6 @@ const useFetchProteinFullData = (isRequired, uniprot_ids) => {
         [uniprot_ids, proteinRepository]
     );
 
-    
-    // const proteinSummaryPromises = uniprot_ids
-    //     .filter(uniprot_id => !proteinRepository[uniprot_id]?.fetchedSummaryData) // filter out data already fetched
-    //     .map(uniprot_id => fetchProteinFullData(uniprot_id));
-
-
-
-
-
     useEffect(() => {
         
         // if (!summaryRequired) return; // Skip if summary is not required
