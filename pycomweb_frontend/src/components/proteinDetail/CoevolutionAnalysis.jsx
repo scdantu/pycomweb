@@ -10,9 +10,7 @@ import { RepositoryContext } from '../../context/RepositorContext';
 function CoevolutionAnalysis({uniprot_id}) {
     
     //need to control matrix type information
-
-    console.log(uniprot_id);
-    
+ 
     const { proteinRepository } = useContext(RepositoryContext);
     const proteinData = proteinRepository[uniprot_id];
     const { protein_name } = proteinData.summaryData;
@@ -25,7 +23,7 @@ function CoevolutionAnalysis({uniprot_id}) {
     
     const {analysisLoaded, analysisData} = useFetchProteinAnalysis(uniprot_id, percentile, matrixType);
     
-    const percentile_options = [90, 80, 70, 75, 70, 60, 50, 40, 30, 20, 10, 5]
+    const percentile_options = [90, 80, 75, 70, 60, 50, 40, 30, 20, 10, 5];
 
 
     useEffect(() => {
