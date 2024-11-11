@@ -53,52 +53,19 @@ def get_top_scoring_residues():
 def get_top_scoring_residues2():
     # Get the POST parameters
     input_params = request.get_json()
-#     # matrix = input_params.get('matrix')
     uniprot_id = input_params.get('uniprot_id')
     percentile = int(input_params.get('percentile'))
     matrixType = input_params.get('matrixType')
-    # print(uniprot_id)
-    # uniprot_id = 'P0C9F0'
-    print(uniprot_id)
-    print(percentile)
-    print(matrixType)
-    # params = {
-    #     "uniprot_id": uniprot_id,
-    # }
-
-#   percentile = int(input_params.get('percentile'))
-#     # get matrix data!
+    
     url = "http://127.0.0.1:5000/getProteinMatrices/" + uniprot_id
-    # print(url)
-    # response = requests.get(url, params)
     response = requests.get(url)
-    # data = getProteinMatrices(uniprot_id)
-    # print(response)
     data = response.json()
-    # data = response.get("results")
-    # for item in data:
-    #     print(item.keys())
-    # # print(data["sequence"]);
     data = data[0]
     sequence = data['sequence']
-    # print(sequence)
-    # matrix = data['matrix']
     matrix = data[matrixType]
-    # percentile = 90
-    # return "false"
-    # print(response.get(sequence))
     
-    # print(protein_data)
-    # for key in protein_data.keys():
-    #     print(key)
-
-
-    # sequence = data.sequence
-    # print(response)
-#   # matrix = data.get(matrix)
     df_top_scoring_residues = calculate_top_scoring_residues(matrix, percentile, sequence)
     response = df_top_scoring_residues.to_dict(orient='records')
-    # print(jsonify(response))
     return jsonify(response)
 
 
@@ -150,10 +117,6 @@ def generate_plot():
     plot_type = data['selectedPlot']
     threshold = data['threshold']
     matrixType = data['matrixType']
-
-    # print(uniprot_id)
-    # print(plot_type)
-    # print(matrixType)
 
     # GET MATRIX DATA
     url = "http://127.0.0.1:5000/getProteinMatrices/" + uniprot_id

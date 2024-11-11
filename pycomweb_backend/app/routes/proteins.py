@@ -45,7 +45,6 @@ def getProteinMatrices(uniprot_id):
         response = requests.get(url)
         response = response.json() 
         protein_data = response.get("results")
-        # protein_data[0] = addProteinDetailFromUniprotDB(uniprot_id, protein_data[0])
         protein_dataframe = pd.DataFrame.from_dict(protein_data)    #convert it into pandas dataframe
         # Convert the matrix column (list of lists) to a NumPy array
         protein_dataframe['matrix'] = protein_dataframe['matrix'].apply(lambda x: np.array(x))
@@ -156,7 +155,6 @@ def addProteinDetailFromUniprotDB2(uniprot_id):
     response = response.json().get("results")[0]
     protein_data = {}
     protein_data['protein_name'] = response.get("proteinDescription").get("recommendedName").get("fullName").get("value") 
-    # protein_data['ec_number'] = response.get("proteinDescription").get("recommendedName").get("ecNumbers")[0].get("value")
     # Initialize lists to store extracted information
     diseases = []
     ec_numbers = []
@@ -174,8 +172,6 @@ def addProteinDetailFromUniprotDB2(uniprot_id):
             disease_accession = disease_info.get("diseaseAccession", "")
             diseases.append({"disease": disease, "disease_id": disease_accession})
         elif comment_type == "CATALYTIC ACTIVITY":
-            # ec_number_list = comment.get("reaction", {}).get("ecNumber", [])
-            # ec_numbers.extend(ec_number_list)
             ec_numbers.append(comment.get("reaction", {}).get("ecNumber", []))
 
     # Extract from "keywords"
