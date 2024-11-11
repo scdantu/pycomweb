@@ -1,4 +1,4 @@
-import { propTypes } from "react-bootstrap/esm/Image";
+import PropTypes from "prop-types";
 import { RepositoryProvider } from "./RepositorContext";
 import { DownloadProvider } from "./DownloadContext";
 import { ProteinTabProvider } from "./ProteinTabContext";
@@ -21,5 +21,5 @@ export const PyComProviders = ({ children }) => {
 // export default PyComProviders;
 
 PyComProviders.propTypes = {
-    children: propTypes.any
+    children: PropTypes.any
 }

@@ -3,7 +3,6 @@ import { useState, useEffect, useContext, useMemo } from "react"
 import { PYCOMWEB_BASE_URL, UNIPROT_DETAIL} from "../constants"
 import { RepositoryContext } from "../context/RepositorContext"
 
-// const useFetchProteinSummaryData = (isRequired, uniprot_ids) => {
 const useFetchProteinSummaryData = (uniprot_ids) => {
     
     
@@ -17,23 +16,7 @@ const useFetchProteinSummaryData = (uniprot_ids) => {
         [uniprot_ids, proteinRepository]
     );
 
-    // const idToFetch = useMemo(() =>
-
-
     useEffect(() => {
-        // if (!summaryRequired) return; // Skip if summary is not required
-        // if(!isRequired) {
-        //     setLoadingSummary(false);
-        //     // updateLoading(false);
-        //     return;
-        // }
-        
-        // if(!proteinRepository[uniprot_id]?.fetchedSummaryData)
-        // {
-        //     setLoadingSummary(false)
-        //     return;
-        // }
-
         if (idsToFetch.length === 0) {
             setLoadingSummary(false);
             return;

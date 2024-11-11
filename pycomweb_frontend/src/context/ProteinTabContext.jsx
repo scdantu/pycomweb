@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { propTypes } from "react-bootstrap/esm/Image";
+import PropTypes from "prop-types";
 export const ProteinTabContext = createContext(null);
 
 export const ProteinTabProvider = ({children}) =>{
@@ -107,7 +107,7 @@ export const ProteinTabProvider = ({children}) =>{
 }
 
 ProteinTabProvider.propTypes = {
-    children: propTypes.function
+    children: PropTypes.any
 }
 
 

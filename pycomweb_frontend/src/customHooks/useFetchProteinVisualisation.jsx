@@ -1,14 +1,11 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { PYCOMWEB_BASE_URL, GENERATE_PLOTS, TOP_SCORING_RESIDUES2, PYCOMWEB_GET_PROTEIN_MATRICES } from "../constants"
+import { PYCOMWEB_BASE_URL, GENERATE_PLOTS } from "../constants"
 const useFetchProteinVisualisation = (uniprot_id, selectedPlot, threshold, matrixType) => {
     const [visualisationError, setVisualisationError] = useState(null);
     const [visualisationLoaded, setVisualisationLoaded] = useState(false);
     const [visualisationData, setVisualisationData] = useState(null);
-    console.log(`uniprot_id: ${uniprot_id}`);
-    console.log(`selectedPlot: ${selectedPlot}`);
-    console.log(`threshold: ${threshold}`);
-    console.log(`matrixType: ${matrixType}`);
+    
     useEffect(() => {
         const fetchVisualisationData = async (uniprot_id, selectedPlot, threshold, matrixType) => {
 
@@ -17,7 +14,6 @@ const useFetchProteinVisualisation = (uniprot_id, selectedPlot, threshold, matri
             try {
                 const fetchProteinVisualisationData = async (uniprot_id, selectedPlot, threshold, matrixType) => {
                     try {
-                        // console.log(`a: ${uniprot_id}`)
                         // const response = await axios.get(PYCOMWEB_BASE_URL + PYCOMWEB_GET_PROTEIN_MATRICES + uniprot_id);
                         const response = await axios.post(PYCOMWEB_BASE_URL + GENERATE_PLOTS, 
                             {uniprot_id, selectedPlot, threshold, matrixType}, 

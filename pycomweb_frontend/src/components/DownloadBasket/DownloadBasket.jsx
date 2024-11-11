@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { RepositoryContext } from '../../context/RepositorContext';
 import { DownloadContext } from '../../context/DownloadContext';
 import useFetchProteinSummaryData from '../../customHooks/useFetchProteinSummaryData';
-// import useDataLoader from '../../customHooks/useDataLoader';
-import { SUMMARY_PROTEIN_DATA } from '../../constants';
 
 function DownloadBasket() {
   const { basket, removeBasketItem, emptyBasket} = useContext(DownloadContext);
@@ -13,7 +11,6 @@ function DownloadBasket() {
   
   const {loadingSummary} = useFetchProteinSummaryData(basket);
   // const dataRequired = [SUMMARY_PROTEIN_DATA];
-  // const {isDataLoaded} = useDataLoader(dataRequired, basket);
 
   return (
     <>

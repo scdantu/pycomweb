@@ -2,17 +2,20 @@ import {useRef, useContext} from "react";
 import styles from './UniProtIdSearch.module.css'; 
 import { FaSearch } from "react-icons/fa";
 import { SearchContext } from "../../context/SearchContext";
-
+import { ProteinTabContext } from "../../context/ProteinTabContext";
+import { useNavigate } from "react-router-dom";
 const UniProtIdSearch = () => {
 
     const {uniProtSearchId, setUniProtSearchId, setIsRunUniProtSearchById} = useContext(SearchContext);
-
+    const {updateSelectedProtein} = useContext(ProteinTabContext);
     const UniProtIdSearchInputRef = useRef(); // create the ref for the search input box
-
+    const navigate = useNavigate();
     /**
      * Search by uniprot id
      */
     const handleSearchBtn = () => {
+        updateSelectedProtein("/");
+        navigate("/");
         setIsRunUniProtSearchById(true);
     }
 

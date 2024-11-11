@@ -4,7 +4,6 @@ import { Accordion, Form, Row, Col, Button } from "react-bootstrap";
 // import AsyncSelect from 'react-select';
 import "../../../src/assets/css/advanceFilters.css";
 
-// import useFetchHelpData from "../../customHooks/useFetchHelpData";
 import { validateField, validateForm } from "./ValidateSearchProteinFilters";
 import { SearchContext } from "../../context/SearchContext";
 
@@ -82,10 +81,10 @@ function AdvanceFilters({ filters, onFilterChange }) {
     const handleApplyFilters = () => {
         const formErrors = validateForm(formData);
         setErrors(formErrors);
-        console.log("five")
-        console.log(errors)
+        // console.log("five")
+        // console.log(errors)
         if (Object.keys(formErrors).length === 0) {
-            console.log('Form submitted successfully!', formData);
+            // console.log('Form submitted successfully!', formData);
             onFilterChange(formData);
         }
         setIsSearchUpdateRequired(true);
@@ -101,7 +100,7 @@ function AdvanceFilters({ filters, onFilterChange }) {
         advancedFilterFormRef.current.reset();
         // reset state of checkboxes to false to update the state
         Object.keys(advancedFilterFormRef.current).forEach((key) => {
-            console.log(key)
+            // console.log(key)
             if (advancedFilterFormRef.current[key].type == 'checkbox') {
                 advancedFilterFormRef.current[key].checked = false;
             }

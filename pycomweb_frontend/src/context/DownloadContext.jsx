@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { propTypes } from "react-bootstrap/esm/Image";
+import PropTypes from "prop-types";
 import useFetchProteinSummaryData from "../customHooks/useFetchProteinSummaryData";
 export const DownloadContext = createContext(null);
 
@@ -45,7 +45,7 @@ export const DownloadProvider = ({ children }) => {
 }
 
 DownloadProvider.propTypes = {
-    children: propTypes.any
+    children: PropTypes.any
 }
 
 

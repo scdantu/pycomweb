@@ -1,14 +1,11 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { PYCOMWEB_BASE_URL, TOP_SCORING_RESIDUES2, PYCOMWEB_GET_PROTEIN_MATRICES } from "../constants"
+import { PYCOMWEB_BASE_URL, TOP_SCORING_RESIDUES2 } from "../constants"
 const useFetchProteinAnalysis = (uniprot_id, percentile, matrixType) => {
     const [analysisError, setAnalysisError] = useState(null);
     const [analysisLoaded, setAnalysisLoaded] = useState(false);
     const [analysisData, setAnalysisData] = useState(null);
 
-    // console.log(`perc1: ${percentile}`)
-    // console.log(`uni: ${uniprot_id}`)
-    // console.log(`type: ${matrixType}`)
     useEffect(() => {
         const fetchMatricesData = async (uniprot_id, percentile, matrixType) => {
 
@@ -16,9 +13,7 @@ const useFetchProteinAnalysis = (uniprot_id, percentile, matrixType) => {
 
             try {
                 const fetchProteinMatricesData = async (uniprot_id, percentile, matrixType) => {
-                    console.log(`perc: ${percentile}`);
                     try {
-                        // console.log(`a: ${uniprot_id}`)
                         // const response = await axios.get(PYCOMWEB_BASE_URL + PYCOMWEB_GET_PROTEIN_MATRICES + uniprot_id);
                         const response = await axios.post(PYCOMWEB_BASE_URL + TOP_SCORING_RESIDUES2, {uniprot_id,percentile, matrixType});
                         const { data } = response;

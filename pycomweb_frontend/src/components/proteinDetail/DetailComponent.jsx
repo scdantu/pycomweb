@@ -3,15 +3,9 @@ import { Col } from 'react-bootstrap';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import PropTypes from 'prop-types';
-// import { HelpDataContext } from '../../context/HelpDataContext';
 import { DownloadContext } from '../../context/DownloadContext';
-// import { PyComContext } from "../../context/PyComContext";
-// import { RepositoryContext } from '../../context/RepositorContext';
 import { FaCartPlus } from 'react-icons/fa';
 import { RepositoryContext } from '../../context/RepositorContext';
-// import useDataLoader from '../../customHooks/useDataLoader';
-// import useProteinDetailsDataLoader from '../../customHooks/useProteinDetailsDataLoader'
-// import { SUMMARY_PROTEIN_DATA, PYCOM_PROTEIN_DATA } from '../../constants';
 
 const DetailComponent = ({ uniprot_id }) => {
 
