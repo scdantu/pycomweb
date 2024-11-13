@@ -1,8 +1,32 @@
+import { useContext } from "react";
 import { Col, Table } from "react-bootstrap";
-import { FaEye, FaFileDownload } from 'react-icons/fa';
+import { FaEye, FaFileDownload, FaCartPlus} from 'react-icons/fa';
+import { DownloadContext } from "../../context/DownloadContext";
+import { SearchContext } from "../../context/SearchContext";
+// import { HelpDataContext } from "../../context/HelpDataContext";
+// import { PyComContext } from "../../context/PyComContext";
+// import { RepositoryContext } from "../../context/RepositorContext";
+import { useNavigate } from "react-router-dom";
+import { ProteinTabContext } from "../../context/ProteinTabContext";
 
-const TableComponent = ({ data, loading, error, pagination, onPageChange, onRecordsPerPageChange }) => {
-  const { results, result_count, total_pages, page } = data || {};
+// const TableComponent = ({ data, loading, error, pagination2, onPageChange, onRecordsPerPageChange }) => {
+const TableComponent = ({ loading, error }) => {
+
+  const {updateBasket} =  useContext(DownloadContext);
+  // const {addProteinToTab} = useContext(PyComContext);
+  // const {addProteinToTab} = useContext(RepositoryContext);
+  const {addProteinToTab} = useContext(ProteinTabContext);
+  // const { results, result_count, total_pages, page } = data || {};
+
+  const {searchData, pagination, handlePageChange, handleRecordsPerPageChange} = useContext(SearchContext);
+  const { results, result_count, total_pages, page } = searchData || {};
+
+  const navigate = useNavigate();
+
+  const ViewProtein = (uniprot_id) => {
+    addProteinToTab(uniprot_id);
+    navigate(`protein/${uniprot_id}`)
+  }
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -13,7 +37,8 @@ const TableComponent = ({ data, loading, error, pagination, onPageChange, onReco
         <Col md-6="true"><span className="h6">Total Records </span><b>{result_count}</b></Col>
         <Col md-3="true">
           <span className="h6">Records per page:</span>
-          <select value={pagination.recordsPerPage} width="50" onChange={(e) => onRecordsPerPageChange(Number(e.target.value))}>
+          {/* <select value={pagination.recordsPerPage} width="50" onChange={(e) => onRecordsPerPageChange(Number(e.target.value))}> */}
+          <select value={pagination.recordsPerPage} width="50" onChange={(e) => handleRecordsPerPageChange(Number(e.target.value))}>
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -23,15 +48,21 @@ const TableComponent = ({ data, loading, error, pagination, onPageChange, onReco
         </Col>
         <Col md-3="true">
           <span className="h6">Go to Page:</span>
-          <input type="number" min="1" max={total_pages} value={page} onChange={(e) => onPageChange(Number(e.target.value))} />
+          {/* <input type="number" min="1" max={total_pages} value={page} onChange={(e) => onPageChange(Number(e.target.value))} /> */}
+          <input type="number" min="1" max={total_pages} value={page} onChange={(e) => handlePageChange(Number(e.target.value))} />
         </Col>
       </div>
       <Col className="pagination col-md-12">
-        <button onClick={() => onPageChange(1)} disabled={page === 1}>First</button>
+        {/* <button onClick={() => onPageChange(1)} disabled={page === 1}>First</button>
         <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>Previous</button>
         <span className="h6">Page <b>{page}</b> of <b>{total_pages}</b></span>
         <button onClick={() => onPageChange(page + 1)} disabled={page === total_pages}>Next</button>
-        <button onClick={() => onPageChange(total_pages)} disabled={page === total_pages}>Last</button>
+        <button onClick={() => onPageChange(total_pages)} disabled={page === total_pages}>Last</button> */}
+        <button onClick={() => handlePageChange(1)} disabled={page === 1}>First</button>
+        <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>Previous</button>
+        <span className="h6">Page <b>{page}</b> of <b>{total_pages}</b></span>
+        <button onClick={() => handlePageChange(page + 1)} disabled={page === total_pages}>Next</button>
+        <button onClick={() => handlePageChange(total_pages)} disabled={page === total_pages}>Last</button>
 
       </Col>
 
@@ -63,21 +94,23 @@ const TableComponent = ({ data, loading, error, pagination, onPageChange, onReco
                 <td>{row.helix_frac}</td>
                 <td>{row.strand_frac}</td>
                 <td>
-                  <a className="fa-icon" href={"/protein/" + row.uniprot_id} target="_blank"><FaEye title="View more" /> </a>
+                  {/* <a className="fa-icon" onClick={() => ViewProtein(row.uniprot_id)} href={"/protein/" + row.uniprot_id} target="_blank"><FaEye title="View more" />&nbsp;</a> */}
+                  <a className="fa-icon" onClick={() => ViewProtein(row.uniprot_id)}><FaEye title="View more" />&nbsp;</a>
                   <a className="fa-icon" href={"https://pycom.brunel.ac.uk/alignments/" + row.uniprot_id + ".aln"} >
-                    <FaFileDownload title="Download MSA file" />
+                    <FaFileDownload title="Download MSA file" />&nbsp;
                   </a>
+                  <a className="fa-icon"><FaCartPlus title="Add to Download Selection" onClick={() => updateBasket(row.uniprot_id)}/>&nbsp;</a>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
         <Col className="pagination col-md-12">
-          <button onClick={() => onPageChange(1)} disabled={page === 1}>First</button>
-          <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>Previous</button>
+          <button onClick={() => handlePageChange(1)} disabled={page === 1}>First</button>
+          <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>Previous</button>
           <span className="h6">Page <b>{page}</b> of <b>{total_pages}</b></span>
-          <button onClick={() => onPageChange(page + 1)} disabled={page === total_pages}>Next</button>
-          <button onClick={() => onPageChange(total_pages)} disabled={page === total_pages}>Last</button>
+          <button onClick={() => handlePageChange(page + 1)} disabled={page === total_pages}>Next</button>
+          <button onClick={() => handlePageChange(total_pages)} disabled={page === total_pages}>Last</button>
         </Col>
       </div>
     </>

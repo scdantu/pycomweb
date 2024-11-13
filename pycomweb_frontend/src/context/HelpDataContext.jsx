@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-
+import { createContext, useState } from "react";
+import PropTypes from "prop-types";
 export const HelpDataContext = createContext({
 
 });
@@ -12,4 +12,8 @@ export const HelpDataProvider = ({children}) =>{
         </HelpDataContext.Provider>
     )
 
+}
+
+HelpDataProvider.propTypes = {
+    children: PropTypes.any
 }

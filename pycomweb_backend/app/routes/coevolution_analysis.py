@@ -1,13 +1,16 @@
-from flask import  request, send_file,  Blueprint, jsonify, Response
+from flask import current_app, request, send_file, make_response, Blueprint, jsonify, Response
 from app.utils.coevolution_analysis import read_scores_from_file, generate_boxplot, calculate_top_scoring_residues, calculate_coevolution_score_stats,util_generate_plots
 import plotly.graph_objs as go
 import plotly.io as pio
 import io
+import json
 import base64
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 from flask_cors import CORS
+import requests
+from app.routes.proteins import getProteinMatrices
 
 coevolution_bp = Blueprint('coevolution_analysis', __name__)
 
@@ -46,6 +49,25 @@ def get_top_scoring_residues():
     response = df_top_scoring_residues.to_dict(orient='records')
     return jsonify(response)
 
+@coevolution_bp.route('/get_top_scoring_residues2', methods=['POST'])
+def get_top_scoring_residues2():
+    # Get the POST parameters
+    input_params = request.get_json()
+    uniprot_id = input_params.get('uniprot_id')
+    percentile = int(input_params.get('percentile'))
+    matrixType = input_params.get('matrixType')
+    
+    url = "http://127.0.0.1:5000/getProteinMatrices/" + uniprot_id
+    response = requests.get(url)
+    data = response.json()
+    data = data[0]
+    sequence = data['sequence']
+    matrix = data[matrixType]
+    
+    df_top_scoring_residues = calculate_top_scoring_residues(matrix, percentile, sequence)
+    response = df_top_scoring_residues.to_dict(orient='records')
+    return jsonify(response)
+
 
 @coevolution_bp.route('/get_frequency_matrix', methods=['POST'])
 def get_frequency_matrix():
@@ -65,7 +87,6 @@ def get_plots():
     data = request.get_json()
     matrix = np.array(data['matrix'])
     plot_type = data['plotType']
-    
 
     fig, ax = plt.subplots()
     
@@ -91,13 +112,34 @@ def get_plots():
 @coevolution_bp.route('/generate_plots', methods=['POST'])
 def generate_plot():
     data = request.get_json()
-    matrix = np.array(data['matrix'])
-    plot_type = data['plotType']
-    buf = util_generate_plots(matrix, plot_type)    
+    uniprot_id = data['uniprot_id']
+    # matrix = np.array(data['matrix'])
+    plot_type = data['selectedPlot']
+    threshold = data['threshold']
+    matrixType = data['matrixType']
+
+    # GET MATRIX DATA
+    url = "http://127.0.0.1:5000/getProteinMatrices/" + uniprot_id
+    response = requests.get(url)
+    data = response.json()
+    data = data[0]
+    
+    # Extract matrix by matrixType
+    matrix = data[matrixType]
+
+    # Generate and return images
+    buf = util_generate_plots(matrix, plot_type)
+    # print(buf)    
+    base64Data = base64.b64encode(buf.getvalue()).decode('utf-8')
     if(buf):
-        return send_file(buf, mimetype='image/png')
+        response = make_response(base64Data)
+        response.headers.set('Content-Type', 'image/png');
+        response.headers.set('Content-Disposition', 'attachment', filename='visualisation.png')
+        return response
+        # return send_file(buf, mimetype='image/png')
     else:
         return jsonify({'error': 'Error While genearting Plot'}), 400
+    
 
 # 
 # @app.route('/generate_network', methods=['GET'])

@@ -1,24 +1,28 @@
-import { Outlet, useLocation } from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import './App.css';
 import '../src/assets/css/layout.css';
 import "../src/assets/css/advanceFilters.css";
 import NavigationBar from "./components/NavigationBar";
+import ViewTabBar from "./components/ViewTabBar/ViewTabs";
 import Footer from "./components/Footer";
-import { HelpDataProvider } from "./context/HelpDataContext";
+import { PyComProviders } from "./context/PyComProviders";
+
 
 function App() {
 
   return (
-    <HelpDataProvider>
-      <div>
+    <PyComProviders>
+      <React.Fragment>
         <NavigationBar />
-        <main className="content"> 
-            <Outlet /> 
+        <ViewTabBar />
+        <main className="content">
+          <Outlet />
         </main>
-        <Footer/>
-      </div>
-    </HelpDataProvider>
+        <Footer />
+      </React.Fragment>
+    </PyComProviders>
   )
 }
 
