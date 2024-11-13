@@ -1,6 +1,6 @@
-import React, { useContext} from 'react'
+import React, { useContext } from 'react'
 import { ProteinTabContext } from '../../context/ProteinTabContext';
-import styles from './ViewTabs.module.css'; 
+import styles from '../../styles/ViewTabs.module.css'; 
 import { useNavigate } from "react-router-dom";
 
 function ViewTabBar() {
@@ -21,18 +21,20 @@ function ViewTabBar() {
     updateSelectedProtein(uniprot_id);
     navigate(`protein/${uniprot_id}`)
   }
-  
 
-return (
+  return (
     <React.Fragment>
-        <div className={styles.ViewTabs}>
-            <div className={proteinTabs.selectedIndex === -1 ? styles.ViewTabsSearchSelected : styles.ViewTabsSearch} onClick={() => ViewSearch()}>Search Protein</div>
-            { proteinTabs.tabs.map((tab, index) => (
-                <div key={tab} className={proteinTabs.selectedIndex === index ? styles.ViewTabsProteinSelected : styles.ViewTabsProtein} >&nbsp;
-                <span className={styles.ViewTabsProteinLabel}onClick={() =>ViewProtein(tab)}>{tab}</span>
-                <span className={styles.ViewTabsRemoveTab} onClick={() => RemoveProteinTabAndUpdateView(tab)}>x</span></div>
-            ))}
+      <div className={styles.ViewTabs}>
+        <div className={proteinTabs.selectedIndex === -1 ? styles.ViewTabsSearchSelected : styles.ViewTabsSearch} onClick={() => ViewSearch()}>Search</div>
+        <div className={styles.ViewTabsProteinTabs}>
+          {proteinTabs.tabs.map((tab, index) => (
+            <div key={tab} className={proteinTabs.selectedIndex === index ? styles.ViewTabsTabProteinSelected : styles.ViewTabsTabProtein} onClick={() => ViewProtein(tab)}>
+              {tab}
+              <span className={proteinTabs.selectedIndex === index ? styles.ViewTabsTabCloseSelected : styles.ViewTabsTabClose} onClick={() => RemoveProteinTabAndUpdateView(tab)}>x</span>
+            </div>
+          ))}
         </div>
+      </div>
     </React.Fragment>
   )
 }
