@@ -1,0 +1,87 @@
+.NavigationBarContainer {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dddddd;
+    display: grid;
+    grid-template-columns: min-content auto;
+    grid-template-areas: "logo navBarOptions";
+    padding: .6rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.NavigationBarLogo {
+    align-items: center;
+    color: #8a41ff;
+    display: flex;
+    font-size: 1.2rem;
+    font-weight: 700;
+    grid-area: logo;
+}
+
+.NavigationBarOptions {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    grid-area: navBarOptions;
+    justify-content: flex-end;
+    padding: 0rem 1rem;
+}
+
+.NavigationBarDownloads {
+    display: inline-block;
+    cursor: pointer;
+    margin: 0rem 0rem;
+    position: relative;
+}
+
+.NavigationBarDownloadsCount,
+.NavigationBarDownloadsCountHidden {
+    align-items: center;
+    background-color: #8A41FF;
+    border-radius: 50%;
+    color: #ffffff;
+    display: flex;
+    font-size: .6rem;
+    font-weight: 600;
+    height: 1.2rem;
+    justify-content: center;
+    line-height: .6rem;
+    padding: .2rem;
+    position: absolute;
+    right: -9px;
+    top: -9px;
+    width: 1.2rem;
+}
+
+.NavigationBarDownloadsCountHidden {
+    visibility: hidden;
+}
+
+.NavigationBarDataTypeList {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #ededed;
+    /* grey svg arrow */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE0IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTcuMDEyODMgOC4wMDAxOUwxMy43NTUgMEgwLjI1TDcuMDEyODMgOC4wMDAxOVoiIGZpbGw9IiM2NjYiLz48L3N2Zz4=');
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 10px 6px;
+    border-radius: 0;
+    color: #333333;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 10px 30px 10px 10px;
+    position: relative;
+    text-align: center;
+    transition: background-color 600ms ease, color 800ms ease, background-image 600ms ease;
+    width: 7rem;
+}
+
+.NavigationBarDataTypeList:hover {
+    background-color: #8a41ff;
+    /* white svg arrow */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE0IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTcuMDEyODMgOC4wMDAxOUwxMy43NTUgMEgwLjI1TDcuMDEyODMgOC4wMDAxOVoiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=');
+    color: #ffffff;
+}
