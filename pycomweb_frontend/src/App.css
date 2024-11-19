@@ -29,7 +29,7 @@ html::-webkit-scrollbar {
 
 body {
   color: #333;
-  background: #eeebf7;
+  /* background: #eeebf7; */
   font: 16px/1.6;
   min-width: 320px;
   -webkit-font-smoothing: antialiased;
@@ -140,7 +140,7 @@ button:disabled {
 
 /**Main Content Wrapper**/
 .content {
-  padding: 52px 0 0 0;
+  /* padding: 52px 0 0 0; */
   margin: 0;
   width: 100%;
   display: flex;

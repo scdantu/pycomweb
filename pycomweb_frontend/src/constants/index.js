@@ -18,7 +18,29 @@ export const SEARCH_FILTERS = {
     "min_length": "Min Length",
     "max_length": "Max Length",
     "max_strand": "Max Strand",
-    "has_substrate": "Has Substrate"
+    "has_substrate": "Has Substrate",
+    
+}
+
+export const ADV_FIL = {
+    BETA_STRAND: {ID: "BETA_STRAND", DISPLAY_NAME: "Beta Strand"},
+    CATH: {ID: "CATH", DISPLAY_NAME: "CATH"},
+    DISEASES: {ID: "DISEASES", DISPLAY_NAME: "Diseases"},
+    EC: {ID: "EC", DISPLAY_NAME: "EC"},
+    HELICAL_STRUCTURE: {ID: "HELICAL_STRUCTURE", DISPLAY_NAME: "Helical Structure"},
+    PDB: {ID: "PDB", DISPLAY_NAME: "PDB"},
+    PTM: {ID: "PTM", DISPLAY_NAME: "PTM"},
+    SEQUENCE_LENGTH: {ID: "SEQUENCE_LENGTH", DISPLAY_NAME: "Sequence Length"},
+    SUBTRATE: {ID: "SUBTRATE", DISPLAY_NAME: "Subtrate"},
+    TURN_STRUCTURE: {ID: "TURN_STRUCTURE", DISPLAY_NAME: "Turn Structure"}
+}
+
+export const ADV_FIL_TYPES = {
+    RANGE: "RANGE",
+    BOOLEAN: "BOOLEAN",
+    SINGLE_LOOKUP: "SINGLE_LOOKUP",
+    MULTIPLE_LOOKUP: "MULTIPLE_LOOKUP",
+    MAJORSUB_INPUT: "MAJORSUB_INPUT"
 }
 //data hook consts
 export const SUMMARY_PROTEIN_DATA = "SUMMARY_PROTEIN_DATA";

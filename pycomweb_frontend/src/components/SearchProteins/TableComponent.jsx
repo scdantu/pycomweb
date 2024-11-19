@@ -31,11 +31,20 @@ const TableComponent = ({ loading, error }) => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (result_count == 0) return <div className="col-md-12"><p>No Results Found</p></div>
+  
   return (
     <>
       <div className="results-table-header col-md-12">
         <Col md-6="true"><span className="h6">Total Records </span><b>{result_count}</b></Col>
-        <Col md-3="true">
+        {/* <Col className="pagination col-md-6">
+        <button onClick={() => handlePageChange(1)} disabled={page === 1}>First</button>
+        <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>Previous</button>
+        <span className="h6">Page <b>{page}</b> of <b>{total_pages}</b></span>
+        <button onClick={() => handlePageChange(page + 1)} disabled={page === total_pages}>Next</button>
+        <button onClick={() => handlePageChange(total_pages)} disabled={page === total_pages}>Last</button>
+
+      </Col> */}
+        <Col md-6="true">
           <span className="h6">Records per page:</span>
           {/* <select value={pagination.recordsPerPage} width="50" onChange={(e) => onRecordsPerPageChange(Number(e.target.value))}> */}
           <select value={pagination.recordsPerPage} width="50" onChange={(e) => handleRecordsPerPageChange(Number(e.target.value))}>
@@ -46,28 +55,12 @@ const TableComponent = ({ loading, error }) => {
             <option value={100}>100</option>
           </select>
         </Col>
-        <Col md-3="true">
+        {/* <Col md-3="true">
           <span className="h6">Go to Page:</span>
-          {/* <input type="number" min="1" max={total_pages} value={page} onChange={(e) => onPageChange(Number(e.target.value))} /> */}
           <input type="number" min="1" max={total_pages} value={page} onChange={(e) => handlePageChange(Number(e.target.value))} />
-        </Col>
+        </Col> */}
       </div>
-      <Col className="pagination col-md-12">
-        {/* <button onClick={() => onPageChange(1)} disabled={page === 1}>First</button>
-        <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>Previous</button>
-        <span className="h6">Page <b>{page}</b> of <b>{total_pages}</b></span>
-        <button onClick={() => onPageChange(page + 1)} disabled={page === total_pages}>Next</button>
-        <button onClick={() => onPageChange(total_pages)} disabled={page === total_pages}>Last</button> */}
-        <button onClick={() => handlePageChange(1)} disabled={page === 1}>First</button>
-        <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>Previous</button>
-        <span className="h6">Page <b>{page}</b> of <b>{total_pages}</b></span>
-        <button onClick={() => handlePageChange(page + 1)} disabled={page === total_pages}>Next</button>
-        <button onClick={() => handlePageChange(total_pages)} disabled={page === total_pages}>Last</button>
-
-      </Col>
-
-
-
+      
       <div className="table-container">
         <Table stripped="true">
           <thead>
