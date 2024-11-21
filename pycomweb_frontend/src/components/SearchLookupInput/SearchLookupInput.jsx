@@ -249,7 +249,7 @@ const SearchLookupInput = (element) => {
         
         if(lookUpItemsCount > 0 && filteredList.length > 0) {
             const formattedResults = filteredList.map(item =>
-                item.replace(new RegExp(element.inputVal, 'gi'), match => `<span style="color: red;">${match}</span>`)
+                item.replace(new RegExp(element.inputVal, 'i'), match => `<span style="color: red;">${match}</span>`)
             );
             
             // const output = formattedResults.slice(0, -1).join(', ') + (filteredList.length > 1 ? ' and ' : '') + formattedResults.slice(-1);
