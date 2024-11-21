@@ -28,6 +28,21 @@ function DownloadBasket() {
     const zipFileDate = getFormattedDate();
     const zipFile = new JSZip();
 
+    // Sarath what data needs to be downloaded?
+    // -- Can that be selectable, ie include Matrix, Bar charts, etc.
+    // -- What format?
+
+    // Sarath needs to let us know what the api is for download - does it exist?
+
+    // 50 ids
+    // take 10
+    // download, make a zip
+    // get next 10, make a zip
+
+    //Pycom file set 1 - yymmdd
+    //Pycom file set 2...
+
+
     await Promise.all(
       basket.map(async (item) => {
         //get alignment file

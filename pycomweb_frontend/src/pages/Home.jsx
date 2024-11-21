@@ -9,7 +9,7 @@ import TableComponent from '../components/SearchProteins/TableComponent.jsx'
 // import { GiConsoleController } from 'react-icons/gi';
 import styles from "../styles/Home.module.css";
 import MultiRangeSlider from "multi-range-slider-react";
-
+import SearchLookupInput from '../components/SearchLookupInput/SearchLookupInput.jsx';
 
 import { SearchContext } from '../context/SearchContext.jsx';
 
@@ -18,14 +18,15 @@ function Home() {
   const [navVisible, showNavbar] = useState(false);  /* Not working */
 
   const { filters, pagination } = useContext(SearchContext);
-  const { handleFiltersChange, getAppliedFilters, clearIndividualFilter} = useContext(SearchContext);
+  const { handleFiltersChange, getAppliedFilters, clearIndividualFilter } = useContext(SearchContext);
   const { advancedFilters, appliedFilterList } = useContext(SearchContext);
   const { SEQUENCE_LENGTH, HELICAL_STRUCTURE, TURN_STRUCTURE, BETA_STRAND } = advancedFilters;
   const { PDB, PTM, SUBTRATE, DISEASES } = advancedFilters;
   const { CATH, EC } = advancedFilters;
-  const { updateFilters, resetFilters } = useContext(SearchContext);
+  const { BIOLOGICAL_PROCESS, CELLULAR_COMPONENT, DEVELOPMENTAL_STAGE, DOMAIN, LIGAND, MOLECULAR_FUNCTION, PTM_SEARCH} = advancedFilters;
+  const { updateFilters, resetFilters, searchErrorMessage, validateFilter, getSingleSearchDataSet, singleSearchDataSets} = useContext(SearchContext);
 
-  
+
   /* Call the hook initially to fetch first 10 protiens without filters */
   const { loading, error } = useFetchQueryProteins(filters, pagination);
 
@@ -39,10 +40,9 @@ function Home() {
   // const [minRValue, set_minRValue] = useState(1);
   // const [maxRValue, set_maxRValue] = useState(500);
   const handleInputR = (element, e) => {
-    
 
-    if(e.minValue != element.min || e.maxValue != element.max)
-    {
+
+    if (e.minValue != element.min || e.maxValue != element.max) {
       let payload = {
         min: e.minValue,
         max: e.maxValue
@@ -56,7 +56,7 @@ function Home() {
   }
 
   const setInputVal2 = (element, e) => {
-    if(e != element.inputVal) {
+    if (e != element.inputVal) {
       let payload = {
         inputVal: e
       }
@@ -156,6 +156,16 @@ function Home() {
   /*Render Home Page Components */
   return (
     <div className={styles.Home}>
+
+      {Object.keys(searchErrorMessage).length > 0 && (
+        <div className={styles.Errors}>
+          <b>Advanced Filter Error</b>
+          {Object.entries(searchErrorMessage).map(([key, value]) => (
+            <span><b>{key}</b>: {value}</span>
+          ))}
+        </div>
+      )}
+
       <div>
         {/* <h1>Find Proteins</h1> */}
         {/* <p>Find proteins via their UniProtId or our advance filters</p> */}
@@ -163,97 +173,29 @@ function Home() {
       </div>
       {/* <br /> */}
       <div className={styles.HomeSearchBlock}>
+
+
+
         <div className={styles.HomeSearchTypes}>
           {/* <button className={styles.HomeStandardSearchButton}>Search</button> */}
+
+
+
 
           <div className={styles.HomeAdvancedSearchButton}>
             <div className={styles.HomeAdvancedSearchLabel}>Advanced Filters ({appliedFilterList.length})</div>
             <div className={styles.HomeAdvancedFiltersContainer}>
-
               <div className={styles.SearchAdvancedFilters}>
                 {/* Single Drop Lists */}
                 <div className={styles.advFilterSingleDropList}>
                   {/* Biological Process */}
-                  <div className={styles.DropDownContent}>
-                    <label>Biological Process</label>
-                    <div>
-                      <input type="text" className={styles.InputList} placeholder="None" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                      <div className={styles.List}>
-                        {filteredList.map(item => (
-                          <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.DropDownContent}>
-                    <label>Cellular Component</label>
-                    <div>
-                      <input type="text" className={styles.InputList} placeholder="None" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                      <div className={styles.List}>
-                        {filteredList.map(item => (
-                          <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.DropDownContent}>
-                    <label>Developmental Stage</label>
-                    <div>
-                      <input type="text" className={styles.InputList} placeholder="None" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                      <div className={styles.List}>
-                        {filteredList.map(item => (
-                          <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.DropDownContent}>
-                    <label>Domain</label>
-                    <div>
-                      <input type="text" className={styles.InputList} placeholder="None" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                      <div className={styles.List}>
-                        {filteredList.map(item => (
-                          <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.DropDownContent}>
-                    <label>Ligand</label>
-                    <div>
-                      <input type="text" className={styles.InputList} placeholder="None" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                      <div className={styles.List}>
-                        {filteredList.map(item => (
-                          <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.DropDownContent}>
-                    <label>Molecular Function</label>
-                    <div>
-                      <input type="text" className={styles.InputList} placeholder="None" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                      <div className={styles.List}>
-                        {filteredList.map(item => (
-                          <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.DropDownContent}>
-                    <label title="Post-Translational Modification">PTM</label>
-                    <div>
-                      <input type="text" className={styles.InputList} placeholder="None" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                      <div className={styles.List}>
-                        {filteredList.map(item => (
-                          <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-
-
+                  <SearchLookupInput {...BIOLOGICAL_PROCESS} />
+                  <SearchLookupInput {...CELLULAR_COMPONENT} />
+                  <SearchLookupInput {...DEVELOPMENTAL_STAGE} />
+                  <SearchLookupInput {...DOMAIN} />
+                  <SearchLookupInput {...LIGAND} />
+                  <SearchLookupInput {...MOLECULAR_FUNCTION} />
+                  <SearchLookupInput {...PTM_SEARCH} />
                 </div>
                 <div className={styles.advFilterIDFeatureAndClassesList}>
                   {/* ID/Feature */}
@@ -300,7 +242,7 @@ function Home() {
                       <label>{CATH.displayname}</label>
                       <div>
                         {/* <input type="text" className={styles.InputList} placeholder={CATH.placeholder} ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} /> */}
-                        <input type="text" className={styles.InputList} placeholder={CATH.placeholder} onChange={(event) => setInputVal2(CATH, event.target.value)} value={CATH.inputVal} />
+                        <input onBlur={() => validateFilter(CATH)} type="text" className={CATH.validation.isValid ? styles.InputList : styles.InputListError} placeholder={CATH.placeholder} onChange={(event) => setInputVal2(CATH, event.target.value)} value={CATH.inputVal} />
                         <div className={styles.Example}>
                           <div>
                             <b>Examples</b>
@@ -318,7 +260,7 @@ function Home() {
                     <div className={styles.DropDownContent}>
                       <label title="Enzyme Commission">{EC.displayname}</label>
                       <div>
-                        <input type="text" className={styles.InputList} placeholder={EC.placeholder} onChange={(event) => setInputVal2(EC, event.target.value)} value={EC.inputVal} />
+                        <input onBlur={() => validateFilter(EC)} type="text" className={EC.validation.isValid ? styles.InputList : styles.InputListError} placeholder={EC.placeholder} onChange={(event) => setInputVal2(EC, event.target.value)} value={EC.inputVal} />
                         <div className={styles.Example}>
                           <div>
                             <b>Examples</b>
@@ -438,7 +380,7 @@ function Home() {
                 {/* Search */}
                 <div className={styles.advFilterSearch}>
                   <div className={styles.HomeSearch}>
-                    <button className={styles.HomeSearchButton}>Search</button>
+                    <button disabled={Object.keys(searchErrorMessage).length > 0 && ("disabled")} className={styles.HomeSearchButton}>Search</button>
                   </div>
                 </div>
               </div>
@@ -492,7 +434,7 @@ function Home() {
               </div>
             </div>
           </div>
-          <button className={styles.HomeSearchButton}>Search</button>
+          <button disabled={Object.keys(searchErrorMessage).length > 0 && ("disabled")} className={styles.HomeSearchButton}>Search</button>
         </div>
 
         {/* <div className={styles.HomeSearchOptions}>
@@ -502,7 +444,7 @@ function Home() {
       </div>
       <br />
 
-    {/* <div>
+      {/* <div>
       
      
       <button>Search</button>
