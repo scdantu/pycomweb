@@ -208,9 +208,9 @@ const SearchLookupInput = (element) => {
             );
             
             return (
-                formattedResults.map(item => (
+                formattedResults.map((item, index) => (
             // <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-            <li key={item} onClick={() => setInputValue(item)}><p dangerouslySetInnerHTML={{ __html: item }} /></li>
+            <li key={filteredList[index]} onMouseDown={() => setInputValue(filteredList[index])}><p dangerouslySetInnerHTML={{ __html: item }} /></li>
         )
         ))}
 
