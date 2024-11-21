@@ -18,6 +18,12 @@
     margin: 0;
 }
 
+.searchInputType {
+    color: #ffffff;
+    border-bottom: 1px solid #ffffff;
+    padding-top: .5rem;
+    padding-bottom: 1rem;
+}
 .HomeAdvancedFilters {
     display: flex;
     flex-direction: column;
