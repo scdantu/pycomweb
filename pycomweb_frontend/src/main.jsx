@@ -21,8 +21,6 @@ import DevelopmentalStages from './pages/helpData/DevelopmentalStages.jsx';
 import ProteinDetail from './pages/ProteinDetail.jsx';
 import PDB from './pages/PDB/PDB.jsx';
 
-const baseUrl = import.meta.env.VITE_BASE_URL || '/';
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -46,6 +44,6 @@ const router = createBrowserRouter(
 console.log("App is bootstrapped")
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} basename={baseUrl} />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 )
