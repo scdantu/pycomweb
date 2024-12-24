@@ -41,7 +41,7 @@ const router = createBrowserRouter(
   )
 );
 
-
+console.log("App is bootstrapped")
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RouterProvider router={router} />
