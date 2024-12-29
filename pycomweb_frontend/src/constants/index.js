@@ -1,5 +1,7 @@
+
 export const PYCOM_API_URL = "https://pycom.brunel.ac.uk/api/"
-export const PYCOMWEB_BASE_URL = "http://127.0.0.1:5000/"
+// export const PYCOMWEB_BASE_URL = "http://127.0.0.1:5000/pycomweb_api/"
+export const PYCOMWEB_BASE_URL = import.meta.env.VITE_PYCOMWEB_BASE_URL
 export const PYCOMWEB_QUERY_PROTEINS_API = "queryProteinsData"
 export const PYCOMWEB_GET_PROTEIN = "getProtein/"
 export const UNIPROT_DETAIL = "https://www.uniprot.org/uniprotkb/A0JP26/entry"

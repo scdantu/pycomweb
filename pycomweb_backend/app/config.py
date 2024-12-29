@@ -1,10 +1,9 @@
 import os
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'a_secret_key'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///site.db'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+    DEBUG = False
+    TESTING = False
+    API_PREFIX = 'pycomweb_api'
     # Define the base directory
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -15,9 +14,20 @@ class Config:
     BASE_URL = os.environ.get('BASE_URL') or 'http://localhost:5000'
 
     #Pycom API URL
-    PYCOM_API_URL = os.environ.get('PYCOM_API_URL')
+    PYCOM_API_URL = os.environ.get('PYCOM_API_URL') or 'https://pycom.brunel.ac.uk/api/'
     if PYCOM_API_URL is None:
         raise ValueError("PYCOM_API_URL environment variable is not set")
+    
+class DevelopmentConfig(Config):
+    DEBUG = True
+    API_PREFIX = 'pycomweb_api'
+
+class ProductionConfig(Config):
+    API_PREFIX = 'pycomweb_api'
+
+class StagingConfig(Config):
+    TESTING = True
+    API_PREFIX = 'pycomwebdev_api'
 
 
 # Ensure the uploads directory exists

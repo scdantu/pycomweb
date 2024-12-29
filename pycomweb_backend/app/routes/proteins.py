@@ -13,7 +13,7 @@ proteins_bp = Blueprint('proteins', __name__)
 @proteins_bp.route('/queryProteinsData', methods = ['POST'])
 def queryProteinsData():
     if request.method == 'POST':
-        api_url = current_app.config['PYCOM_API_URL'] + '/find'
+        api_url = current_app.config['PYCOM_API_URL'] + 'find'
         # disease = request.form.get('disease')
         # Get the POST parameters
         params = request.get_json()
