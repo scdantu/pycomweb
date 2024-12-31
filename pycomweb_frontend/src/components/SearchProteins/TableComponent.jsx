@@ -63,7 +63,7 @@ const TableComponent = ({ data, loading, error, pagination, onPageChange, onReco
                 <td>{row.helix_frac}</td>
                 <td>{row.strand_frac}</td>
                 <td>
-                  <a className="fa-icon" href={"/protein/" + row.uniprot_id} target="_blank"><FaEye title="View more" /> </a>
+                  <a className="fa-icon" href={import.meta.env.VITE_ROUTER_BASENAME + "/protein/" + row.uniprot_id} target="_blank"><FaEye title="View more" /> </a>
                   <a className="fa-icon" href={"https://pycom.brunel.ac.uk/alignments/" + row.uniprot_id + ".aln"} >
                     <FaFileDownload title="Download MSA file" />
                   </a>
