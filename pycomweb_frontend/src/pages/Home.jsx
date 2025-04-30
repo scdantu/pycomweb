@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useRef } from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 
-import AdvanceFilters from '../components/SearchProteins/AdvanceFilters.jsx';
+// import AdvanceFilters from '../components/SearchProteins/AdvanceFilters.jsx';
 // import { FaX } from 'react-icons/fa6';
 import useFetchQueryProteins from '../customHooks/useFetchQueryProteins.jsx';
 import TableComponent from '../components/SearchProteins/TableComponent.jsx'
@@ -21,13 +21,15 @@ function Home() {
   const { handleFiltersChange, getAppliedFilters, clearIndividualFilter } = useContext(SearchContext);
   const { advancedFilters, appliedFilterList } = useContext(SearchContext);
   const { SEQUENCE_LENGTH, HELICAL_STRUCTURE, TURN_STRUCTURE, BETA_STRAND } = advancedFilters;
-  const { PDB, PTM, SUBTRATE, DISEASES } = advancedFilters;
+  const { PDB, PTM, SUBTRATE } = advancedFilters;
   const { CATH, EC } = advancedFilters;
   const { BIOLOGICAL_PROCESS, CELLULAR_COMPONENT, DEVELOPMENTAL_STAGE, DOMAIN, LIGAND, MOLECULAR_FUNCTION, PTM_SEARCH} = advancedFilters;
-  const { updateFilters, resetFilters, searchErrorMessage, validateFilter, getSingleSearchDataSet, singleSearchDataSets} = useContext(SearchContext);
+  const { DISEASES, DISEASES_FILTER, COFACTORS_FILTER, ORGANISM_FILTER } = advancedFilters;
+  const { performSearch, updateFilters, resetFilters, searchErrorMessage, validateFilter, getSingleSearchDataSet, singleSearchDataSets, setIsSearchUpdateRequired} = useContext(SearchContext);
 
-
-  /* Call the hook initially to fetch first 10 protiens without filters */
+  // console.log(advancedFilters);
+  // console.log(singleSearchDataSets);
+    /* Call the hook initially to fetch first 10 protiens without filters */
   const { loading, error } = useFetchQueryProteins(filters, pagination);
 
   // const [minValue, set_minValue] = useState(0);
@@ -95,8 +97,56 @@ function Home() {
   const [filteredList, setFilteredList] = useState([]);
   const [inputVal, setInputVal] = useState("");
   const resultLimit = 5;
+  const [formData, setFormData] = useState({});
+  // const inputRef = useRef();
 
-  const inputRef = useRef();
+
+  useEffect(() => {
+    console.log("hey")
+    console.log(filters);
+    console.log(advancedFilters);
+}, [filters]);
+  
+const submitSearch = () => {
+    performSearch();
+    //create form
+
+    // const formData = new FormData();
+    
+      // const { name, type, checked, value } = e.target;
+      // if (type === 'checkbox') {
+      //     if (checked) {
+      //         // Add filter to state if checkbox is checked
+      //         setFormData((prevFilters) => ({
+      //             ...prevFilters,
+      //             [name]: value,
+      //         }));
+      //     } else {
+      //         // Remove filter from state if checkbox is unchecked
+      //         setFormData((prevFilters) => {
+      //             const { [name]: _, ...restFilters } = prevFilters;
+      //             return restFilters;
+      //         });
+      //     }
+      // } else {
+
+      //     if (value == '' || value == 'undefined') {
+      //         //why do we have this space?
+      //     }
+      //     // Update other types of inputs
+      //     setFormData((prevFilters) => ({
+      //         ...prevFilters,
+      //         [name]: value,
+      //     }));
+      // }
+      // // Clear error for the field being edited
+      // setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
+      // setIsFormChanged(true);
+  
+
+    //submit search
+    // setIsSearchUpdateRequired(true);
+  }
 
   const filterFunction = () => {
     // console.log('data')
@@ -128,28 +178,28 @@ function Home() {
     // }
   }
 
-  const setInputValue = (val) => {
-    setInputVal(val);
-    setFilteredList([]);
+  // const setInputValue = (val) => {
+  //   setInputVal(val);
+  //   setFilteredList([]);
 
-    // inputRef.currentValue = val;
-  }
+  //   // inputRef.currentValue = val;
+  // }
 
   //debounce input
-  useEffect(() => {
-    if (inputRef.current.value) {
-      const getData = setTimeout(() => {
-        filterFunction();
-      }, 200)
+  // useEffect(() => {
+  //   if (inputRef.current.value) {
+  //     const getData = setTimeout(() => {
+  //       filterFunction();
+  //     }, 200)
 
-      return () => clearTimeout(getData)
-    } else {
-      if (inputRef.current.value === "") {
-        //show first 10 results
-        setFilteredList(list.slice(0, resultLimit));
-      }
-    }
-  }, [inputVal])
+  //     return () => clearTimeout(getData)
+  //   } else {
+  //     if (inputRef.current.value === "") {
+  //       //show first 10 results
+  //       setFilteredList(list.slice(0, resultLimit));
+  //     }
+  //   }
+  // }, [inputVal])
 
 
 
@@ -182,9 +232,9 @@ function Home() {
 
 
 
-          <div className={styles.HomeAdvancedSearchButton}>
+          <div className={styles.HomeAdvancedSearchButton}> {/* hover hit */}
             <div className={styles.HomeAdvancedSearchLabel}>Advanced Filters ({appliedFilterList.length})</div>
-            <div className={styles.HomeAdvancedFiltersContainer}>
+            <div className={styles.HomeAdvancedFiltersContainer}> {/* display: 'block' */}
               <div className={styles.SearchAdvancedFilters}>
                 {/* Single Drop Lists */}
                 <div className={styles.advFilterSingleDropList}>
@@ -200,19 +250,22 @@ function Home() {
                 <div className={styles.advFilterIDFeatureAndClassesList}>
                   {/* ID/Feature */}
                   <div className={styles.advFilterIDFeatureList}>
-                    <div className={styles.DropDownContent}>
+                    <SearchLookupInput {...ORGANISM_FILTER} />
+                    <SearchLookupInput {...DISEASES_FILTER} />
+                    <SearchLookupInput {...COFACTORS_FILTER} />
+                    {/* <div className={styles.DropDownContent}>
                       <label>Organism</label>
                       <div>
-                        <input type="text" className={styles.InputList} placeholder="ID / Organism" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
+                        <input type="text" className={styles.InputList} placeholder="ID / Organisma" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
                         <div className={styles.List}>
                           {filteredList.map(item => (
                             <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
                           ))}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div className={styles.DropDownContent}>
+                    {/* <div className={styles.DropDownContent}>
                       <label>Disease</label>
                       <div>
                         <input type="text" className={styles.InputList} placeholder="ID / Disease" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
@@ -222,9 +275,9 @@ function Home() {
                           ))}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div className={styles.DropDownContent}>
+                    {/* <div className={styles.DropDownContent}>
                       <label>CoFactor</label>
                       <div>
                         <input type="text" className={styles.InputList} placeholder="ID / CoFactor" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
@@ -234,7 +287,7 @@ function Home() {
                           ))}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   {/* Class List */}
                   <div className={styles.advFilterClassesList}>
@@ -380,7 +433,7 @@ function Home() {
                 {/* Search */}
                 <div className={styles.advFilterSearch}>
                   <div className={styles.HomeSearch}>
-                    <button disabled={Object.keys(searchErrorMessage).length > 0 && ("disabled")} className={styles.HomeSearchButton}>Search</button>
+                    <button  onClick={() => submitSearch()} disabled={Object.keys(searchErrorMessage).length > 0 && ("disabled")} className={styles.HomeSearchButton}>Search</button>
                   </div>
                 </div>
               </div>
@@ -434,7 +487,7 @@ function Home() {
               </div>
             </div>
           </div>
-          <button disabled={Object.keys(searchErrorMessage).length > 0 && ("disabled")} className={styles.HomeSearchButton}>Search</button>
+          <button onClick={() => submitSearch()} disabled={Object.keys(searchErrorMessage).length > 0 && ("disabled")} className={styles.HomeSearchButton}>Search</button>
         </div>
 
         {/* <div className={styles.HomeSearchOptions}>
@@ -454,9 +507,9 @@ function Home() {
       <Container fluid className="main-content-wrapper">
         <Row>
           {/* --------Advance Filter Component----- */}
-          <Col md={3} lg={2} className="sidebar-div">
+          {/* <Col md={3} lg={2} className="sidebar-div">
             <AdvanceFilters visible={navVisible} show={showNavbar} filters={filters} onFilterChange={handleFiltersChange} />
-          </Col>
+          </Col> */}
           {/* <!--Right Content Section-> */}
           <Col md={9} lg={10} className="right-content-div search-results-div d-flex flex-column flex-column-fluid">
             {/* <!--Header Section--> */}

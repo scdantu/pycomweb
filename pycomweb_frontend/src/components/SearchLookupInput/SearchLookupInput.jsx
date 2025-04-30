@@ -5,7 +5,7 @@ import styles from "../../styles/SearchLookupInput.module.css";
 
 const SearchLookupInput = (element) => {
 
-    const { singleSearchDataSets } = useContext(SearchContext);
+    const { singleSearchDataSets, filters } = useContext(SearchContext);
 
     const [focused, setFocused] = React.useState(false)
     const onFocus = () => { setShowList(true), setFocused(true)}
@@ -167,6 +167,7 @@ const SearchLookupInput = (element) => {
     const { updateFilters } = useContext(SearchContext);
 
     const handleSearchInputChange = (e) => {
+        console.log(e);
         if (e != element.inputVal) {
             let payload = {
                 inputVal: e
@@ -176,6 +177,7 @@ const SearchLookupInput = (element) => {
     };
 
     const setInputValue = (e) => {
+        console.log(e);
         if (e != element.inputVal) {
             let payload = {
                 inputVal: e
@@ -223,10 +225,6 @@ const SearchLookupInput = (element) => {
 
     const IncludesList = () => {
         //colour match
-
-        
-        
-        
         if(lookUpItemsCount > 0 && filteredList.length > 0) {
             const formattedResults = filteredList.map(item =>
                 item.replace(new RegExp(element.inputVal, 'gi'), match => `<span style="color: red;">${match}</span>`)
