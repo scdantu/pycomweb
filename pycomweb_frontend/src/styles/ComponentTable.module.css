@@ -1,0 +1,28 @@
+.TableDataTypeList {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #ededed;
+    /* grey svg arrow */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE0IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTcuMDEyODMgOC4wMDAxOUwxMy43NTUgMEgwLjI1TDcuMDEyODMgOC4wMDAxOVoiIGZpbGw9IiM2NjYiLz48L3N2Zz4=');
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 10px 6px;
+    border-radius: 0;
+    color: #333333;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 10px 40px 10px 10px;
+    position: relative;
+    text-align: center;
+    transition: background-color 600ms ease, color 800ms ease, background-image 600ms ease;
+    /* width: 4rem; */
+    font-weight: 600;
+}
+
+.TableDataTypeList:hover {
+    background-color: #8a41ff;
+    /* white svg arrow */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE0IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTcuMDEyODMgOC4wMDAxOUwxMy43NTUgMEgwLjI1TDcuMDEyODMgOC4wMDAxOVoiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=');
+    color: #ffffff;
+}
