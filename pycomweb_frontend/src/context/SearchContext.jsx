@@ -140,7 +140,7 @@ export const SearchProvider = ({children}) =>{
       return Object.values(advancedFilters).filter(filter => filter.applied && filter.isAdvancedFilter);
     }, [advancedFilters]);
 
-    const [searchLookupData, setSearchLookupData] = useState();
+    // const [searchLookupData, setSearchLookupData] = useState();
 
     const resetFilters = () => {
       setAdvancedFilters(filterDefaults);

@@ -1,12 +1,7 @@
-import { useState, useContext, useEffect, useRef } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
-
-// import AdvanceFilters from '../components/SearchProteins/AdvanceFilters.jsx';
-// import { FaX } from 'react-icons/fa6';
 import useFetchQueryProteins from '../customHooks/useFetchQueryProteins.jsx';
 import TableComponent from '../components/SearchProteins/TableComponent.jsx'
-// import { SEARCH_FILTERS } from '../constants';
-// import { GiConsoleController } from 'react-icons/gi';
 import styles from "../styles/Home.module.css";
 import MultiRangeSlider from "multi-range-slider-react";
 import SearchLookupInput from '../components/SearchLookupInput/SearchLookupInput.jsx';
@@ -14,11 +9,8 @@ import SearchLookupInput from '../components/SearchLookupInput/SearchLookupInput
 import { SearchContext } from '../context/SearchContext.jsx';
 
 function Home() {
-  /*State to manage responsive sidebar */
-  const [navVisible, showNavbar] = useState(false);  /* Not working */
-
   const { filters, pagination } = useContext(SearchContext);
-  const { handleFiltersChange, getAppliedFilters, clearIndividualFilter } = useContext(SearchContext);
+  // const { handleFiltersChange, getAppliedFilters, clearIndividualFilter } = useContext(SearchContext);
   const { advancedFilters, appliedFilterList } = useContext(SearchContext);
   const { SEQUENCE_LENGTH, HELICAL_STRUCTURE, TURN_STRUCTURE, BETA_STRAND } = advancedFilters;
   const { PDB, PTM, SUBTRATE } = advancedFilters;
@@ -101,11 +93,11 @@ function Home() {
   // const inputRef = useRef();
 
 
-  useEffect(() => {
-    console.log("hey")
-    console.log(filters);
-    console.log(advancedFilters);
-}, [filters]);
+  // useEffect(() => {
+    // console.log("hey")
+    // console.log(filters);
+    // console.log(advancedFilters);
+// }, [filters]);
   
 const submitSearch = () => {
     performSearch();
@@ -253,41 +245,6 @@ const submitSearch = () => {
                     <SearchLookupInput {...ORGANISM_FILTER} />
                     <SearchLookupInput {...DISEASES_FILTER} />
                     <SearchLookupInput {...COFACTORS_FILTER} />
-                    {/* <div className={styles.DropDownContent}>
-                      <label>Organism</label>
-                      <div>
-                        <input type="text" className={styles.InputList} placeholder="ID / Organisma" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                        <div className={styles.List}>
-                          {filteredList.map(item => (
-                            <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                          ))}
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div className={styles.DropDownContent}>
-                      <label>Disease</label>
-                      <div>
-                        <input type="text" className={styles.InputList} placeholder="ID / Disease" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                        <div className={styles.List}>
-                          {filteredList.map(item => (
-                            <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                          ))}
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div className={styles.DropDownContent}>
-                      <label>CoFactor</label>
-                      <div>
-                        <input type="text" className={styles.InputList} placeholder="ID / CoFactor" ref={inputRef} onChange={(event) => setInputVal(event.target.value)} value={inputVal} />
-                        <div className={styles.List}>
-                          {filteredList.map(item => (
-                            <li key={item} onClick={() => setInputValue(item)}><p>{item}</p></li>
-                          ))}
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                   {/* Class List */}
                   <div className={styles.advFilterClassesList}>
@@ -511,7 +468,7 @@ const submitSearch = () => {
             <AdvanceFilters visible={navVisible} show={showNavbar} filters={filters} onFilterChange={handleFiltersChange} />
           </Col> */}
           {/* <!--Right Content Section-> */}
-          <Col md={9} lg={10} className="right-content-div search-results-div d-flex flex-column flex-column-fluid">
+          <Col md={9} lg={12} className="right-content-div search-results-div d-flex flex-column flex-column-fluid">
             {/* <!--Header Section--> */}
             {/* <Col md={12} className="content-header-wrapper">
             <div className='header-title col-md-6'>

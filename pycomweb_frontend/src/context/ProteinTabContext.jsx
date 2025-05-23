@@ -1,9 +1,32 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useCookies } from 'react-cookie';
+
 export const ProteinTabContext = createContext(null);
 
 export const ProteinTabProvider = ({children}) =>{
     const [proteinTabs, setProteinTabs] = useState({selectedIndex: -1, tabs: []});
+    const [cookies, setCookie, removeCookie] = useCookies(['tabs']);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        //check if cookie exists
+        const cookieTabs = cookies.tabs;
+        if(cookieTabs){
+            setProteinTabs(cookieTabs);
+        } else {
+            //set default tabs
+            const defaultTabs = {selectedIndex: -1, tabs: []};
+            setCookie('tabs', defaultTabs, { path: '/', maxAge: 3600 });
+            setProteinTabs(defaultTabs);
+        }
+        // setLoading(false);
+    }
+    , [cookies, setCookie]);
+    
+    const handleSetCookie = () => {
+        setCookie('tabs', proteinTabs, { path: '/', maxAge: 3600 });
+    };
     
     /**
      * Add protein to tabs
@@ -14,10 +37,22 @@ export const ProteinTabProvider = ({children}) =>{
         
         if(!tabs.includes(uniprot_id)){
             tabs.push(uniprot_id);
+            const updatedProteinTabs = {selectedIndex: -1, tabs};
+            
+            setProteinTabs(updatedProteinTabs);
+        }
+    }
+
+    const addProteinToTabAndNavigate = (uniprot_id) => {
+        const tabs = proteinTabs.tabs;
+        
+        if(!tabs.includes(uniprot_id)){
+            tabs.push(uniprot_id);
             const length = tabs.length;
             const updatedProteinTabs = {selectedIndex: length-1, tabs};
             
             setProteinTabs(updatedProteinTabs);
+            handleSetCookie();
         }
     }
     
@@ -77,6 +112,7 @@ export const ProteinTabProvider = ({children}) =>{
             
             //update state
             setProteinTabs(updatedProteinTabs);
+            handleSetCookie();
         }
         //return path to navigate to
         if(newSelectedIndex != -1) {
@@ -100,7 +136,7 @@ export const ProteinTabProvider = ({children}) =>{
     }
 
     return (
-        <ProteinTabContext.Provider value= {{isSelectedTab, addProteinToTab, removeProteinFromTabs, updateSelectedProtein, proteinTabs}}>
+        <ProteinTabContext.Provider value= {{isSelectedTab, addProteinToTab, addProteinToTabAndNavigate, removeProteinFromTabs, updateSelectedProtein, proteinTabs}}>
             {children}
         </ProteinTabContext.Provider>
     )

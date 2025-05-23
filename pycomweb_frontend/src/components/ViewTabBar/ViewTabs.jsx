@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ProteinTabContext } from '../../context/ProteinTabContext';
 import styles from '../../styles/ViewTabs.module.css'; 
 import { useNavigate } from "react-router-dom";
 
 function ViewTabBar() {
-  const { proteinTabs, removeProteinFromTabs, updateSelectedProtein } = useContext(ProteinTabContext);
+  const { proteinTabs, removeProteinFromTabs, selectedProtein,updateSelectedProtein } = useContext(ProteinTabContext);
   const navigate = useNavigate();
 
   const ViewSearch = () => {
@@ -21,6 +21,11 @@ function ViewTabBar() {
     updateSelectedProtein(uniprot_id);
     navigate(`protein/${uniprot_id}`)
   }
+
+  // useEffect(() => {
+  //   console.log("Selected Protein: ", selectedProtein);
+  //   // navigate(`protein/${uniprot_id}`)
+  // }, [selectedProtein])
 
   return (
     <React.Fragment>

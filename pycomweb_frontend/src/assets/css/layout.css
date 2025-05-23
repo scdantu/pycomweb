@@ -1,7 +1,8 @@
 .main-content-wrapper {
   margin-top: 5px;
   flex: 1;
-  height: 100vh;
+  min-height: 50px;
+  /* height: 100vh; */
   /* Full viewport height */
 }
 
