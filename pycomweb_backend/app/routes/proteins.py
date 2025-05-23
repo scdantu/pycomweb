@@ -13,7 +13,7 @@ proteins_bp = Blueprint('proteins', __name__)
 @proteins_bp.route('/queryProteinsData', methods = ['POST'])
 def queryProteinsData():
     if request.method == 'POST':
-        api_url = current_app.config['PYCOM_API_URL'] + '/find'
+        api_url = current_app.config['PYCOM_API_URL'] + 'find'
         # disease = request.form.get('disease')
         # Get the POST parameters
         params = request.get_json()
@@ -69,7 +69,7 @@ def getProteinMatrices(uniprot_id):
 @proteins_bp.route('/getProtein/<string:uniprot_id>', methods = ['GET'])
 def getProtein(uniprot_id):
     if request.method == 'GET':
-        api_url = current_app.config['PYCOM_API_URL'] + '/find'
+        api_url = current_app.config['PYCOM_API_URL'] + 'find'
         query_string = 'uniprot_id='+uniprot_id+"&matrix=true"
         url = f"{api_url}?{query_string}"
         # Make the GET request to the third-party API
