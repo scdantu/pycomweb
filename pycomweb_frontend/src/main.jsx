@@ -21,6 +21,7 @@ import PTM from './pages/helpData/PTM.jsx';
 import DevelopmentalStages from './pages/helpData/DevelopmentalStages.jsx';
 import ProteinDetail from './pages/ProteinDetail.jsx';
 import PDB from './pages/PDB/PDB.jsx';
+import DownloadBasket from './components/DownloadBasket/DownloadBasket.jsx';
 
 
 // Function to strip the prefix path
@@ -39,7 +40,6 @@ console.log(strippedPath)
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-
       <Route path="/" element={<App />}>
         <Route path="" element={<Home />} />
         <Route path="biological_processes" element={<BiologicalProcesses />} />
@@ -54,9 +54,9 @@ const router = createBrowserRouter(
         <Route path="ptm" element={<PTM />} />
         <Route path="/protein/:uniprot_id" element={<ProteinDetail />} />
         <Route path="pdb" element={<PDB />} />
+        <Route path="basket" element={<DownloadBasket />} />
       </Route>
     </>
-
   ),
   { basename: import.meta.env.VITE_ROUTER_BASENAME }
 );

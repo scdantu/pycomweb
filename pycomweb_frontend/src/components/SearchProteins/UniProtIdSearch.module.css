@@ -1,0 +1,22 @@
+.uniProtIdSearchContainer {
+    background-color: #ededed;
+    display: flex;
+    margin-right: 1rem;
+}
+
+.uniProtIdSearchInput {
+    background-color: transparent;
+    border: none;
+    padding: .6rem;
+    width: 10rem;
+}
+
+.uniProtIdSearchGo {
+    transition: background-color 800ms ease, color 800ms ease;
+    width: 3rem;
+}
+
+.uniProtIdSearchGo:hover {
+    background-color: #8a41ff;
+    color: #fafafa;
+}

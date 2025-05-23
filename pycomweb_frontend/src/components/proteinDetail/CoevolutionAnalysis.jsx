@@ -1,48 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { PYCOMWEB_BASE_URL, TOP_SCORING_RESIDUES } from "../../constants"
 import { Col, Form, Table } from 'react-bootstrap';
+import useFetchProteinAnalysis from '../../customHooks/useFetchProteinAnalysis';
 
-function CoevolutionAnalysis({ proteinData }) {
+
+import { RepositoryContext } from '../../context/RepositorContext';
+
+function CoevolutionAnalysis({uniprot_id}) {
+    
+    //need to control matrix type information
+ 
+    const { proteinRepository } = useContext(RepositoryContext);
+    const proteinData = proteinRepository[uniprot_id];
+    const { protein_name } = proteinData.summaryData;
+    
     const [percentile, setPercentile] = useState(90); // Default percentile
     const [residuesData, setResiduesData] = useState([]);
-    const [matrixData, setMatrixData] = useState(proteinData.matrix); // Default to simple
+    // const [matrixData, setMatrixData] = useState(proteinData.matrix); // Default to simple
     const [matrixType, setMatrixType] = useState('matrix')
     const [matrixTypeTitle, setMatrixTypeTitle] = useState('Without Scaling')
+    
+    const {analysisLoaded, analysisData} = useFetchProteinAnalysis(uniprot_id, percentile, matrixType);
+    
+    const percentile_options = [90, 80, 75, 70, 60, 50, 40, 30, 20, 10, 5];
 
-    const percentile_options = [90, 80, 70, 75, 70, 60, 50, 40, 30, 20, 10, 5]
 
     useEffect(() => {
-        // Fetch top residues when component mounts or when selectedMatrixType/percentile changes
-        fetchResidueData(matrixData, percentile);
-    }, [matrixData, percentile]);
+        if(analysisLoaded){
+            if(analysisData){
+                setResiduesData(analysisData.proteinAnalysisData);
+            }
+        }
+    }, [analysisLoaded, analysisData]);
 
-    const fetchResidueData = (matrixData, selectedPercentile) => {
-        // Make an API call to fetch top residues
-        axios.post(PYCOMWEB_BASE_URL + TOP_SCORING_RESIDUES, {
-            matrix: matrixData,
-            percentile: selectedPercentile,
-            sequence: proteinData.sequence
-        })
-            .then(response => {
-                setResiduesData(response.data); // Set the returned residue data
-            })
-            .catch(error => {
-                console.error("Error fetching residue data:", error);
-            });
-    };
+    if(!analysisData){
+        return(
+            <div>loading</div>
+        )
+    }
+
+   
+    // return (
+    //     <div>Data Temp</div>
+    // )
+
+    // useEffect(() => {
+    //     // Fetch top residues when component mounts or when selectedMatrixType/percentile changes
+    //     fetchResidueData(matrixData, percentile);
+    // }, [matrixData, percentile]);
+
+    // const fetchResidueData = (matrixData, selectedPercentile) => {
+    //     // Make an API call to fetch top residues
+    //     axios.post(PYCOMWEB_BASE_URL + TOP_SCORING_RESIDUES, {
+    //         matrix: matrixData,
+    //         percentile: selectedPercentile,
+    //         sequence: proteinData.sequence
+    //     })
+    //         .then(response => {
+    //             setResiduesData(response.data); // Set the returned residue data
+    //         })
+    //         .catch(error => {
+    //             console.error("Error fetching residue data:", error);
+    //         });
+    // };
 
     const handleMatrixTypeChange = (e) => {
         const val = e.target.value
         setMatrixType(val)
         if (val == 'matrix_S') {
-            setMatrixData(proteinData.matrix_S)
+            // setMatrixData(proteinData.matrix_S)
             setMatrixTypeTitle("Scaling")
         } else if (val == "matrix_N") {
-            setMatrixData(proteinData.matrix_N)
+            // setMatrixData(proteinData.matrix_N)
             setMatrixTypeTitle("Normalize")
         } else {
-            setMatrixData(proteinData.matrix)
+            // setMatrixData(proteinData.matrix)
             setMatrixTypeTitle("Without Scaling")
         }
         console.log(e.target.value)
@@ -51,12 +84,19 @@ function CoevolutionAnalysis({ proteinData }) {
     const handlePercentileChange = (event) => {
         setPercentile(event.target.value);
     };
+
+
+    // return (
+    //     <div>done</div>
+    // )
+
+
     return (
 
         <Col className="coevolution-analysis-wrapper">
             {/* header */}
             <div className="col-md-12 mb-3 content-header-wrapper">
-                <Col md={12}><h3>Coevolution Analysis: {proteinData.protein_name} ({proteinData.uniprot_id})</h3> </Col>
+                <Col md={12}><h3>Coevolution Analysis: {protein_name} ({uniprot_id})</h3> </Col>
             </div>
             <div className='col-md-12 pb-3 flex-row-div content-header-wrapper' style={{ justifyContent: "start" }}>
                 <div className='flex-column-div'>
@@ -98,7 +138,7 @@ function CoevolutionAnalysis({ proteinData }) {
                     <h5 className='mb-0' >Select Percentile</h5>
                     <Form.Select aria-label="Choose Matrix" value={percentile} onChange={handlePercentileChange}>
 
-                        {percentile_options.map(val => { return (<option value={val}>{val}</option>) })}
+                        {percentile_options.map(val => { return (<option key={`perVal_${val}`} value={val}>{val}</option>) })}
                         {/* <option value={90}>90</option>
                         <option value={80}>80</option>
                         <option value={75}>75</option>
