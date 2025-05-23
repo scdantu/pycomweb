@@ -16,6 +16,7 @@ def queryProteinsData():
     if request.method == 'POST':
         api_url = current_app.config['PYCOM_API_URL'] + 'find'
         print(api_url)
+
         # disease = request.form.get('disease')
         # Get the POST parameters
         params = request.get_json()

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
+  Navigate,
   Route,
   RouterProvider,
   createBrowserRouter,
@@ -22,25 +23,42 @@ import ProteinDetail from './pages/ProteinDetail.jsx';
 import PDB from './pages/PDB/PDB.jsx';
 import DownloadBasket from './components/DownloadBasket/DownloadBasket.jsx';
 
+
+// Function to strip the prefix path
+const getStrippedPath = () => {
+  console.log("calledddddddd")
+  const fullPath = window.location.pathname; // Get the full path from the browser
+  console.log("fullpath  +" + fullPath)
+  const prefix = '/pycomwebdev'; // Define the prefix to strip
+  return fullPath.startsWith(prefix) ? fullPath.replace(prefix, '') || '/' : fullPath;
+
+};
+
+// Get the stripped path
+const strippedPath = getStrippedPath();
+console.log(strippedPath)
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route path="" element={<Home />} />
-      <Route path="biological_processes" element={<BiologicalProcesses />} />
-      <Route path="cellular_components" element={<CellularComponents />} />
-      <Route path="cofactors" element={<Cofactors />} />
-      <Route path="diseases" element={<Diseases />} />
-      <Route path="developmental_stages" element={<DevelopmentalStages />} />
-      <Route path="domains" element={<Domains />} />
-      <Route path="ligands" element={<Ligands />} />
-      <Route path="molecular_functions" element={<MolecularFunctions />} />
-      <Route path="Organisms" element={<Organisms />} />
-      <Route path="ptm" element={<PTM />} />
-      <Route path="/protein/:uniprot_id" element={<ProteinDetail />} />
-      <Route path="pdb" element={<PDB />} />
-      <Route path="basket" element={<DownloadBasket />} />
-    </Route>
-  )
+    <>
+      <Route path="/" element={<App />}>
+        <Route path="" element={<Home />} />
+        <Route path="biological_processes" element={<BiologicalProcesses />} />
+        <Route path="cellular_components" element={<CellularComponents />} />
+        <Route path="cofactors" element={<Cofactors />} />
+        <Route path="diseases" element={<Diseases />} />
+        <Route path="developmental_stages" element={<DevelopmentalStages />} />
+        <Route path="domains" element={<Domains />} />
+        <Route path="ligands" element={<Ligands />} />
+        <Route path="molecular_functions" element={<MolecularFunctions />} />
+        <Route path="Organisms" element={<Organisms />} />
+        <Route path="ptm" element={<PTM />} />
+        <Route path="/protein/:uniprot_id" element={<ProteinDetail />} />
+        <Route path="pdb" element={<PDB />} />
+        <Route path="basket" element={<DownloadBasket />} />
+      </Route>
+    </>
+  ),
+  { basename: import.meta.env.VITE_ROUTER_BASENAME }
 );
 
 
