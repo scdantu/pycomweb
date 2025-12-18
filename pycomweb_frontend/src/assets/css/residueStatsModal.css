@@ -1,0 +1,161 @@
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Modal Container */
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 1100px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Close Button */
+.modal-close-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #eee;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Title */
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Plot Selector */
+.plot-selector {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.plot-selector label {
+  margin-right: 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.plot-selector select {
+  padding: 6px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+/* Two-column layout */
+.two-column-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Plot Panel */
+.plot-panel {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.plot-title {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.plot-image {
+  width: 100%;
+  max-height: 350px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.plot-label {
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* Stats Panel */
+.stats-panel {
+  flex: 1;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stats-table td {
+  padding: 4px 8px;
+}
+
+/* Footer Messages */
+.modal-footer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.message-box {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.message-box.alpha {
+  background-color: #fff8c5;
+  border-left: 4px solid #e0b800;
+  color: #7a6200;
+}
+
+.message-box.percentile {
+  background-color: #e6f7ff;
+  border-left: 4px solid #3399cc;
+  color: #005580;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .two-column-layout {
+    flex-direction: column;
+  }
+}

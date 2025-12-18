@@ -5,6 +5,7 @@ import { VariableSizeGrid as Grid } from 'react-window';
 import { Col, Form } from 'react-bootstrap';
 // import useFetchProteinDetail from '../../customHooks/useFetchProteinDetail';
 import useFetchProteinMatrices from '../../customHooks/useFetchProteinMatrices';
+import ResidueStatsModal from './ResidueStatsModal';
 
 const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => {
     
@@ -15,6 +16,7 @@ const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => 
     const [matrixType, setMatrixType] = useState('matrix')
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [boxplotImage, setBoxplotImage] = useState('');
+    const [plotImages, setPlotImages] = useState({ boxplot:null, histogram: null, kde: null });   
     const [descriptiveStatistics, setDescriptiveStatistics] = useState(null);
     
     const handleMatrixTypeChange = (e) => {
@@ -39,14 +41,14 @@ const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => 
                 },
                 // responseType: 'blob' // Expecting an image response
             });
-            const { plotImage, descriptive_statistics } = response.data;
-            // Create an image element and set its source to the base64 string
-            // const img = new Image();
-            // img.src = `data:image/png;base64,${plot}`;
-            // const src = `data:image/png;base64,${plot}`
+            const { boxplot, histogram, kde, descriptive_statistics } = response.data;
 
             // Set the image and statistics in your state
-            setBoxplotImage(`data:image/png;base64,${plotImage}`);
+            setPlotImages({
+                boxplot: `data:image/png;base64,${boxplot}`,
+                histogram: `data:image/png;base64,${histogram}`,
+                kde: `data:image/png;base64,${kde}`,
+            });
             setSelectedData({ residuePair, score });
             setDescriptiveStatistics(descriptive_statistics);  // Store statistics in state
             setIsModalOpen(true);
@@ -176,35 +178,16 @@ const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => 
                     </Grid>
                 )}
 
-                {isModalOpen && (
-                    <div className="modal">
-                        {/* <h2>Significance of Coevolution Score for residue pair {residuePair}</h2> */}
-                        <div className='flex-row-div' style={{ justifyContent: "space-around" }}>
-                            <img src={boxplotImage} alt="Boxplot" />
-                            <div>
-                                <h3>Descriptive Statistics</h3>
-                                <ul>
-                                    <li>Mean: {descriptiveStatistics.mean}</li>
-                                    <li>Median: {descriptiveStatistics.median}</li>
-                                    <li>Standard Deviation: {descriptiveStatistics.std_dev}</li>
-                                    <li>Variance: {descriptiveStatistics.variance}</li>
-                                    <li>Min: {descriptiveStatistics.min}</li>
-                                    <li>Max: {descriptiveStatistics.max}</li>
-                                    <li>Quartiles: {descriptiveStatistics.quartiles.join(', ')}</li>
-                                    <li>Z-Score: {descriptiveStatistics.z_score}</li>
-                                    <li>T-Test: t-stat = {descriptiveStatistics.t_test.t_stat}, p-value = {descriptiveStatistics.t_test.p_value}</li>
-                                    <li>{descriptiveStatistics.significance}</li>
-                                </ul>
-                            </div>
-                            <button className="modal-close-button" onClick={closeModal}>Close</button>
-                        </div>
-
-
-                    </div>
-                )}
+                <ResidueStatsModal
+                    isOpen={isModalOpen}
+                    onClose={() => setModalOpen(false)}
+                    images={plotImages}
+                    descriptiveStatistics={descriptiveStatistics}
+                    selectedPair={selectedData?.residuePair}
+                    selectedScore={selectedData?.score}
+                />
             </div>
         </Col>
-
     );
 }
 

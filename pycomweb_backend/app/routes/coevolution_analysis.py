@@ -1,5 +1,5 @@
 from flask import current_app, request, send_file, make_response, Blueprint, jsonify, Response
-from app.utils.coevolution_analysis import read_scores_from_file, generate_boxplot, calculate_top_scoring_residues, calculate_coevolution_score_stats,util_generate_plots
+from app.utils.coevolution_analysis import read_scores_from_file, generate_boxplot, generate_histogram, generate_kde, calculate_top_scoring_residues, calculate_coevolution_score_stats,util_generate_plots
 import plotly.graph_objs as go
 import plotly.io as pio
 import io
@@ -26,16 +26,22 @@ def check_coevolution_score_significance():
     #Get statistics and T-test result
     descriptive_stats = calculate_coevolution_score_stats(scores, selected_score)
     
-    # Generate boxplot using the utility function
-    buf = generate_boxplot(scores, selected_score, residue_pair)
-    plot_image = base64.b64encode(buf.getvalue()).decode('utf-8')
-    
+    # Generate all plots
+    boxplot_buf = generate_boxplot(scores, selected_score, residue_pair)
+    hist_buf = generate_histogram(scores, selected_score)
+    kde_buf = generate_kde(scores, selected_score)
+
+    # Convert to base64
+    boxplot_img = base64.b64encode(boxplot_buf.getvalue()).decode('utf-8')
+    hist_img = base64.b64encode(hist_buf.getvalue()).decode('utf-8')
+    kde_img = base64.b64encode(kde_buf.getvalue()).decode('utf-8')
+
     return jsonify({
         'descriptive_statistics': descriptive_stats,
-        'plotImage': plot_image
+        'boxplot': boxplot_img,
+        'histogram': hist_img,
+        'kde': kde_img
     })
-
-    # return send_file(buf, mimetype='image/png')
 
 
 @coevolution_bp.route('/get_top_scoring_residues', methods=['POST'])
