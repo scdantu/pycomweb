@@ -3,8 +3,8 @@ import axios from 'axios';
 import { PYCOMWEB_BASE_URL, COEVOLUTION_SCORE_SIGNIFICANCE } from "../../constants"
 import { VariableSizeGrid as Grid } from 'react-window';
 import useFetchProteinMatrices from '../../customHooks/useFetchProteinMatrices';
+import ResidueStatsModal from './ResidueStatsModal';
 import styles from '../../styles/ProteinDetail.module.css';
-
 const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => {
     const { matricesData, matricesLoaded, matricesError } = useFetchProteinMatrices(uniprot_id);
 
@@ -12,6 +12,7 @@ const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => 
     const [matrixType, setMatrixType] = useState('matrix');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [boxplotImage, setBoxplotImage] = useState('');
+    const [plotImages, setPlotImages] = useState({ boxplot:null, histogram: null, kde: null });   
     const [descriptiveStatistics, setDescriptiveStatistics] = useState(null);
 
     const handleMatrixTypeChange = (e) => setMatrixType(e.target.value);
@@ -27,8 +28,14 @@ const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => 
                     matrix_type: matrixType
                 },
             });
-            const { plotImage, descriptive_statistics } = response.data;
-            setBoxplotImage(`data:image/png;base64,${plotImage}`);
+            const { boxplot, histogram, kde, descriptive_statistics } = response.data;
+
+            // Set the image and statistics in your state
+            setPlotImages({
+                boxplot: `data:image/png;base64,${boxplot}`,
+                histogram: `data:image/png;base64,${histogram}`,
+                kde: `data:image/png;base64,${kde}`,
+            });
             setSelectedData({ residuePair, score });
             setDescriptiveStatistics(descriptive_statistics);
             setIsModalOpen(true);

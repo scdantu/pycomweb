@@ -4,11 +4,13 @@ import os
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import seaborn as sns
 import networkx as nx
 import numpy as np
 import pandas as pd
 from pycom import PyCom,CoMAnalysis 
 from scipy import stats
+from scipy.stats import percentileofscore
 import io
 import base64
 from flask_cors import CORS
@@ -36,6 +38,10 @@ def read_scores_from_file(residue_pair):
 #Function generates statisctics related to list of Coevolution scores and check the significance of selected score 
 def calculate_coevolution_score_stats(scores, selected_score):
     scores = np.array(scores)
+    mean = np.mean(scores)
+    std = np.std(scores)
+    z = (selected_score - mean) / (std + 1e-9)
+    percentile = percentileofscore(scores, selected_score)
     # Calculate Descriptive statistics
     descriptive_stats = {
         'mean': round(np.mean(scores), 2),
@@ -44,11 +50,12 @@ def calculate_coevolution_score_stats(scores, selected_score):
         'variance': round(np.var(scores), 2),
         'min': round(np.min(scores), 2),
         'max': round(np.max(scores), 2),
-        'quartiles': list(np.percentile(scores, [25, 50, 75]))  # Convert numpy array to list
+        'quartiles': list(np.percentile(scores, [25, 50, 75])),  # Convert numpy array to list
+        "z_score": round(float(z),2),
+        "percentile": round(float(percentile),2),
+        "percentile_msg": f"Selected score is at the {percentile:.2f}th percentile of the distribution."
+        
     }
-    # Calculate Z-score for selected score
-    z_score = (selected_score - np.mean(scores)) / np.std(scores)
-    descriptive_stats['z_score'] = round(z_score, 2)
 
     # Perform a t-test comparing the selected score with the sample distribution
     t_stat, p_value = stats.ttest_1samp(scores, selected_score)
@@ -73,7 +80,7 @@ def generate_boxplot(scores, selected_score, residue_pair):
     ax.boxplot(scores, patch_artist=False)
     ax.plot(1, selected_score, 'ro', label=f'Selected Score: {round(selected_score, 2)}')
      # Adding title and labels for better readability
-    ax.set_title('Sgnificance of Coevolution Score for residue pair ' +     residue_pair)
+    ax.set_title('BoxPlot ' +     residue_pair)
     ax.set_ylabel('Score')
     ax.set_xticks([1])
     ax.set_xticklabels(['Scores'])
@@ -87,6 +94,37 @@ def generate_boxplot(scores, selected_score, residue_pair):
     plt.savefig(buf, format='png')
     buf.seek(0)
     plt.close(fig)
+    return buf
+
+def generate_histogram(scores, selected_score):
+    fig, ax = plt.subplots(figsize=(4, 4))
+    ax.hist(scores, bins=50, color="lightgray", edgecolor="black")
+    ax.axvline(selected_score, color="red", linewidth=2)
+    ax.set_title("Histogram ")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight")
+    plt.close(fig)
+    buf.seek(0)
+    return buf
+
+def generate_kde(scores, selected_score):
+    fig, ax = plt.subplots(figsize=(4, 4))
+    sns.kdeplot(scores, ax=ax, fill=True, color="skyblue")
+    ax.axvline(selected_score, color="red", linewidth=2)
+    ax.text(selected_score, ax.get_ylim()[1]*0.9, f"Score = {selected_score:.2f}", color="red")
+    
+    percentile = percentileofscore(scores, selected_score)
+    ax.text(selected_score, ax.get_ylim()[1]*0.8, f"{percentile:.1f}%", color="darkred")
+    
+    ax.set_xlim([0, np.percentile(scores, 99)])
+    
+    ax.set_title("KDE Plot")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight")
+    plt.close(fig)
+    buf.seek(0)
     return buf
     
 
