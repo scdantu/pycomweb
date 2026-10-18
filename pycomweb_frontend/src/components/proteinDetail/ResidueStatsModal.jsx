@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../assets/css/ResidueStatsModal.css";
+import "../../assets/css/residueStatsModal.css";
 
 const ResidueStatsModal = ({
   isOpen,
@@ -9,9 +9,9 @@ const ResidueStatsModal = ({
   selectedPair,
   selectedScore
 }) => {
-  if (!isOpen) return null;
-
   const [selectedPlot, setSelectedPlot] = useState("boxplot");
+
+  if (!isOpen) return null;
 
   const plotOptions = {
     boxplot: images.boxplot,

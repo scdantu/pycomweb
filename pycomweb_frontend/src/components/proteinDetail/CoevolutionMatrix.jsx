@@ -11,8 +11,7 @@ const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => 
     const [selectedData, setSelectedData] = useState(null);
     const [matrixType, setMatrixType] = useState('matrix');
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [boxplotImage, setBoxplotImage] = useState('');
-    const [plotImages, setPlotImages] = useState({ boxplot:null, histogram: null, kde: null });   
+    const [plotImages, setPlotImages] = useState({ boxplot: null, histogram: null, kde: null });
     const [descriptiveStatistics, setDescriptiveStatistics] = useState(null);
 
     const handleMatrixTypeChange = (e) => setMatrixType(e.target.value);
@@ -189,29 +188,14 @@ const CoevolutionMatrix = ({ uniprot_id, rowHeight = 35, labelWidth = 100 }) => 
                         </Grid>
                     )}
 
-                    {isModalOpen && (
-                        <div className="modal">
-                            <div className='flex-row-div' style={{ justifyContent: "space-around" }}>
-                                <img src={boxplotImage} alt="Boxplot" />
-                                <div>
-                                    <h3>Descriptive Statistics</h3>
-                                    <ul>
-                                        <li>Mean: {descriptiveStatistics.mean}</li>
-                                        <li>Median: {descriptiveStatistics.median}</li>
-                                        <li>Standard Deviation: {descriptiveStatistics.std_dev}</li>
-                                        <li>Variance: {descriptiveStatistics.variance}</li>
-                                        <li>Min: {descriptiveStatistics.min}</li>
-                                        <li>Max: {descriptiveStatistics.max}</li>
-                                        <li>Quartiles: {descriptiveStatistics.quartiles.join(', ')}</li>
-                                        <li>Z-Score: {descriptiveStatistics.z_score}</li>
-                                        <li>T-Test: t-stat = {descriptiveStatistics.t_test.t_stat}, p-value = {descriptiveStatistics.t_test.p_value}</li>
-                                        <li>{descriptiveStatistics.significance}</li>
-                                    </ul>
-                                </div>
-                                <button className="modal-close-button" onClick={closeModal}>Close</button>
-                            </div>
-                        </div>
-                    )}
+                    <ResidueStatsModal
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                        images={plotImages}
+                        descriptiveStatistics={descriptiveStatistics}
+                        selectedPair={selectedData?.residuePair}
+                        selectedScore={selectedData?.score}
+                    />
                 </div>
 
                 <div style={{ position: 'absolute', right: 10, bottom: 10, border: '1px solid black' }}>
