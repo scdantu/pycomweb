@@ -351,6 +351,9 @@
     border: 1px solid black;
     z-index: 1000;
 }
+.caption {
+    background-color: red !important;
+}
 
 /* .FilterProteinLength:hover .RangeSelector{ */
 .HoverContainer:hover .FilterProteinLength {

@@ -1,6 +1,26 @@
+.downloadsPage{
+    padding: 2rem 3rem;
+    box-sizing: border-box;
+}
+.DownloadsHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+    /* padding-bottom: 1rem; */
+    /* border-bottom: 1px solid #4a4a4a; */
+}
+.DownloadsTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0rem 0rem;
+    padding: 0;
+}
 .DownloadBasketContainer {
-    margin-top: 1rem;
-    padding: 1rem 2rem;
+    margin-top: 0rem;
+    padding: 0rem 0rem;
 }
 .DownloadBasketHeader {
     display: flex;
@@ -8,7 +28,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    border-bottom: 1px solid #dee2e6;
+    /* border-bottom: 1px solid #dee2e6; */
     padding-bottom: .5rem;
 }
 .DownloadBasketTable {
@@ -36,42 +56,102 @@
 }
 .DownloadBasketTableFooter {
     display: flex;
-    gap: .5rem;
-    border-top: 1px solid #dee2e6;
+    gap: 2rem;
+    /* border-top: 1px solid #dee2e6; */
     margin-top: 1rem;
     padding: 1rem;
     /* padding: 2rem; */
     /* margin: 2rem; */
 }
 .DownloadBasketNoItemsFound{
-    padding: 3rem;
-    text-align: center;
+    padding: 1rem 0rem;
+    text-align: left;
 }
 .DownloadBasketTableActions {
     display: flex;
     justify-content: flex-start;
-    gap: .5rem;
     align-items: center;
+    gap: .25rem;
+}
+.DownloadMessage {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    padding: 1rem;
+    margin-top: 1rem;
+    gap: 1rem;
+    /* border: 1px solid red; */
+    background-color: #f4f9fb;
+}
+.DownloadsOkayButton {
+    width: min-content;
+    padding: .3rem 1rem;
+    border-radius: .4rem;
+    background-color: #fafafa;
+    border: 1px solid #dadada;
+}
+.DownloadError {
+    color: rgb(202, 88, 88);
+}
+.DownloadsOkayButton:hover {
+    background-color: #def4f6;
+    transition: background-color .3s ease;
+}
+.DeleteIcon {
+    font-family: 'Material Symbols Outlined';
+    font-size: 1.4rem;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    /* color: #d74d5b; */
+    cursor: pointer;
+}
+.DownloadIcon {
+    font-family: 'Material Symbols Outlined';
+    font-size: 1.4rem;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    /* color: #d74d5b; */
+    cursor: pointer;
 }
 .DownloadDangerButton {
     font-family: "poppins", sans-serif;
-    background-color: #d74d5b;
-    color: white;
+    background-color: transparent;
+    color: #4a4a4a;
     border: none;
-    padding: 0.25rem .5rem;
+    /* padding: 0.25rem .5rem; */
     border-radius: 0.25rem;
     cursor: pointer;
     font-size: .8rem;
+    display: flex;
+    gap: .25rem;
+    align-items: center;
+}
+.DownloadDangerButton:hover {
+    color: #d74d5b;
+    transition: color .3s ease;
 }
 .DownloadActionButton {
     font-family: "poppins", sans-serif;
-    background-color: #5e9067;
-    color: white;
+    background-color: transparent;
+    color: #4a4a4a;
     border: none;
-    padding: 0.25rem .5rem;
+    /* padding: 0.25rem .5rem; */
     border-radius: 0.25rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
     font-size: .8rem;
+}
+.DownloadActionButton:hover {
+    color: #437eb4;
+    transition: color .3s ease;
 }
 .DownloadOptions {
     display: flex;

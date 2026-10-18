@@ -41,14 +41,15 @@ const UniProtIdSearch = () => {
                 autoComplete="off"
                 className={styles.uniProtIdSearchInput}
                 name="uniprot_id"
-                onChange={() => setUniProtSearchId(UniProtIdSearchInputRef.current.value)}
+                onChange={() => setUniProtSearchId(UniProtIdSearchInputRef.current.value.toUpperCase())}
                 onKeyUp={(e) => handleSearchBoxKeyDown(e)}
                 placeholder='UniProt ID'
                 ref={UniProtIdSearchInputRef}
                 type="text"
                 value={uniProtSearchId}
             />
-            <button className={styles.uniProtIdSearchGo} onClick={handleSearchBtn} type="button"><FaSearch /></button>
+            {/* <button className={styles.uniProtIdSearchGo} onClick={handleSearchBtn} type="button"><FaSearch /></button> */}
+            <button className={styles.uniProtIdSearchGo} onClick={handleSearchBtn}><span className={styles.searchIcon}>&#xe8b6;</span></button>
         </div>
     )
 }

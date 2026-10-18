@@ -15,13 +15,13 @@ function Home() {
   const { SEQUENCE_LENGTH, HELICAL_STRUCTURE, TURN_STRUCTURE, BETA_STRAND } = advancedFilters;
   const { PDB, PTM, SUBTRATE } = advancedFilters;
   const { CATH, EC } = advancedFilters;
-  const { BIOLOGICAL_PROCESS, CELLULAR_COMPONENT, DEVELOPMENTAL_STAGE, DOMAIN, LIGAND, MOLECULAR_FUNCTION, PTM_SEARCH} = advancedFilters;
+  const { BIOLOGICAL_PROCESS, CELLULAR_COMPONENT, DEVELOPMENTAL_STAGE, DOMAIN, LIGAND, MOLECULAR_FUNCTION, PTM_SEARCH } = advancedFilters;
   const { DISEASES, DISEASES_FILTER, COFACTORS_FILTER, ORGANISM_FILTER } = advancedFilters;
-  const { performSearch, updateFilters, resetFilters, searchErrorMessage, validateFilter, getSingleSearchDataSet, singleSearchDataSets, setIsSearchUpdateRequired} = useContext(SearchContext);
+  const { performSearch, updateFilters, resetFilters, searchErrorMessage, validateFilter, getSingleSearchDataSet, singleSearchDataSets, setIsSearchUpdateRequired } = useContext(SearchContext);
 
   // console.log(advancedFilters);
   // console.log(singleSearchDataSets);
-    /* Call the hook initially to fetch first 10 protiens without filters */
+  /* Call the hook initially to fetch first 10 protiens without filters */
   const { loading, error } = useFetchQueryProteins(filters, pagination);
 
   // const [minValue, set_minValue] = useState(0);
@@ -58,22 +58,6 @@ function Home() {
     }
   }
 
-  // const sliderProps = {
-  //   style:{border: 'none', boxShadow: 'none', padding: 0, marginTop: '1rem', width: '150px'},
-  //     min:0,
-  //     max:100,
-  //     step:1,
-  //     minValue:minValue,
-  //     maxValue:maxValue,
-  //     label:false,
-  //     ruler:false,
-  //     barInnerColor:'#8a41ff',
-  //     barLeftColor:'#cccccc',
-  //     barRightColor:'#cccccc',
-  //     thumbLeftColor:'#000000',
-  //     thumbRightColor:'#000000',
-  // }
-
   const list = [
     'Acetoin biosynthesis',
     'Acetoin catabolism',
@@ -94,47 +78,47 @@ function Home() {
 
 
   // useEffect(() => {
-    // console.log("hey")
-    // console.log(filters);
-    // console.log(advancedFilters);
-// }, [filters]);
-  
-const submitSearch = () => {
+  // console.log("hey")
+  // console.log(filters);
+  // console.log(advancedFilters);
+  // }, [filters]);
+
+  const submitSearch = () => {
     performSearch();
     //create form
 
     // const formData = new FormData();
-    
-      // const { name, type, checked, value } = e.target;
-      // if (type === 'checkbox') {
-      //     if (checked) {
-      //         // Add filter to state if checkbox is checked
-      //         setFormData((prevFilters) => ({
-      //             ...prevFilters,
-      //             [name]: value,
-      //         }));
-      //     } else {
-      //         // Remove filter from state if checkbox is unchecked
-      //         setFormData((prevFilters) => {
-      //             const { [name]: _, ...restFilters } = prevFilters;
-      //             return restFilters;
-      //         });
-      //     }
-      // } else {
 
-      //     if (value == '' || value == 'undefined') {
-      //         //why do we have this space?
-      //     }
-      //     // Update other types of inputs
-      //     setFormData((prevFilters) => ({
-      //         ...prevFilters,
-      //         [name]: value,
-      //     }));
-      // }
-      // // Clear error for the field being edited
-      // setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
-      // setIsFormChanged(true);
-  
+    // const { name, type, checked, value } = e.target;
+    // if (type === 'checkbox') {
+    //     if (checked) {
+    //         // Add filter to state if checkbox is checked
+    //         setFormData((prevFilters) => ({
+    //             ...prevFilters,
+    //             [name]: value,
+    //         }));
+    //     } else {
+    //         // Remove filter from state if checkbox is unchecked
+    //         setFormData((prevFilters) => {
+    //             const { [name]: _, ...restFilters } = prevFilters;
+    //             return restFilters;
+    //         });
+    //     }
+    // } else {
+
+    //     if (value == '' || value == 'undefined') {
+    //         //why do we have this space?
+    //     }
+    //     // Update other types of inputs
+    //     setFormData((prevFilters) => ({
+    //         ...prevFilters,
+    //         [name]: value,
+    //     }));
+    // }
+    // // Clear error for the field being edited
+    // setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
+    // setIsFormChanged(true);
+
 
     //submit search
     // setIsSearchUpdateRequired(true);
@@ -170,36 +154,10 @@ const submitSearch = () => {
     // }
   }
 
-  // const setInputValue = (val) => {
-  //   setInputVal(val);
-  //   setFilteredList([]);
-
-  //   // inputRef.currentValue = val;
-  // }
-
-  //debounce input
-  // useEffect(() => {
-  //   if (inputRef.current.value) {
-  //     const getData = setTimeout(() => {
-  //       filterFunction();
-  //     }, 200)
-
-  //     return () => clearTimeout(getData)
-  //   } else {
-  //     if (inputRef.current.value === "") {
-  //       //show first 10 results
-  //       setFilteredList(list.slice(0, resultLimit));
-  //     }
-  //   }
-  // }, [inputVal])
-
-
-
   /*Render Home Page Components */
   return (
     <div className={styles.Home}>
-
-      {Object.keys(searchErrorMessage).length > 0 && (
+    {Object.keys(searchErrorMessage).length > 0 && (
         <div className={styles.Errors}>
           <b>Advanced Filter Error</b>
           {Object.entries(searchErrorMessage).map(([key, value]) => (
@@ -207,23 +165,9 @@ const submitSearch = () => {
           ))}
         </div>
       )}
-
-      <div>
-        {/* <h1>Find Proteins</h1> */}
-        {/* <p>Find proteins via their UniProtId or our advance filters</p> */}
-
-      </div>
-      {/* <br /> */}
       <div className={styles.HomeSearchBlock}>
-
-
-
         <div className={styles.HomeSearchTypes}>
           {/* <button className={styles.HomeStandardSearchButton}>Search</button> */}
-
-
-
-
           <div className={styles.HomeAdvancedSearchButton}> {/* hover hit */}
             <div className={styles.HomeAdvancedSearchLabel}>Advanced Filters ({appliedFilterList.length})</div>
             <div className={styles.HomeAdvancedFiltersContainer}> {/* display: 'block' */}
@@ -257,10 +201,12 @@ const submitSearch = () => {
                           <div>
                             <b>Examples</b>
                             <table>
-                              <tr><td>3.*</td><td>Include all in Major class</td></tr>
-                              <tr><td>3.4.*</td><td>Inclue all in Major.Sub Class</td></tr>
-                              <tr><td>3.4.52.*</td><td>Inclue all in Major.Sub.Sub Class</td></tr>
-                              <tr><td>3.4.52.48&nbsp;&nbsp;</td><td>Include Specifc CATH</td></tr>
+                              <tbody>
+                                <tr><td>3.*</td><td>Include all in Major class</td></tr>
+                                <tr><td>3.4.*</td><td>Inclue all in Major.Sub Class</td></tr>
+                                <tr><td>3.4.52.*</td><td>Inclue all in Major.Sub.Sub Class</td></tr>
+                                <tr><td>3.4.52.48&nbsp;&nbsp;</td><td>Include Specifc CATH</td></tr>
+                              </tbody>
                             </table>
                           </div>
                         </div>
@@ -275,12 +221,13 @@ const submitSearch = () => {
                           <div>
                             <b>Examples</b>
                             <table>
-                              <tr><td>3.*</td><td>Include all in Major class</td></tr>
-                              <tr><td>3.4.*</td><td>Inclue all in Major.Sub Class</td></tr>
-                              <tr><td>3.4.52.*</td><td>Inclue all in Major.Sub.Sub Class</td></tr>
-                              <tr><td>3.4.52.48&nbsp;&nbsp;</td><td>Include Specifc Enzyme Commission</td></tr>
+                              <tbody>
+                                <tr><td>3.*</td><td>Include all in Major class</td></tr>
+                                <tr><td>3.4.*</td><td>Inclue all in Major.Sub Class</td></tr>
+                                <tr><td>3.4.52.*</td><td>Inclue all in Major.Sub.Sub Class</td></tr>
+                                <tr><td>3.4.52.48&nbsp;&nbsp;</td><td>Include Specifc Enzyme Commission</td></tr>
+                              </tbody>
                             </table>
-
                           </div>
                         </div>
                       </div><span onClick={() => clearIndividualFilter(EC)}>x</span>
@@ -390,7 +337,7 @@ const submitSearch = () => {
                 {/* Search */}
                 <div className={styles.advFilterSearch}>
                   <div className={styles.HomeSearch}>
-                    <button  onClick={() => submitSearch()} disabled={Object.keys(searchErrorMessage).length > 0 && ("disabled")} className={styles.HomeSearchButton}>Search</button>
+                    <button onClick={() => submitSearch()} disabled={Object.keys(searchErrorMessage).length > 0 && ("disabled")} className={styles.HomeSearchButton}>Search</button>
                   </div>
                 </div>
               </div>
@@ -411,19 +358,29 @@ const submitSearch = () => {
                       </div>
                     </div>
                     <div className={styles.RangeSelector}>
+                      <style>{`
+                        .min-caption, .max-caption {
+                        visibility: hidden;  
+                        display: none !important;
+                          // z-index: 30000;
+                          // top: 50px;
+                        }
+                      `}</style>
                       <MultiRangeSlider
-                        style={{ border: 'none', boxShadow: 'none', margin: '.4rem', padding: '.5rem', width: '500px', zIndex: 1020 }}
-                        // baseClassName='multi-range-slider-black'
+                        style={{ border: 'none', boxShadow: 'none', margin: '.4rem', padding: '.5rem', width: '500px', zIndex: 2020 }}
+                        baseClassName='multi-range-slider'
+                        className='multi-range-slider'
                         min={SEQUENCE_LENGTH.range.min}
                         max={SEQUENCE_LENGTH.range.max}
                         step={1}
                         minValue={SEQUENCE_LENGTH.min}
                         maxValue={SEQUENCE_LENGTH.max}
+                        caption={false}
                         label={false}
                         ruler={false}
-                        barInnerColor='#8a41ff'
-                        barLeftColor='#cccccc'
-                        barRightColor='#cccccc'
+                        barInnerColor='#437eb4'
+                        barLeftColor='#eaeaea'
+                        barRightColor='#eaeaea'
                         thumbLeftColor='#000000'
                         thumbRightColor='#000000'
                         onInput={(e) => {
@@ -454,13 +411,7 @@ const submitSearch = () => {
       </div>
       <br />
 
-      {/* <div>
-      
-     
-      <button>Search</button>
-      clear
-      More filters
-    </div> */}
+
       <Container fluid className="main-content-wrapper">
         <Row>
           {/* --------Advance Filter Component----- */}

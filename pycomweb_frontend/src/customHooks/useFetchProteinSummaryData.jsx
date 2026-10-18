@@ -1,76 +1,61 @@
 import axios from "axios"
-import { useState, useEffect, useContext, useMemo } from "react"
-import { PYCOMWEB_BASE_URL, UNIPROT_DETAIL} from "../constants"
+import { useState, useEffect, useContext, useRef } from "react"
+import { PYCOMWEB_BASE_URL, UNIPROT_DETAIL } from "../constants"
 import { RepositoryContext } from "../context/RepositorContext"
 
 const useFetchProteinSummaryData = (uniprot_ids) => {
-    
-    
+  const { setProteinRepository } = useContext(RepositoryContext);
+  const [error, setError] = useState(null);
+  const [loadingSummary, setLoadingSummary] = useState(false);
 
-    const {proteinRepository, setProteinRepository} = useContext(RepositoryContext);
-    const [error, setError] = useState(null);
-    const [loadingSummary, setLoadingSummary] = useState(true);
-    
-    const idsToFetch = useMemo(() => 
-        uniprot_ids.filter(uniprot_id => !proteinRepository[uniprot_id]?.fetchedSummaryData), // filter out data already fetched
-        [uniprot_ids, proteinRepository]
-    );
+  const fetchedIdsRef = useRef(new Set()); // prevent re-fetching attempts
 
-    useEffect(() => {
-        if (idsToFetch.length === 0) {
-            setLoadingSummary(false);
-            return;
-        }
-        
-        const fetchSummaryData = async (idsToFetch) => {
-            
-            setLoadingSummary(true);
-            
-            try {
+  useEffect(() => {
+    const idsToFetch = uniprot_ids.filter(id => !fetchedIdsRef.current.has(id));
 
-                const fetchProteinSummaryData = async (uniprot_id) => {
-            
-                    try {
-                        const response = await axios.get(PYCOMWEB_BASE_URL + UNIPROT_DETAIL + uniprot_id);
-                        const {data} = response;
-                        return {[uniprot_id]: data};
-                    } catch (err) {
-                        setError(err.message);
-                        return {}
-                    }
-                };
-            
-                const proteinSummaryPromises = idsToFetch.map(uniprot_id => fetchProteinSummaryData(uniprot_id));
-                const proteinSummaryData = await Promise.all(proteinSummaryPromises); // wait for all requests to be fulfilled
+    if (idsToFetch.length === 0) return;
 
-                //update the protein repository with received data
-                setProteinRepository(prevState => {
-                    const newState = { ...prevState };
-                    
-                    proteinSummaryData.forEach(item => {
-                        const keys = Object.keys(item);
-                        keys.forEach(key => {
-                            newState[key] = {
-                                ...newState[key],
-                                fetchedSummaryData: true,
-                                summaryData: item[key]
-                            }
-                        })
-                    })
-            
-                    return newState;
-                });
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoadingSummary(false);
+    const fetchData = async () => {
+      setLoadingSummary(true);
+
+      try {
+        const results = await Promise.all(idsToFetch.map(async id => {
+          try {
+            const res = await axios.get(`${PYCOMWEB_BASE_URL}${UNIPROT_DETAIL}${id}`);
+            return { id, data: res.data };
+          } catch (err) {
+            setError(err.message);
+            return { id, data: null };
+          }
+        }));
+
+        setProteinRepository(prev => {
+          const updated = { ...prev };
+
+          results.forEach(({ id, data }) => {
+            if (data) {
+              updated[id] = {
+                ...updated[id],
+                fetchedSummaryData: true,
+                summaryData: data,
+              };
+              fetchedIdsRef.current.add(id); // mark as fetched
             }
-        }
+          });
 
-        fetchSummaryData(uniprot_ids);
-    }, [idsToFetch]);
+          return updated;
+        });
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoadingSummary(false);
+      }
+    };
 
-    return { error, loadingSummary }
-}
+    fetchData();
+  }, [uniprot_ids.join(",")]); // depend only on the incoming prop
 
-export default useFetchProteinSummaryData
+  return { error, loadingSummary };
+};
+
+export default useFetchProteinSummaryData;

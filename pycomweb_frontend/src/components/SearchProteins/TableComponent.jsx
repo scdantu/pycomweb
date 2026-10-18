@@ -41,14 +41,14 @@ const TableComponent = ({ loading, error }) => {
     <>
       <div style={{ display: "flex", alignItems: 'flex-end', justifyContent: "space-between", margin: "0px 1rem", marginBottom: ".5rem", paddingBottom: "1rem", borderBottom: "1px solid #ededed"}}>
         <div>Total Records: <span style={{fontWeight: "700"}}>{result_count}</span></div>
-        <div>Records per page:&nbsp;<span style={{ border: "1px solid #dddddd", backgroundColor: '#f6f6f6', borderRadius: '1rem', fontWeight: '600', margin: '0rem', padding: '.2rem .7rem'}}>
-          <select id="results"  style={{backgroundColor: 'transparent', fontWeight: '600', textAlign: 'center'}} value={pagination.recordsPerPage} onChange={(e) => handleRecordsPerPageChange(Number(e.target.value))}>
+        <div>Records per page:&nbsp;
+          <select id="results"  className={styles.SelectPagination} value={pagination.recordsPerPage} onChange={(e) => handleRecordsPerPageChange(Number(e.target.value))}>
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
-          </select></span></div>
+          </select></div>
       </div>
 
       {/* <div className="results-table-header col-md-12" style={{margin: "0px 1rem"}}>
@@ -66,9 +66,9 @@ const TableComponent = ({ loading, error }) => {
         </Col>
       </div> */}
       
-      <div className="table-container" style={{margin: "0px 1rem"}}>
+      <div className="table-container" style={{margin: "0px 2rem"}}>
         <Table stripped="true">
-          <thead>
+          <thead className="table-header-font">
             <tr>
               {/* <th>#</th> */}
               <th>UniProt ID</th>
@@ -91,26 +91,27 @@ const TableComponent = ({ loading, error }) => {
                 <td>{row.neff.toFixed(2)}</td>
                 <td>{row.helix_frac.toFixed(2)}</td>
                 <td>{row.strand_frac.toFixed(2)}</td>
-                <td>
+                <td className={styles.ActionIcons}>
                   {/* <a className="fa-icon" onClick={() => ViewProtein(row.uniprot_id)} href={"/protein/" + row.uniprot_id} target="_blank"><FaEye title="View more" />&nbsp;</a> */}
-                  <a className="fa-icon" onClick={() => AddProtein(row.uniprot_id)}><FaEye title="View more" />&nbsp;</a>
-                  <a className="fa-icon" onClick={() => ViewProtein(row.uniprot_id)}><FaEye title="View more" />&nbsp;</a>
-                  <a className="fa-icon" href={"https://pycom.brunel.ac.uk/alignments/" + row.uniprot_id + ".aln"} >
-                    <FaFileDownload title="Download MSA file" />&nbsp;
-                  </a>
-                  <a className="fa-icon"><FaCartPlus title="Add to Download Selection" onClick={() => updateBasket(row.uniprot_id)}/>&nbsp;</a>
-                </td>
+                  {/* <a className="fa-icon" onClick={() => AddProtein(row.uniprot_id)}><FaEye title="View more" />&nbsp;</a> */}
+                  {/* <div > */}
+                  <span onClick={() => ViewProtein(row.uniprot_id)} className={styles.FileOpenIcon} title="View">&#xf466;</span>
+                  <span onClick={() => AddProtein(row.uniprot_id)} className={styles.FileOpenIcon} title="Add to tabs">&#xe8d9;</span>
+                  <a href={"https://pycom.brunel.ac.uk/alignments/" + row.uniprot_id + ".aln"} className={styles.AlignmentIcon} title="Download MSA file">&#xf199;</a>
+                  <span className={styles.AddToBasketIcon} title="Add to Download Selection" onClick={() => updateBasket(row.uniprot_id)}>&#xf000;</span>
+                  {/* </div> */}
+                  </td>
               </tr>
             ))}
           </tbody>
         </Table>
-        <Col className="pagination col-md-12">
-          <button onClick={() => handlePageChange(1)} disabled={page === 1}>First</button>
-          <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>Previous</button>
-          <span className="h6">Page <b>{page}</b> of <b>{total_pages}</b></span>
-          <button onClick={() => handlePageChange(page + 1)} disabled={page === total_pages}>Next</button>
-          <button onClick={() => handlePageChange(total_pages)} disabled={page === total_pages}>Last</button>
-        </Col>
+        <div className={styles.TablePagination}>
+          <button className={styles.TablePaginationButton} onClick={() => handlePageChange(1)} disabled={page === 1}>First</button>
+          <button className={styles.TablePaginationButton} onClick={() => handlePageChange(page - 1)} disabled={page === 1}>Previous</button>
+          <span className={styles.TablePaginationText}>Page <b>{page}</b> of <b>{total_pages}</b></span>
+          <button className={styles.TablePaginationButton} onClick={() => handlePageChange(page + 1)} disabled={page === total_pages}>Next</button>
+          <button className={styles.TablePaginationButton} onClick={() => handlePageChange(total_pages)} disabled={page === total_pages}>Last</button>
+        </div>
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -6,13 +6,26 @@ import PropTypes from 'prop-types';
 import { DownloadContext } from '../../context/DownloadContext';
 import { FaCartPlus } from 'react-icons/fa';
 import { RepositoryContext } from '../../context/RepositorContext';
+// import useFetchQueryProteins from '../customHooks/useFetchQueryProteins.jsx';
+// import  useFetchProteinDetail from '../../customHooks/useFetchProteinDetail.jsx';
+import useFetchProteinFullData from '../../customHooks/useFetchProteinFullData.jsx';
 
 const DetailComponent = ({ uniprot_id }) => {
 
     const { updateBasket } = useContext(DownloadContext);
     const { proteinRepository } = useContext(RepositoryContext);
+    const { loadingFull, error } = useFetchProteinFullData(true, [uniprot_id])
+    // const [ready, setReady] = useState(false);
+
+    // useEffect(() => {
+    //     if (proteinRepository[uniprot_id]?.fullData) {
+    //         setReady(true);
+    //     }
+    // }, [proteinRepository, uniprot_id]);
+
+
     const data = proteinRepository[uniprot_id];
-    const { protein_name, diseases, ligands, ec_numbers, pdb, organism_id, ptm } = data.summaryData;
+    
     const decimalPlaces = 3; //number of decimal places for display
 
     const roundFigure = (item) => {
@@ -40,6 +53,50 @@ const DetailComponent = ({ uniprot_id }) => {
          }
     }
 
+    if(loadingFull) {
+        return <div>Loading...</div>;
+    }
+    if(error) {
+        return <div>Error: {error}</div>;
+    }
+    if (!data) {
+       return <div>Initialising protein data…</div>;
+    }
+    if(!data.summaryData) {
+        return <div>No data found for this UniProt ID.</div>;
+    }
+    if (!data?.fullData) {
+        return <div>Loading full data…</div>;
+    }
+    // if (!ready) return <div>Waiting for protein data...</div>;
+
+    if (!data || !data.fetchedFullData) {
+    return <p>Loading protein data...</p>;
+  }
+
+    const {
+        protein_name = "" ,
+        diseases = [],
+        ligands = [],
+        ec_numbers = [],
+        pdb = [],
+        ptm = [],
+    } = data?.summaryData || {};
+    // = data?.summaryData || {};
+
+    const {
+        organism_id = "",
+        sequence_length = 0,
+        sequence = "",
+        neff = 0,
+        helix_frac = 0,
+        turn_frac = 0,
+        strand_frac = 0,
+        has_ptm = false,
+        has_pdb = false,
+        has_substrate = false
+    } = data?.fullData || {};
+
     return (
         <div>
             {/* <!--Header Section--> */}
@@ -47,39 +104,39 @@ const DetailComponent = ({ uniprot_id }) => {
                 <div className='header-title'>
                     <div className='h4'>{protein_name}</div>
                 </div>
-                <p><strong>UniProt ID:</strong> {data.uniprot_id}</p>
-                <p><strong>Sequence Length:</strong> {data.sequence_length} residues</p>
-                <a className="fa-icon" onClick={() => updateBasket(data.uniprot_id)}><FaCartPlus title="Add to Downloads" />&nbsp; Add to download</a>
+                <p><strong>UniProt ID:</strong> {uniprot_id}</p>
+                <p><strong>Sequence Length:</strong> {sequence_length} residues</p>
+                <a className="fa-icon" onClick={() => updateBasket(uniprot_id)}><FaCartPlus title="Add to Downloads" />&nbsp; Add to download</a>
                 {/* <p><strong>Neff:</strong>{data.neff}</p> */}
             </Col>
             <Col md={12} className="content-header-wrapper">
-                <p><strong>Sequence: </strong>{data.sequence}</p>
+                <p><strong>Sequence: </strong>{sequence}</p>
             </Col>
             {/* <!--Statistics about the search Data--> */}
             <Col md={12} className="result-statistics-wrapper">
                 <div className='protein-detail-cards'>
-                    <b>Organism: </b> <span> {renderLink(data.organism_id)}</span>
+                    <b>Organism: </b> <span> {renderLink(organism_id)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Neff: </b> <span> {roundFigure(data.neff)}</span>
+                    <b>Neff: </b> <span> {roundFigure(neff)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Helix Fraction: </b> <span> {roundFigure(data.helix_frac)}</span>
+                    <b>Helix Fraction: </b> <span> {roundFigure(helix_frac)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Turn Fraction: </b> <span> {roundFigure(data.turn_frac)}</span>
+                    <b>Turn Fraction: </b> <span> {roundFigure(turn_frac)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Standard Fraction: </b> <span> {roundFigure(data.strand_frac)}</span>
+                    <b>Standard Fraction: </b> <span> {roundFigure(strand_frac)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Ptm: </b> <span> {renderTrueFalse(data.has_ptm)}</span>
+                    <b>Ptm: </b> <span> {renderTrueFalse(has_ptm)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>PDB: </b> <span> {renderTrueFalse(data.has_pdb)}</span>
+                    <b>PDB: </b> <span> {renderTrueFalse(has_pdb)}</span>
                 </div>
                 <div className='protein-detail-cards'>
-                    <b>Substrate: </b> <span> {renderTrueFalse(data.has_substrate)}</span>
+                    <b>Substrate: </b> <span> {renderTrueFalse(has_substrate)}</span>
                 </div>
 
             </Col>

@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useCookies } from 'react-cookie';
+import { use } from "react";
 
 export const ProteinTabContext = createContext(null);
 
@@ -11,23 +12,30 @@ export const ProteinTabProvider = ({children}) =>{
 
     useEffect(() => {
         //check if cookie exists
-        const cookieTabs = cookies.tabs;
-        if(cookieTabs){
-            setProteinTabs(cookieTabs);
-        } else {
-            //set default tabs
-            const defaultTabs = {selectedIndex: -1, tabs: []};
-            setCookie('tabs', defaultTabs, { path: '/', maxAge: 3600 });
-            setProteinTabs(defaultTabs);
+        if(loading)
+        {
+            const cookieTabs = cookies.tabs;
+            if(cookieTabs){
+                setProteinTabs(cookieTabs);
+                // setLoading(false);
+            } else {
+                //set default tabs
+                const defaultTabs = {selectedIndex: -1, tabs: []};
+                setCookie('tabs', defaultTabs, { path: '/', maxAge: 31536000 });
+                setProteinTabs(defaultTabs);
+            }
         }
-        // setLoading(false);
+        setLoading(false);
     }
-    , [cookies, setCookie]);
+    , [cookies]);
     
+    
+
     const handleSetCookie = () => {
-        setCookie('tabs', proteinTabs, { path: '/', maxAge: 3600 });
+        setCookie('tabs', proteinTabs, { path: '/', maxAge: 31536000 });
     };
     
+
     /**
      * Add protein to tabs
      * @param {*} uniprot_id 
@@ -40,12 +48,14 @@ export const ProteinTabProvider = ({children}) =>{
             const updatedProteinTabs = {selectedIndex: -1, tabs};
             
             setProteinTabs(updatedProteinTabs);
+            handleSetCookie();
         }
     }
 
     const addProteinToTabAndNavigate = (uniprot_id) => {
         const tabs = proteinTabs.tabs;
         
+        //if not in tabs, add it
         if(!tabs.includes(uniprot_id)){
             tabs.push(uniprot_id);
             const length = tabs.length;
@@ -53,7 +63,14 @@ export const ProteinTabProvider = ({children}) =>{
             
             setProteinTabs(updatedProteinTabs);
             handleSetCookie();
+            return;
         }
+
+        //if in tabs get key and update selected
+        const index = tabs.findIndex(protein => protein === uniprot_id);
+        const updatedProteinTabs = {selectedIndex: index, tabs};
+        setProteinTabs(updatedProteinTabs);
+        handleSetCookie();
     }
     
     /**

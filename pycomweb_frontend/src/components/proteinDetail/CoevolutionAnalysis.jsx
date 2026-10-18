@@ -4,6 +4,7 @@ import { PYCOMWEB_BASE_URL, TOP_SCORING_RESIDUES } from "../../constants"
 import { Col, Form, Table } from 'react-bootstrap';
 import useFetchProteinAnalysis from '../../customHooks/useFetchProteinAnalysis';
 
+import styles from '../../styles/ProteinDetail.module.css';
 
 import { RepositoryContext } from '../../context/RepositorContext';
 
@@ -40,31 +41,6 @@ function CoevolutionAnalysis({uniprot_id}) {
         )
     }
 
-   
-    // return (
-    //     <div>Data Temp</div>
-    // )
-
-    // useEffect(() => {
-    //     // Fetch top residues when component mounts or when selectedMatrixType/percentile changes
-    //     fetchResidueData(matrixData, percentile);
-    // }, [matrixData, percentile]);
-
-    // const fetchResidueData = (matrixData, selectedPercentile) => {
-    //     // Make an API call to fetch top residues
-    //     axios.post(PYCOMWEB_BASE_URL + TOP_SCORING_RESIDUES, {
-    //         matrix: matrixData,
-    //         percentile: selectedPercentile,
-    //         sequence: proteinData.sequence
-    //     })
-    //         .then(response => {
-    //             setResiduesData(response.data); // Set the returned residue data
-    //         })
-    //         .catch(error => {
-    //             console.error("Error fetching residue data:", error);
-    //         });
-    // };
-
     const handleMatrixTypeChange = (e) => {
         const val = e.target.value
         setMatrixType(val)
@@ -78,83 +54,43 @@ function CoevolutionAnalysis({uniprot_id}) {
             // setMatrixData(proteinData.matrix)
             setMatrixTypeTitle("Without Scaling")
         }
-        console.log(e.target.value)
     }
 
     const handlePercentileChange = (event) => {
         setPercentile(event.target.value);
     };
 
-
-    // return (
-    //     <div>done</div>
-    // )
-
-
     return (
 
-        <Col className="coevolution-analysis-wrapper">
+        <div className={styles.overviewPage}>
             {/* header */}
-            <div className="col-md-12 mb-3 content-header-wrapper">
-                <Col md={12}><h3>Coevolution Analysis: {protein_name} ({uniprot_id})</h3> </Col>
-            </div>
-            <div className='col-md-12 pb-3 flex-row-div content-header-wrapper' style={{ justifyContent: "start" }}>
-                <div className='flex-column-div'>
-                    <h5 className='mb-0' >Select Coevolution Matrix</h5>
-                    <div key="inline-radio" className="mb" style={{ background: "#eeebf7", padding: "5px 10px", display: "flex" }}>
-                        <Form.Check
-                            inline
-                            label="Without Scaling"
-                            name="matrix_type"
-                            type="radio"
-                            id="matrix"
-                            value="matrix"
-                            onChange={handleMatrixTypeChange}
-                            checked={matrixType == 'matrix'}
-                        />
-                        <Form.Check
-                            inline
-                            label="Min-Max Scaling"
-                            name="matrix_type"
-                            type="radio"
-                            id="matrix_S"
-                            value="matrix_S"
-                            onChange={handleMatrixTypeChange}
-                            checked={matrixType == 'matrix_S'}
-                        />
-                        <Form.Check
-                            inline
-                            label="Normalized"
-                            type="radio"
-                            name="matrix_type"
-                            id="matrix_N"
-                            value="matrix_N"
-                            onChange={handleMatrixTypeChange}
-                            checked={matrixType == 'matrix_N'}
-                        />
+            <div className={styles.structures}>
+                <form>
+                    <div className={styles.formSection}>
+                        <p className={styles.strong}>Matrix Type:</p>
+                        <input type="radio" name="matrix_type" value="matrix" checked={matrixType === 'matrix'} onChange={handleMatrixTypeChange} /> Without Scaling
+                        <input type="radio" name="matrix_type" value="matrix_S" checked={matrixType === 'matrix_S'} onChange={handleMatrixTypeChange} /> Min-Max Scaling
+                        <input type="radio" name="matrix_type" value="matrix_N" checked={matrixType === 'matrix_N'} onChange={handleMatrixTypeChange} /> Normalized
                     </div>
-                </div>
-                <div className='flex-column-div'>
-                    <h5 className='mb-0' >Select Percentile</h5>
-                    <Form.Select aria-label="Choose Matrix" value={percentile} onChange={handlePercentileChange}>
+                    <div className={styles.formSection}>
+                        <p className={styles.strong}>Percentile:</p>
+                        <select type="select" value={percentile} onChange={handlePercentileChange}>
+                            {percentile_options.map(val => { return (<option key={`perVal_${val}`} value={val}>{val}</option>) })}
+                        </select>
+                    </div>
+                </form>
+            </div>
 
-                        {percentile_options.map(val => { return (<option key={`perVal_${val}`} value={val}>{val}</option>) })}
-                        {/* <option value={90}>90</option>
-                        <option value={80}>80</option>
-                        <option value={75}>75</option>
-                        <option value={70}>70</option>
-                        <option value={70}>70</option> */}
-                    </Form.Select>
+            <div className={styles.analysisHeader}>
+                <div>
+                    <h2>Top Scoring Residues</h2>
+                    <p className={styles.analysisHeaderTableType}>{matrixTypeTitle}, {percentile}th percentile</p>
+                </div>
+                <div>
+                    <p className={styles.analysisHeaderTableResults}><span className={styles.strong}>Results:</span> <span className={styles.value}>{residuesData.length}</span></p>
                 </div>
             </div>
 
-            <div className="analysis-table-header">
-                <div className="analysis-title-subtitle mb-0">
-                    <h4 className="analysis-title mb-0">Top Scoring Residues</h4>
-                    <span className="analysis-subtitle mb-0">({matrixTypeTitle}, {percentile}th percentile)</span>
-                </div>
-                <h5 className="total-results mb-0">Total Results: {residuesData.length}</h5>
-            </div>
             <div className="analysis-table-container" >
                 <Table stripped="true">
                     <thead>
@@ -177,7 +113,7 @@ function CoevolutionAnalysis({uniprot_id}) {
                     </tbody>
                 </Table>
             </div>
-        </Col >
+        </div>
 
     )
 }

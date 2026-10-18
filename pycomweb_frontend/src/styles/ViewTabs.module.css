@@ -6,7 +6,7 @@
     flex-direction: row;
     overflow: hidden;
     position: sticky;
-    top: 64px;
+    top: 51px;
     z-index: 1000;
 }
 .ViewTabs:hover {
@@ -36,11 +36,11 @@
     -webkit-user-select: none;
 }
 .ViewTabsSearch:hover {
-    background-color: #e4d7fa;
+    background-color: #e7ecf4;
 }
 
 .ViewTabsSearchSelected {
-    background-color: #8a41ff;
+    background-color: #437eb4;
     color: #ffffff;
 }
 
@@ -59,11 +59,11 @@
 }
 
 .ViewTabsTabProtein:hover {
-    background-color: #d5c0f6;
+    background-color: #e7ecf4;
 }
 
 .ViewTabsTabProteinSelected {
-    background-color: #8a41ff;
+    background-color: #437eb4;
     color: #ffffff;
 }
 

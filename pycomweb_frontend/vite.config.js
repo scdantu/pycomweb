@@ -17,4 +17,4 @@ export default defineConfig({
 
 console.log("===============================")
 console.log(env.VITE_BASE_URL)
-console.log(process.env.NODE_ENV)
+// console.log(process.env.NODE_ENV)

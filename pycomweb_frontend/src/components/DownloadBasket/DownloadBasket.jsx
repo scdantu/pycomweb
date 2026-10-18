@@ -53,7 +53,7 @@ function DownloadBasket() {
         const blobData = await response.blob();
   
         // Get coevolution matrix 
-        let url2 = `http://127.0.0.1:5000/getProteinMatrices/${item}`;
+        let url2 = `https://pycom.brunel.ac.uk/pycomwebdev/pycomwebdev_api/getProteinMatrices/${item}`;
         let filename2 = `${item}.data`;
   
         const response2 = await fetch(url2);
@@ -87,6 +87,55 @@ function DownloadBasket() {
     return { failed: failedItems };
   };
 
+  const downloadSingle = async (uniprot_id, zipFile) => {
+    let completed = 0;
+    let failedItems = [];
+  
+    //for (const item of basket) {
+      try {
+        // Get alignment file
+        let url = `https://pycom.brunel.ac.uk/alignments/${uniprot_id}.aln`;
+        let filename = `${uniprot_id}.aln`;
+  
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch ${filename}`);
+        const blobData = await response.blob();
+  
+        // Get coevolution matrix 
+        let url2 = `https://pycom.brunel.ac.uk/pycomwebdev/pycomwebdev_api/getProteinMatrices/${uniprot_id}`;
+        let filename2 = `${uniprot_id}.data`;
+  
+        const response2 = await fetch(url2);
+        if (!response2.ok) throw new Error(`Failed to fetch ${filename2}`);
+        const jsonData2 = await response2.json();
+  
+        // Convert JSON to ASCII string
+        let asciiString = '';
+        const jsonString = JSON.stringify(jsonData2, null, 2);
+        for (let i = 0; i < jsonString.length; i++) {
+          const charCode = jsonString.charCodeAt(i);
+          if (charCode <= 127) asciiString += jsonString[i];
+        }
+        const blobData2 = new Blob([asciiString], { type: 'text/plain;charset=ascii' });
+  
+        // Add files to zip
+        let folder = zipFile.folder(uniprot_id);
+        folder.file(filename, blobData);
+        folder.file(filename2, blobData2);
+  
+        // Update progress
+        completed += 1;
+        updateProgress?.(completed, basket.length);
+  
+      } catch (error) {
+        console.error(`Error processing ${uniprot_id}:`, error);
+        failedItems.push(uniprot_id);
+      }
+  //}
+    // return { completed, failed: failedItems };
+    return { failed: failedItems };
+  };
+
   const handleDownloadAll = async () => {
     setIsDownloadingComplete(false);
     setFailedItems([]);
@@ -107,30 +156,55 @@ function DownloadBasket() {
     setIsDownloadingComplete(true);
   };
 
+  const handleDownloadSingle = async (uniprot_id) => {
+    setIsDownloadingComplete(false);
+    setFailedItems([]);
+
+    const zipFile = new JSZip();
+    const zipFileDate = getFormattedDate();
+  
+    const { failed } = await downloadSingle(uniprot_id, zipFile);
+  
+    const content = await zipFile.generateAsync({ type: 'blob' });
+    saveAs(content, `PyComFiles_${zipFileDate}.zip`);
+  
+    if (failed.length > 0) {
+      setFailedItems(failed);
+      // alert(`Download complete with errors. Failed items:\n${failed.join(', ')}`);
+    }
+    
+    setIsDownloadingComplete(true);
+  };
+
 //   <div>
 //   Downloading... {progress.done} of {progress.total} complete
 //   {isDownloadingComplete && (<div>OK</div>)}
 // </div>
 
   return (
-    <>
+    <div className={styles.downloadsPage}>
+      <div className={styles.DownloadsHeader}>
+        <h1 className={styles.DownloadsTitle}>Downloads</h1>
+        {/* <div>Items: <span style={{fontWeight: 700}}>{basket.length}</span></div> */}
+      </div>
       <div className={styles.DownloadBasketContainer}>
         { /* progress and summary */ }
         {progress.total > 0 && ( 
           <>
           
           {isDownloadingComplete ? (
-            <>
-            <div>Downloaded {progress.done} of {progress.total}</div>
-            
+            <div className={styles.DownloadMessage}>
+            <div>Download Complete</div>
             {failedItems.length > 0 && (
-              <div>Some items failed to download: {failedItems.join(', ')}</div>
+              <div className={styles.DownloadError}>Some items failed to download: {failedItems.join(', ')}</div>
             )}
 
-            <button onClick={() => resetProgress()}>Okay</button>
-            </>
+            <button className={styles.DownloadsOkayButton} onClick={() => resetProgress()}>OK</button>
+            </div>
           ) : (
-            <div>Downloading... {progress.done} of {progress.total} complete</div>
+            <div className={styles.DownloadMessage}>
+              <div>Downloading... {progress.done} of {progress.total} complete</div>
+            </div>
           )}
           </>
         )}
@@ -142,7 +216,7 @@ function DownloadBasket() {
           {basket.length > 0 ? (
             <>
             <div className={styles.DownloadBasketHeader}>
-              <div>Items: <span style={{fontWeight: 700}}>{basket.length}</span></div>
+              {/* <div>Items: <span style={{fontWeight: 700}}>{basket.length}</span></div> */}
               {/* <div className="DownloadOptions">
                 <button onClick={handleDownloadAll}>Download All</button>
                 <button onClick={()=> emptyBasket()}>Clear All</button>
@@ -162,15 +236,15 @@ function DownloadBasket() {
                     <td>{proteinRepository[item]?.uniprot_id}</td>
                     <td>{proteinRepository[item]?.summaryData?.protein_name || "no name"}</td>
                     <td className={styles.DownloadBasketTableActions}>
-                        <button className={styles.DownloadDangerButton} onClick={()=> removeBasketItem(item)}>Remove</button>
-                        <button className={styles.DownloadActionButton} onClick={handleDownloadAll}>Download</button>
+                        <button className={styles.DownloadDangerButton} onClick={()=> removeBasketItem(item)}><span className={styles.DeleteIcon}>&#xe872;</span></button>
+                        <button className={styles.DownloadActionButton} onClick={() => handleDownloadSingle(proteinRepository[item]?.uniprot_id)}><span className={styles.DownloadIcon}>&#xf090;</span></button>
                     </td>
                   </tr>
                 ))}
               </table>
               <div className={styles.DownloadBasketTableFooter}>
-                <button className={styles.DownloadDangerButton} onClick={()=> emptyBasket()}>Remove All</button>
-                <button className={styles.DownloadActionButton} onClick={handleDownloadAll}>Download All</button>
+                <button className={styles.DownloadDangerButton} onClick={()=> emptyBasket()}><span className={styles.DeleteIcon}>&#xe872;</span>Remove All</button>
+                <button className={styles.DownloadActionButton} onClick={() => handleDownloadAll()}><span className={styles.DownloadIcon}>&#xf090;</span>Download All</button>
               </div>
             </>
           ) : (
@@ -185,7 +259,7 @@ function DownloadBasket() {
 
       </div>
 
-    </>
+    </div>
   )
 }
 

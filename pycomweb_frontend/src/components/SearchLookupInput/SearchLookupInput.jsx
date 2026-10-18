@@ -106,7 +106,6 @@ const SearchLookupInput = (element) => {
 
             break;
             case "INCLUDES":
-                console.log('sorting includes');
                 if (inputRef.current.value) {
                     const getData = setTimeout(() => {
                         filterFunction();
@@ -129,7 +128,6 @@ const SearchLookupInput = (element) => {
                 }
             break;
             case "STARTS":
-                console.log('sorting includes');
                 if (inputRef.current.value) {
                     const getData = setTimeout(() => {
                         filterFunctionStart();
@@ -167,7 +165,6 @@ const SearchLookupInput = (element) => {
     const { updateFilters } = useContext(SearchContext);
 
     const handleSearchInputChange = (e) => {
-        console.log(e);
         if (e != element.inputVal) {
             let payload = {
                 inputVal: e
@@ -177,7 +174,6 @@ const SearchLookupInput = (element) => {
     };
 
     const setInputValue = (e) => {
-        console.log(e);
         if (e != element.inputVal) {
             let payload = {
                 inputVal: e

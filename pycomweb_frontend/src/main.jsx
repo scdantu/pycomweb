@@ -26,9 +26,7 @@ import DownloadBasket from './components/DownloadBasket/DownloadBasket.jsx';
 
 // Function to strip the prefix path
 const getStrippedPath = () => {
-  console.log("calledddddddd")
   const fullPath = window.location.pathname; // Get the full path from the browser
-  console.log("fullpath  +" + fullPath)
   const prefix = '/pycomwebdev'; // Define the prefix to strip
   return fullPath.startsWith(prefix) ? fullPath.replace(prefix, '') || '/' : fullPath;
 
@@ -36,12 +34,11 @@ const getStrippedPath = () => {
 
 // Get the stripped path
 const strippedPath = getStrippedPath();
-console.log(strippedPath)
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<App />}>
-        <Route path="" element={<Home />} />
+        <Route index element={<Home />} />
         <Route path="biological_processes" element={<BiologicalProcesses />} />
         <Route path="cellular_components" element={<CellularComponents />} />
         <Route path="cofactors" element={<Cofactors />} />
@@ -52,7 +49,7 @@ const router = createBrowserRouter(
         <Route path="molecular_functions" element={<MolecularFunctions />} />
         <Route path="Organisms" element={<Organisms />} />
         <Route path="ptm" element={<PTM />} />
-        <Route path="/protein/:uniprot_id" element={<ProteinDetail />} />
+        <Route path="protein/:uniprot_id" element={<ProteinDetail />} />
         <Route path="pdb" element={<PDB />} />
         <Route path="basket" element={<DownloadBasket />} />
       </Route>

@@ -9,20 +9,29 @@ import ViewTabBar from "./components/ViewTabBar/ViewTabs";
 import Footer from "./components/Footer";
 import { PyComProviders } from "./context/PyComProviders";
 
+import { ErrorBoundary } from "react-error-boundary";
+
+function ErrorFallback({ error }) {
+  return <div>ERROR: {error.message}</div>;
+}
+
+
 
 function App() {
 
   return (
-    <PyComProviders>
-      <React.Fragment>
-        <NavigationBar />
-        <ViewTabBar />
-        <main className="content">
-          <Outlet />
-        </main>
-        <Footer />
-      </React.Fragment>
-    </PyComProviders>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <PyComProviders>
+        <React.Fragment>
+          <NavigationBar />
+          <ViewTabBar />
+          <main className="content">
+            <Outlet />
+          </main>
+          <Footer />
+        </React.Fragment>
+      </PyComProviders>
+    </ErrorBoundary>
   )
 }
 

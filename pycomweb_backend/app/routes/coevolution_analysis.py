@@ -20,9 +20,11 @@ def check_coevolution_score_significance():
     residue_pair = request.args.get('residue_pair')
     selected_score = float(request.args.get('score'))
 
+    print('here')
     # Read scores from file using the utility function
     scores = read_scores_from_file(residue_pair)
 
+    print('here2')
     #Get statistics and T-test result
     descriptive_stats = calculate_coevolution_score_stats(scores, selected_score)
     
@@ -51,19 +53,20 @@ def get_top_scoring_residues():
 
 @coevolution_bp.route('/get_top_scoring_residues2', methods=['POST'])
 def get_top_scoring_residues2():
+    print('getting data')
     # Get the POST parameters
     input_params = request.get_json()
     uniprot_id = input_params.get('uniprot_id')
     percentile = int(input_params.get('percentile'))
     matrixType = input_params.get('matrixType')
-    
-    url = "http://127.0.0.1:5000/getProteinMatrices/" + uniprot_id
+    print('here now')
+    url = "http://127.0.0.1:5000/pycomweb_api/getProteinMatrices/" + uniprot_id
     response = requests.get(url)
     data = response.json()
     data = data[0]
     sequence = data['sequence']
     matrix = data[matrixType]
-    
+    print('I got here okay')
     df_top_scoring_residues = calculate_top_scoring_residues(matrix, percentile, sequence)
     response = df_top_scoring_residues.to_dict(orient='records')
     return jsonify(response)
@@ -119,7 +122,7 @@ def generate_plot():
     matrixType = data['matrixType']
 
     # GET MATRIX DATA
-    url = "http://127.0.0.1:5000/getProteinMatrices/" + uniprot_id
+    url = "http://127.0.0.1:5000/pycomweb_api/getProteinMatrices/" + uniprot_id
     response = requests.get(url)
     data = response.json()
     data = data[0]

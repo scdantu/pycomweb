@@ -178,8 +178,6 @@ export const SearchProvider = ({children}) =>{
     }
 
     const updateFilters = (elementID, elementType, payload = {}) => {
-      // console.log(`${name} ${type} ${JSON.stringify(payload)}`);
-      console.log('hi');
       switch(elementType) {
         case ADV_FIL_TYPES.RANGE:
           setAdvancedFilters((prev) => ({
@@ -304,7 +302,6 @@ export const SearchProvider = ({children}) =>{
       // console.log(item);
       switch(item.type) {
         case "BOOLEAN":
-          console.log(item);
           if(item.applied === true) {
             requestBody.push({[item.apiParamId]: item.isEnabled});
           }
@@ -331,13 +328,11 @@ export const SearchProvider = ({children}) =>{
       // }
     }
 
-    console.log(requestBody);
     // setFilters(requestBody);
     // console.log(filters);
     setFilters(requestBody.reduce((acc, curr) => {
        return { ...acc, ...curr };
      }, {}));
-    console.log(filters);
     setIsSearchUpdateRequired(true);
     //submit
   }

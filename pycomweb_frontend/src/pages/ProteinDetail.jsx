@@ -1,22 +1,30 @@
-import React, { useEffect, useRef, useState, useContext, useMemo} from 'react';
+import React, { useEffect, useRef, useState, useContext, useMemo } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { useParams } from 'react-router-dom';
-import Layout from '../Layout/Layout';
-import useFetchProteinDetail from '../customHooks/useFetchProteinDetail';
-import AnalysisSidebarOptions from '../components/proteinDetail/AnalysisSidebarOptions';
-import DetailComponent from '../components/proteinDetail/DetailComponent';
+// import Layout from '../Layout/Layout';
+// import useFetchProteinDetail from '../customHooks/useFetchProteinDetail';
+// import AnalysisSidebarOptions from '../components/proteinDetail/AnalysisSidebarOptions';
+// import DetailComponent from '../components/proteinDetail/DetailComponent';
+import ProteinOverview from '../components/proteinDetail/ProteinOverview';
 import CoevolutionMatrix from '../components/proteinDetail/CoevolutionMatrix';
 import CoevolutionAnalysis from '../components/proteinDetail/CoevolutionAnalysis';
 import CoevolutionVisualization from '../components/proteinDetail/CoevolutionVisualization';
 import { Button } from 'react-bootstrap';
+import { FaCartPlus } from 'react-icons/fa';
+import { DownloadContext } from '../context/DownloadContext';
 import '../assets/css/proteinDetail.css'
-import useFetchProteinSummaryData from '../customHooks/useFetchProteinSummaryData';
+// import useFetchProteinSummaryData from '../customHooks/useFetchProteinSummaryData';
+// import useFetchProteinFullData from '../customHooks/useFetchProteinFullData';
+// import useFetchProteinSummary from '../customHooks/useFetchProteinSummary';
+import useFetchProteinAllData from '../customHooks/useFetchProteinAllData';
 import { RepositoryContext } from '../context/RepositorContext';
+// import styles from '../../styles/ViewTabs.module.css';
+import styles from '../styles/ProteinDetail.module.css'; // Adjust the path as necessary
 
 function ProteinDetail() {
   const { uniprot_id } = useParams(); // Get the uniprot_id from the URL
-  
-  const { proteinData, loading} = useFetchProteinDetail(uniprot_id);
+
+  //const { proteinData, loading} = useFetchProteinDetail(uniprot_id);
   const [selectedSection, setSelectedSection] = useState("detail");
   const [selectedMatrixType, setSelectedMatrixType] = useState(null); // 'simple', 'scaled', 'normalized'
   const [showMatrix, setShowMatrix] = useState(false);
@@ -25,33 +33,42 @@ function ProteinDetail() {
   const matrixRef = useRef(null);
   const [visualizationType, setVisualizationType] = useState('heatmap');
 
-  const {proteinRepository} = useContext(RepositoryContext);
+  const { proteinRepository } = useContext(RepositoryContext);
   // const {loadingSummary, error} = useFetchProteinSummaryData(true, [uniprot_id]);
-  const {loadingSummary, error} = useFetchProteinSummaryData([uniprot_id]);
-  // const [proteinData, setProteinData] = useState({});
-  // const proteinDataForId = useMemo(() => proteinRepository[uniprot_id], [proteinRepository, uniprot_id]);
-  // useEffect(() => {
-  //   // console.log(`proteinDataForId: ${JSON.stringify(proteinDataForId)}`);
-  //   // if (proteinDataForId) {
-  //     // If data is available in the context, update the local state
-  //     setProteinData(proteinRepository[uniprot_id]);
-  // // }
-  // }, [proteinDataForId]);
+  const { updateBasket } = useContext(DownloadContext);
+  const uniprotIds = useMemo(() => [uniprot_id], [uniprot_id]);
+  // const { loadingSummary, error } = useFetchProteinSummaryData(uniprotIds);
+  //  const {  loadingFull, error } = useFetchProteinFullData(true, uniprotIds);
+  const { loadingSummary, error } = useFetchProteinAllData(uniprot_id);
 
-  const handleSelectedSection = (section) => {
-    setSelectedSection(section);
+  const data = proteinRepository[uniprot_id] || {};
+  const { protein_name = "" } = data.summaryData || {};
+  const { organism_id = "" } = data.fullData || {};
+  const [view, setView] = useState('overview');
+
+  // console.log(`summaryData: ${JSON.stringify(summaryData)}`);
+
+  // return (<div> I got to here okay</div>)
+
+  // const handleSelectedSection = (section) => {
+  //   setSelectedSection(section);
+  // }
+  // // Function to handle matrix type selection
+  // const handleMatrixTypeSelection = (type) => {
+  //   setSelectedMatrixType(type);
+  // };
+  // const handleShowAnalysis = () => {
+  //   setShowAnalysis(true);
+  //   setShowMatrix(false);
+  // };
+  // const handleVisualizationSelect = (type) => {
+  //   setShowVisualization(true);
+  // };
+
+  // Error state
+  if (error) {
+    return <div>Error: {error}</div>;
   }
-  // Function to handle matrix type selection
-  const handleMatrixTypeSelection = (type) => {
-    setSelectedMatrixType(type);
-  };
-  const handleShowAnalysis = () => {
-    setShowAnalysis(true);
-    setShowMatrix(false);
-  };
-  const handleVisualizationSelect = (type) => {
-    setShowVisualization(true);
-  };
 
   // Loading state
   if (loadingSummary) {
@@ -72,48 +89,81 @@ function ProteinDetail() {
     );
   }
 
-  // Error state
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+
 
   // Check if proteinData is available
   // if (proteinData?.fetchedSummaryData === false) {
   //   return <div>No data available</div>;
   // }
-  // 
-    return (
-      <>
-        <Layout
-          sidebar={
-            <AnalysisSidebarOptions
-              onSectionSelected={handleSelectedSection}
-              selectedSection={selectedSection}
-              onMatrixTypeSelect={handleMatrixTypeSelection}
-              onShowAnalysis={handleShowAnalysis}
-              onVisualizationSelect={handleVisualizationSelect}
-            />}>
+  return (
+    <>
+      <div className={styles.page}>
+        <div className={styles.header}>
+          <div className={styles.titleNav}>
+            <h1 className={styles.title}>{protein_name}</h1>
+          </div>
+          <div className={styles.identities}>
+            <p><a className={styles.identity} href={`https://www.uniprot.org/uniprotkb/${uniprot_id}`} target="_blank" rel="noreferrer noopener"><span><span className={styles.strong}>UniProt ID:</span> <span className={styles.value}>{uniprot_id}</span></span><span className={styles.externalLink}>&#xe89e;</span></a></p>
+            <p><a className={styles.identity} href={`https://www.uniprot.org/taxonomy/${organism_id}`} target="_blank" rel="noreferrer noopener"><span><span className={styles.strong}>Organism ID:</span> <span className={styles.value}>{organism_id}</span></span><span className={styles.externalLink}>&#xe89e;</span></a></p>
+            {/* <p><span className={styles.strong}>Organism ID:</span> <span className={styles.value}>{organism_id}</span> <span className={styles.externalLink}>&#8599;</span></p> */}
 
-          {/* {console.log(selectedSection)} */}
-          {selectedSection === "detail" &&
-            <>
-            <DetailComponent uniprot_id={uniprot_id} />
-            </>
-          }
-          {selectedSection === "matrix" &&
-            // <CoevolutionMatrix proteinData={proteinData} />
-            <CoevolutionMatrix uniprot_id={uniprot_id} />
-            
-          }
-          {selectedSection === "analysis" &&
-            <CoevolutionAnalysis uniprot_id={uniprot_id} />
-          }
-          {selectedSection === "visualization" &&
-            <CoevolutionVisualization uniprot_id={uniprot_id} />
-          }
-        </Layout>
-      </>
-    )
+            {/* <a class="organism-link" href="https://www.uniprot.org/taxonomy/561445" target="_blank" rel="noreferrer noopener">561445</a> */}
+          </div>
+          <nav className={styles.subNav}>
+            <div className={styles.subNavPages}>
+              <button
+                className={`${styles.proteinOverviewNavButton} ${view === 'overview' ? styles.proteinOverviewNavButtonActive : ''}`}
+                onClick={() => setView('overview')}
+              >
+                Overview
+              </button>
+
+              <button
+                className={`${styles.proteinOverviewNavButton} ${view === 'coevolutionmatrix' ? styles.proteinOverviewNavButtonActive : ''}`}
+                onClick={() => setView('coevolutionmatrix')}
+              >
+                Coevolution Matrix
+              </button>
+
+              <button
+                className={`${styles.proteinOverviewNavButton} ${view === 'analysis' ? styles.proteinOverviewNavButtonActive : ''}`}
+                onClick={() => setView('analysis')}
+              >
+                Analysis
+              </button>
+
+              <button
+                className={`${styles.proteinOverviewNavButton} ${view === 'visualisations' ? styles.proteinOverviewNavButtonActive : ''}`}
+                onClick={() => setView('visualisations')}
+              >
+                Visualisations
+              </button>
+            </div>
+            <div>
+              <div className={styles.addToDownloadsContainer} onClick={() => updateBasket(uniprot_id)}>
+                <span className={styles.addToDownloadsIcon}>&#xf000;</span>
+                <p className={styles.addToDownloads}>Add to downloads</p>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+
+      {view === 'overview' && (
+        <ProteinOverview uniprot_id={uniprot_id} />
+      )}
+
+      {view === 'coevolutionmatrix' && (
+        <CoevolutionMatrix uniprot_id={uniprot_id} />
+      )}
+      {view === 'analysis' && (
+        <CoevolutionAnalysis uniprot_id={uniprot_id} />
+      )}
+      {view === 'visualisations' && (
+        <CoevolutionVisualization uniprot_id={uniprot_id} />
+      )}
+    </>
+  )
   // 
 }
 

@@ -4,7 +4,6 @@ import { FaSearch } from 'react-icons/fa';
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
 
 const DataTable = ({ columns, data, title, placeholder }) => {
-    console.log("called datatable component ....................................")
     // Retrieve stored filter from sessionStorage or set to an empty string
     const storedFilter = sessionStorage.getItem(`searchQuery_${title}`) || '';
     // Create a state to manage the global filter

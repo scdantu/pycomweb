@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import PropTypes from "prop-types";
-export const RepositoryContext = createContext(null);
+export const RepositoryContext = createContext();
 
 export const RepositoryProvider = ({children}) =>{
     const [proteinRepository, setProteinRepository] = useState({}); //repository of access proteins during a session
@@ -65,7 +65,7 @@ export const RepositoryProvider = ({children}) =>{
     }
 
     return (
-        <RepositoryContext.Provider value= {{proteinRepository, setProteinRepository, addItemToProteinRepository, addItemsToProteinRepository, isHelpDataLoaded}}>
+        <RepositoryContext.Provider value={{proteinRepository, setProteinRepository, addItemToProteinRepository, addItemsToProteinRepository, isHelpDataLoaded}}>
             {children}
         </RepositoryContext.Provider>
     )

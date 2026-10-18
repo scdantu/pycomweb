@@ -104,7 +104,6 @@ export const validateField = (name, value, formData) => {
         return error;
     }
     const { label, rules } = validationRules[name];
-    console.log(rules)
     /* IF Field value is empty then don't check for further errors  */
     if (rules == 'undefined' || value == '') {
         error[name] = ""
